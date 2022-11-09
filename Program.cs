@@ -195,10 +195,9 @@ class Program
         List<Player> Players= new List<Player>();
         Players.Add(new Player("Manolo",new HeroCards("jose","yellow",1,0,1,0),InitialDeck));
         Players.Add( new Player("Juanito",new HeroCards("pedro","yellow",0,1,0,2),InitialDeck));
-
+        
         while(true)
         {
-            System.Console.WriteLine("aqui");
             foreach(Player a in Players)
             {
                 Console.Clear();
