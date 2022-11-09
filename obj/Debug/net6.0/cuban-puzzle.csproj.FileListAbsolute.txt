@@ -1,0 +1,15 @@
+/home/dario/Study/cuban-puzzle/obj/Debug/net6.0/cuban-puzzle.csproj.AssemblyReference.cache
+/home/dario/Study/cuban-puzzle/obj/Debug/net6.0/cuban-puzzle.GeneratedMSBuildEditorConfig.editorconfig
+/home/dario/Study/cuban-puzzle/obj/Debug/net6.0/cuban-puzzle.AssemblyInfoInputs.cache
+/home/dario/Study/cuban-puzzle/obj/Debug/net6.0/cuban-puzzle.AssemblyInfo.cs
+/home/dario/Study/cuban-puzzle/obj/Debug/net6.0/cuban-puzzle.csproj.CoreCompileInputs.cache
+/home/dario/Study/cuban-puzzle/bin/Debug/net6.0/cuban-puzzle
+/home/dario/Study/cuban-puzzle/bin/Debug/net6.0/cuban-puzzle.deps.json
+/home/dario/Study/cuban-puzzle/bin/Debug/net6.0/cuban-puzzle.runtimeconfig.json
+/home/dario/Study/cuban-puzzle/bin/Debug/net6.0/cuban-puzzle.dll
+/home/dario/Study/cuban-puzzle/bin/Debug/net6.0/ref/cuban-puzzle.dll
+/home/dario/Study/cuban-puzzle/bin/Debug/net6.0/cuban-puzzle.pdb
+/home/dario/Study/cuban-puzzle/obj/Debug/net6.0/cuban-puzzle.dll
+/home/dario/Study/cuban-puzzle/obj/Debug/net6.0/ref/cuban-puzzle.dll
+/home/dario/Study/cuban-puzzle/obj/Debug/net6.0/cuban-puzzle.pdb
+/home/dario/Study/cuban-puzzle/obj/Debug/net6.0/cuban-puzzle.genruntimeconfig.cache

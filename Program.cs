@@ -198,6 +198,7 @@ class Program
 
         while(true)
         {
+            System.Console.WriteLine("aqui");
             foreach(Player a in Players)
             {
                 Console.Clear();
