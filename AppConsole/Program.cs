@@ -12,7 +12,7 @@ class Program
 
     static void NewGame()
     {
-        List<PlayingCard> choosecards = new List<PlayingCard>();
+        List<PlayingCard> choosecards = new List<PlayingCard>(); //Lista de cartas a escoger
 
         choosecards.Add(new PlayingCard(5,"yellow","Axe Kick",1,0,2,0,0));
         choosecards.Add(new PlayingCard(2,"yellow","Bang then Fizzle",2,0,2,0,0));
@@ -39,21 +39,60 @@ class Program
         Players.Add(new Player("Manolo",new HeroCards("jose","yellow",1,0,1,0),InitialDeck));
         Players.Add( new Player("Juanito",new HeroCards("pedro","yellow",0,1,0,2),InitialDeck));
         
-        while(true)
-        {
+        // while(true)
+        // {
             foreach(Player a in Players)
             {
                 Console.Clear();
                 a.GemPile.Add(new Gem(1,1));
-                PrintTable();
+                PrintTable(a);
+                Console.ReadLine();//Esto se borra
             }
-        }
+        // }
     }
 
-    static void PrintTable()
+    static void PrintTable(Player a)
     {
+        List<Card> tableChoose = new List<Card>();
+        int i = 0;
+        Console.WriteLine("Ongoing:");
+        foreach(Card l in a.Ongoing)
+        {
+            Console.WriteLine(i+"-"+l.Name);
+            tableChoose.Add(l);
+            i++;
+        }
+        Console.WriteLine("\n");
 
+
+        int totalGem = 0;
+        foreach(Gem l in a.GemPile)
+        {
+            totalGem += l.Count;
+        }
+        Console.WriteLine($"Gem Pile: {totalGem}\n");
+
+
+        Console.WriteLine("Discard Pile:");
+        foreach(Card l in a.DiscardPile)
+        {
+            Console.WriteLine(i+"-"+l.Name);
+            tableChoose.Add(l);
+            i++;
+        }
+        Console.WriteLine("\n");
+
+
+        Console.WriteLine("Hand:");
+        foreach(Card l in a.Hand)
+        {
+            Console.WriteLine(i+"-"+l.Name);
+            tableChoose.Add(l);
+            i++;
+        }
+        Console.WriteLine("\n");
     }
+
     static void Main()
     {
         while(true)
