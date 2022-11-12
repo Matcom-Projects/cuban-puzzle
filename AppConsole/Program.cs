@@ -1,5 +1,4 @@
-﻿using cuban_puzzle_engine;
-namespace cuban_puzzle;
+﻿namespace cuban_puzzle;
 
 class Program
 {
@@ -36,24 +35,38 @@ class Program
         }
 
         List<Player> Players= new List<Player>();
-        Players.Add(new Player("Manolo",new HeroCards("jose","yellow",1,0,1,0),InitialDeck));
-        Players.Add( new Player("Juanito",new HeroCards("pedro","yellow",0,1,0,2),InitialDeck));
+        Players.Add(new Player("Manolo",new HeroCards("jose","yellow",1,0,1,0),ChoosePlayingCard(choosecards,InitialDeck)));
+        Players.Add( new Player("Juanito",new HeroCards("pedro","yellow",0,1,0,2),ChoosePlayingCard(choosecards,InitialDeck)));
         
-        // while(true)
-        // {
+        List<Card> tableChoose = new List<Card>();
+        
+        foreach(Player a in Players)
+        {
+            a.Draw(5);
+        }
+
+        while(true)
+        {
             foreach(Player a in Players)
             {
                 Console.Clear();
                 a.GemPile.Add(new Gem(1,1));
-                PrintTable(a);
-                Console.ReadLine();//Esto se borra
+                bool turn = false;
+                do
+                {
+                    Console.Clear();
+                    PrintTable(a, tableChoose);
+                    turn = Turn(a, tableChoose);
+                }while(!turn);
+                tableChoose.Clear();
             }
-        // }
+        }
+        
     }
 
-    static void PrintTable(Player a)
+    static void PrintTable(Player a, List<Card> tableChoose)
     {
-        List<Card> tableChoose = new List<Card>();
+        Console.WriteLine($"     Jugador {a}:");
         int i = 0;
         Console.WriteLine("Ongoing:");
         foreach(Card l in a.Ongoing)
@@ -65,12 +78,7 @@ class Program
         Console.WriteLine("\n");
 
 
-        int totalGem = 0;
-        foreach(Gem l in a.GemPile)
-        {
-            totalGem += l.Count;
-        }
-        Console.WriteLine($"Gem Pile: {totalGem}\n");
+        Console.WriteLine($"Gem Pile: {a.GemPile.Count}\n");
 
 
         Console.WriteLine("Discard Pile:");
@@ -91,6 +99,117 @@ class Program
             i++;
         }
         Console.WriteLine("\n");
+
+        Console.WriteLine("Deck:");
+        foreach(Card l in a.Deck)
+        {
+            Console.WriteLine(i+"-"+l.Name);
+            tableChoose.Add(l);
+            i++;
+        }
+        Console.WriteLine("\n");
+    }
+
+    static bool Turn(Player a, List<Card> tableChoose)
+    {
+        Console.WriteLine("Opciones:");
+        Console.WriteLine("Presione [A] para jugar fase de accion"); 
+        Console.WriteLine("Presione [C] para jugar fase de compra");
+        Console.WriteLine("Presione [I] para ver informacion de una carta");
+        Console.WriteLine("Presione [E] para finalizar turno");        
+
+        ConsoleKey key = Console.ReadKey(true).Key;
+        Console.Clear();
+
+        switch (key)
+        {
+            case ConsoleKey.A :
+            {
+                break;
+            }
+            case ConsoleKey.C :
+            {
+                break;
+            }
+            case ConsoleKey.I :
+            {
+                InformationCard(a, tableChoose);
+                break;
+            }
+            case ConsoleKey.E :
+            {
+                PhaseCleanUp(a);
+                return true;
+            } 
+        }
+
+        return false;
+    }
+
+    static void PhaseAction()
+    {
+
+    }
+
+    static void PhaseBuy()
+    {
+
+    }
+
+    static void InformationCard(Player a, List<Card> tableChoose)
+    {
+        Console.Clear();
+        PrintTable(a, tableChoose);
+        Console.WriteLine("Elija una carta"); int opc = int.Parse(Console.ReadLine());
+        Console.Clear();
+        Console.WriteLine(tableChoose[opc]);
+        Console.WriteLine("\nAtras: presione [Enter]"); Console.ReadLine();
+    }
+
+    static void PhaseCleanUp(Player a)
+    {
+        for(int i=a.Hand.Count-1; i>=0; i--)
+        {
+            a.DiscardPile.Add(a.Hand[i]);
+            a.Hand.RemoveAt(i);
+        }
+        for(int i=a.Ongoing.Count-1; i>=0; i--)
+        {
+            a.DiscardPile.Add(a.Ongoing[i]);
+            a.Ongoing.RemoveAt(i);
+        }
+
+        //Revisar por que el robo de las cartas no lo implementa correctamente
+        int amountGem = a.GemPile.Count;
+        if(amountGem<=2) a.Draw(5);
+        if((amountGem>=3) && (amountGem<=5)) a.Draw(6);
+        if(amountGem>=6 && amountGem<=8) a.Draw(7);
+        if(amountGem==9) a.Draw(8);
+        if(amountGem>=10) GameOver();
+    }
+
+    static void GameOver()
+    {
+
+    }
+    
+
+
+    static List<Card> ChoosePlayingCard(List<PlayingCard> choosecards, List<Card> InitialDeck)
+    {
+        Random r = new Random();
+        List<Card> list = new List<Card>();
+        foreach(var l in InitialDeck)
+        {
+            list.Add(l);
+        }
+
+        for(int i=0; i<5; i++)
+        {
+            list.Add(choosecards[r.Next(0,choosecards.Count-1)]);
+        }
+
+        return list;
     }
 
     static void Main()
