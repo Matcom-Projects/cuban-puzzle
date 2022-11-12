@@ -25,6 +25,17 @@ public class HeroCards : Card
         this.DeckRobbery = deckrobbery;
         this.Money = money;
     }
+    public override string ToString()
+    {
+        string result= @$"
+{Name} {Color}
+acciones: {Actions}
+salvar carta: {SaveCard}
+Robar carta del deck: {DeckRobbery}
+Dinero extra: {Money}
+        ";
+        return result;
+    }
 }
 
 public abstract class BankCards : Card
@@ -55,6 +66,10 @@ public class Wound : BankCards
     public Wound() : base(0,"CUP")
     {
         
+    }
+    public override string ToString()
+    {
+        return $"{Name} Costo:{Cost}";
     }
 }
 
@@ -137,11 +152,13 @@ public class Player
 
     public override string ToString()
     {
-        return"";
+        return this.Name;
     }
 
     public void Draw(int n) 
     {
+        Random r = new Random();
+        int num;
         for (int i = 0 ; i < n; i++)
         {
             if(Deck.Count==0)
@@ -149,8 +166,9 @@ public class Player
                 Deck.AddRange(DiscardPile);
                 DiscardPile.RemoveRange(0,DiscardPile.Count());
             }
-            Hand.Add(Deck[0]);
-            Deck.RemoveAt(0);
+            num = r.Next(0,Deck.Count-1);
+            Hand.Add(Deck[num]);
+            Deck.RemoveAt(num);
         }
     }
 }
