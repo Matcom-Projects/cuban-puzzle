@@ -44,21 +44,25 @@ class Program
         {
             a.Draw(5);
         }
-
-        while(true)
+        
+        bool gameOver = false;
+        while(!gameOver)
         {
             foreach(Player a in Players)
             {
                 Console.Clear();
                 a.GemPile.Add(new Gem(1,1));
-                bool turn = false;
-                do
+                
+                Turn(a, tableChoose);
+                tableChoose.Clear();
+                
+                gameOver = GameOver(a.GemPile.Count);
+                if(gameOver) 
                 {
                     Console.Clear();
-                    PrintTable(a, tableChoose);
-                    turn = Turn(a, tableChoose);
-                }while(!turn);
-                tableChoose.Clear();
+                    Console.WriteLine($"Has perdido {a}. Suerte para la próxima mi pana");
+                    Console.WriteLine("Presione [Enter] para volver al menú"); Console.ReadLine();break;
+                }
             }
         }
         
@@ -68,6 +72,16 @@ class Program
     {
         Console.WriteLine($"     Jugador {a}:");
         int i = 0;
+        Console.WriteLine("Hand:");
+        foreach(Card l in a.Hand)
+        {
+            Console.WriteLine(i+"-"+l.Name);
+            tableChoose.Add(l);
+            i++;
+        }
+        Console.WriteLine("\n");
+
+        Console.WriteLine($"     Campo de Juego:         Gem Pile: {a.GemPile.Count}");
         Console.WriteLine("Ongoing:");
         foreach(Card l in a.Ongoing)
         {
@@ -76,10 +90,6 @@ class Program
             i++;
         }
         Console.WriteLine("\n");
-
-
-        Console.WriteLine($"Gem Pile: {a.GemPile.Count}\n");
-
 
         Console.WriteLine("Discard Pile:");
         foreach(Card l in a.DiscardPile)
@@ -91,15 +101,6 @@ class Program
         Console.WriteLine("\n");
 
 
-        Console.WriteLine("Hand:");
-        foreach(Card l in a.Hand)
-        {
-            Console.WriteLine(i+"-"+l.Name);
-            tableChoose.Add(l);
-            i++;
-        }
-        Console.WriteLine("\n");
-
         Console.WriteLine("Deck:");
         foreach(Card l in a.Deck)
         {
@@ -110,45 +111,83 @@ class Program
         Console.WriteLine("\n");
     }
 
-    static bool Turn(Player a, List<Card> tableChoose)
+    static void Turn(Player a, List<Card> tableChoose)
     {
-        Console.WriteLine("Opciones:");
-        Console.WriteLine("Presione [A] para jugar fase de accion"); 
-        Console.WriteLine("Presione [C] para jugar fase de compra");
-        Console.WriteLine("Presione [I] para ver informacion de una carta");
-        Console.WriteLine("Presione [E] para finalizar turno");        
+        int actions = 1;
+        bool turn = false;
 
-        ConsoleKey key = Console.ReadKey(true).Key;
-        Console.Clear();
-
-        switch (key)
+        do
         {
-            case ConsoleKey.A :
-            {
-                break;
-            }
-            case ConsoleKey.C :
-            {
-                break;
-            }
-            case ConsoleKey.I :
-            {
-                InformationCard(a, tableChoose);
-                break;
-            }
-            case ConsoleKey.E :
-            {
-                PhaseCleanUp(a);
-                return true;
-            } 
-        }
+            Console.Clear();
+            PrintTable(a, tableChoose);
+            
+            Console.WriteLine("Opciones:");
+            if(actions>0) Console.WriteLine("Presione [A] para jugar fase de accion");
+            Console.WriteLine("Presione [C] para jugar fase de compra");
+            Console.WriteLine("Presione [I] para ver informacion de una carta");
+            Console.WriteLine("Presione [E] para finalizar turno");        
 
-        return false;
+            ConsoleKey key = Console.ReadKey(true).Key;
+            Console.Clear();
+
+            switch (key)
+            {
+                case ConsoleKey.A :
+                {
+                        if(actions>0)
+                        {    
+                            PhaseAction(a, tableChoose);
+                            actions--;
+                        }
+                        break;
+                }
+                case ConsoleKey.C :
+                {
+                    break;
+                }
+                case ConsoleKey.I :
+                {
+                    InformationCard(a, tableChoose);
+                    break;
+                }
+                case ConsoleKey.E :
+                {
+                    PhaseCleanUp(a);
+                    turn = true;
+                    return;
+                } 
+            }
+
+            turn = false;
+        }while(!turn);
     }
 
-    static void PhaseAction()
+    static void PhaseAction(Player a, List<Card> tableChoose) //Implementar bien esta fase
     {
-
+        int opc;
+        
+        do
+        {
+            Console.Clear();
+            PrintTable(a, tableChoose);
+            Console.WriteLine("Elija una carta de su mano"); opc = int.Parse(Console.ReadLine());
+            
+            if(opc<a.Hand.Count && Object.ReferenceEquals(tableChoose[opc].GetType(),(new PlayingCard(0,"","",0,0,0,0,0)).GetType()))
+            {
+                a.Ongoing.Add(tableChoose[opc]);
+                a.Hand.RemoveAt(opc);
+                Console.Clear();
+                PrintTable(a, tableChoose);
+                // CardExecution(tableChoose[opc]);
+                break;
+            }
+            else
+            {
+                Console.WriteLine("Esa carta no es posible activarla en el Ongoing");
+                Console.WriteLine("Presione [Enter] para elegir otra carta"); Console.ReadLine();
+            }
+        }while(opc>=a.Hand.Count || !Object.ReferenceEquals(tableChoose[opc].GetType(),(new PlayingCard(0,"","",0,0,0,0,0)).GetType()));
+       
     }
 
     static void PhaseBuy()
@@ -185,14 +224,24 @@ class Program
         if((amountGem>=3) && (amountGem<=5)) a.Draw(6);
         if(amountGem>=6 && amountGem<=8) a.Draw(7);
         if(amountGem==9) a.Draw(8);
-        if(amountGem>=10) GameOver();
     }
 
-    static void GameOver()
+    static bool GameOver(int n)
     {
+        if(n>=10) return true;
 
+        return false;
     }
     
+    //Este metodo implementarlo mas adelante
+    // static void CardExecution(Card card)
+    // {
+    //     if(card.Actions>0) Console.WriteLine($"Tiene {card.Actions} acciones más");
+    //     if(card.saveCard>0) Console.WriteLine($"Tiene {card.saveCard} cartas salvadas");
+    //     if(card.DeckRobbery>0) Console.WriteLine($"Puede robar {card.DeckRobbery} cartas del deck");
+    //     if(card.Money>0) Console.WriteLine($"Tiene ${card.Money} para su fase de compra");
+    //     if(card.Attack>0) Console.WriteLine($"Tiene {card.Attack} puntos para atacar");
+    // }
 
 
     static List<Card> ChoosePlayingCard(List<PlayingCard> choosecards, List<Card> InitialDeck)
