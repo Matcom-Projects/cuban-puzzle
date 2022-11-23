@@ -220,10 +220,15 @@ class Program
 
         //Revisar por que el robo de las cartas no lo implementa correctamente
         int amountGem = a.GemPile.Count; // cambiar para mas adelante...
-        if(amountGem<=2) a.Draw(5);
-        if((amountGem>=3) && (amountGem<=5)) a.Draw(6);
-        if(amountGem>=6 && amountGem<=8) a.Draw(7);
-        if(amountGem==9) a.Draw(8);
+        int cantsavingcards = a.SavingCards.Count;
+
+        if (amountGem <= 2) a.Draw(5-cantsavingcards);
+        else if ((amountGem >= 3) && (amountGem <= 5)) a.Draw(6-cantsavingcards);
+        else if (amountGem >= 6 && amountGem <= 8) a.Draw(7-cantsavingcards);
+        if (amountGem == 9) a.Draw(8-cantsavingcards);
+
+        a.Hand.AddRange(a.SavingCards);
+        a.SavingCards.RemoveRange(0,cantsavingcards);
     }
 
     static bool GameOver(int n) // cambiar para mas adelante...
