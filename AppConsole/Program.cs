@@ -14,20 +14,20 @@ class Program
         List<PlayingCard> choosecards = new List<PlayingCard>(); //Lista de cartas a escoger
 
         choosecards.Add(new GameCard1(5,"yellow","Axe Kick",1,0,2,0,0));
-        choosecards.Add(new PlayingCard(2,"yellow","Bang then Fizzle",2,0,2,0,0));
-        choosecards.Add(new PlayingCard(3,"yellow","Button Machine",2,0,0,0,0));
-        choosecards.Add(new PlayingCard(3,"yellow","Draw Three",0,0,3,0,0));
-        choosecards.Add(new PlayingCard(5,"yellow","One of each",1,1,1,1,0));
-        choosecards.Add(new PlayingCard(6,"yellow","Punch, Punch, Kick",2,0,1,0,0));
-        choosecards.Add(new PlayingCard(1,"yellow","Safe Keeping",1,1,0,0,0));
-        choosecards.Add(new PlayingCard(2,"yellow","Sales Price",0,0,0,2,0));
-        choosecards.Add(new PlayingCard(6,"yellow","Lucky",1,1,3,0,0));
-        choosecards.Add(new PlayingCard(7,"yellow","Boss",2,0,3,3,0));
+        choosecards.Add(new GameCard2(2,"yellow","Bang then Fizzle",2,0,2,0,0));
+        choosecards.Add(new GameCard3(3,"yellow","Button Machine",2,0,0,0,0));
+        choosecards.Add(new GameCard4(3,"yellow","Draw Three",0,0,3,0,0));
+        choosecards.Add(new GameCard5(5,"yellow","One of each",1,1,1,1,0));
+        choosecards.Add(new GameCard6(6,"yellow","Punch, Punch, Kick",2,0,1,0,0));
+        choosecards.Add(new GameCard7(1,"yellow","Safe Keeping",1,1,0,0,0));
+        choosecards.Add(new GameCard8(2,"yellow","Sales Price",0,0,0,2,0));
+        choosecards.Add(new GameCard9(6,"yellow","Lucky",1,1,3,0,0));
+        choosecards.Add(new GameCard10(7,"yellow","Boss",2,0,3,3,0));
 
         Bank bank = new Bank(choosecards);
 
         List<Card> InitialDeck = new List<Card>();
-        InitialDeck.Add(new PlayingCard(5,"purple","crash gem",0,0,0,1,1));
+        InitialDeck.Add(new CrashGem());
 
         for(int i = 0 ; i < 6 ; i++)
         {
@@ -186,7 +186,7 @@ class Program
                 Console.WriteLine("Esa carta no es posible activarla en el Ongoing");
                 Console.WriteLine("Presione [Enter] para elegir otra carta"); Console.ReadLine();
             }
-        }while(opc>=a.Hand.Count || !Object.ReferenceEquals(tableChoose[opc].GetType(),(new PlayingCard(0,"","",0,0,0,0,0)).GetType()));
+        }while(opc >= a.Hand.Count || !Object.ReferenceEquals(tableChoose[opc].GetType(),(new PlayingCard(0,"","",0,0,0,0,0)).GetType()));
        
     }
 
@@ -219,14 +219,14 @@ class Program
         }
 
         //Revisar por que el robo de las cartas no lo implementa correctamente
-        int amountGem = a.GemPile.Count;
+        int amountGem = a.GemPile.Count; // cambiar para mas adelante...
         if(amountGem<=2) a.Draw(5);
         if((amountGem>=3) && (amountGem<=5)) a.Draw(6);
         if(amountGem>=6 && amountGem<=8) a.Draw(7);
         if(amountGem==9) a.Draw(8);
     }
 
-    static bool GameOver(int n)
+    static bool GameOver(int n) // cambiar para mas adelante...
     {
         if(n>=10) return true;
 
