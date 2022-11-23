@@ -1,4 +1,4 @@
-﻿namespace cuban_puzzle;
+﻿namespace engine_cuban_puzzle;
 
 public abstract class Card
 {
@@ -73,6 +73,14 @@ public class Wound : BankCards
     }
 }
 
+public class CrashGem : PlayingCard
+{
+    public CrashGem( ) : base(5, "purple","Crash Gem",  0 , 0 ,  0 ,  1 , 1)
+    {
+
+    }
+}
+
 public class PlayingCard : BankCards
 {
     public string Color { get ; private set; }
@@ -115,7 +123,7 @@ public class Bank
     public Gem gem3 { get{return new Gem(3,5);} private set{} }
     public Gem gem4 { get{return new Gem(4,7);} private set{} }
     public Wound wound{ get {return new Wound();} private set{} }
-    public PlayingCard crashgem { get{ return new PlayingCard(5,"purple","crash gem",0,0,0,1,1);} private set{}}
+    public CrashGem crashgem { get{ return new CrashGem();} private set{}}
     public Dictionary<BankCards,int> bank { get; set; }
     public Bank(List<PlayingCard> choosecard)
     {
@@ -129,6 +137,11 @@ public class Bank
 
 public class Player
 {
+    public int NumberActions{get;set;}
+    public int CantMoney{get;set;}
+    public int NumberAttack{get;set;}
+    public int NumberSaveCard{get;set;}
+    public int NumberRoberryCard{get;set;}
     public string Name{ get; private set; }
     public int CantGem{ get; private set; }
     public  List <Card> Deck { get; set; }
@@ -136,9 +149,11 @@ public class Player
     public  List <Card> DiscardPile { get; set; }
     public  List <Gem> GemPile { get; set; }
     public  List <Card> Ongoing { get; set; }
+    public List<Card> SavingCards{get; set;}
 
     public Player(string name,HeroCards a,List<Card> initialdeck)
     {
+        this.SavingCards= new List<Card>();
         this.Name = name;
         this.CantGem = 0;
         this.Hand = new List<Card>();
@@ -171,4 +186,91 @@ public class Player
             Deck.RemoveAt(num);
         }
     }
+
+    public void Attack(List<Gem> a, Player b)
+    {
+        b.GemPile.AddRange(a);
+    }
+
+    public void SaveCard(Card a)
+    {
+        SavingCards.Add(a);
+    }
+
+    public void Actions(int n)
+    {
+        NumberActions += n;
+    }
 }
+
+public class GameCard1 : PlayingCard
+{
+    public GameCard1(int cost , string color , string name , int actions , int savecard , int deckrobbery , int money , int attack):base(cost , color , name ,  actions , savecard ,  deckrobbery ,  money , attack)
+    {
+
+    }
+}
+public class GameCard2 : PlayingCard
+{
+    public GameCard2(int cost , string color , string name , int actions , int savecard , int deckrobbery , int money , int attack):base(cost , color , name ,  actions , savecard ,  deckrobbery ,  money , attack)
+    {
+
+    }
+}
+public class GameCard3 : PlayingCard
+{
+    public GameCard3(int cost , string color , string name , int actions , int savecard , int deckrobbery , int money , int attack):base(cost , color , name ,  actions , savecard ,  deckrobbery ,  money , attack)
+    {
+
+    }
+}
+public class GameCard4 : PlayingCard
+{
+    public GameCard4(int cost , string color , string name , int actions , int savecard , int deckrobbery , int money , int attack):base(cost , color , name ,  actions , savecard ,  deckrobbery ,  money , attack)
+    {
+
+    }
+}
+public class GameCard5 : PlayingCard
+{
+    public GameCard5(int cost , string color , string name , int actions , int savecard , int deckrobbery , int money , int attack):base(cost , color , name ,  actions , savecard ,  deckrobbery ,  money , attack)
+    {
+
+    }
+}
+public class GameCard6 : PlayingCard
+{
+    public GameCard6(int cost , string color , string name , int actions , int savecard , int deckrobbery , int money , int attack):base(cost , color , name ,  actions , savecard ,  deckrobbery ,  money , attack)
+    {
+
+    }
+}
+public class GameCard7 : PlayingCard
+{
+    public GameCard7(int cost , string color , string name , int actions , int savecard , int deckrobbery , int money , int attack):base(cost , color , name ,  actions , savecard ,  deckrobbery ,  money , attack)
+    {
+
+    }
+}
+public class GameCard8 : PlayingCard
+{
+    public GameCard8(int cost , string color , string name , int actions , int savecard , int deckrobbery , int money , int attack):base(cost , color , name ,  actions , savecard ,  deckrobbery ,  money , attack)
+    {
+
+    }
+}
+public class GameCard9 : PlayingCard
+{
+    public GameCard9(int cost , string color , string name , int actions , int savecard , int deckrobbery , int money , int attack):base(cost , color , name ,  actions , savecard ,  deckrobbery ,  money , attack)
+    {
+
+    }
+}
+public class GameCard10 : PlayingCard
+{
+    public GameCard10(int cost , string color , string name , int actions , int savecard , int deckrobbery , int money , int attack):base(cost , color , name ,  actions , savecard ,  deckrobbery ,  money , attack)
+    {
+
+    }
+}
+

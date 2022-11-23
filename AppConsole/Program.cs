@@ -1,5 +1,5 @@
-﻿namespace cuban_puzzle;
-
+﻿using engine_cuban_puzzle;
+namespace console_cuban_puzzle;
 class Program
 {
     static void PrintMenu()
@@ -13,7 +13,7 @@ class Program
     {
         List<PlayingCard> choosecards = new List<PlayingCard>(); //Lista de cartas a escoger
 
-        choosecards.Add(new PlayingCard(5,"yellow","Axe Kick",1,0,2,0,0));
+        choosecards.Add(new GameCard1(5,"yellow","Axe Kick",1,0,2,0,0));
         choosecards.Add(new PlayingCard(2,"yellow","Bang then Fizzle",2,0,2,0,0));
         choosecards.Add(new PlayingCard(3,"yellow","Button Machine",2,0,0,0,0));
         choosecards.Add(new PlayingCard(3,"yellow","Draw Three",0,0,3,0,0));

@@ -1,0 +1,12 @@
+/home/dario/Study/cuban-puzzle/Engine/bin/Debug/net6.0/Engine.deps.json
+/home/dario/Study/cuban-puzzle/Engine/bin/Debug/net6.0/Engine.dll
+/home/dario/Study/cuban-puzzle/Engine/bin/Debug/net6.0/ref/Engine.dll
+/home/dario/Study/cuban-puzzle/Engine/bin/Debug/net6.0/Engine.pdb
+/home/dario/Study/cuban-puzzle/Engine/obj/Debug/net6.0/Engine.csproj.AssemblyReference.cache
+/home/dario/Study/cuban-puzzle/Engine/obj/Debug/net6.0/Engine.GeneratedMSBuildEditorConfig.editorconfig
+/home/dario/Study/cuban-puzzle/Engine/obj/Debug/net6.0/Engine.AssemblyInfoInputs.cache
+/home/dario/Study/cuban-puzzle/Engine/obj/Debug/net6.0/Engine.AssemblyInfo.cs
+/home/dario/Study/cuban-puzzle/Engine/obj/Debug/net6.0/Engine.csproj.CoreCompileInputs.cache
+/home/dario/Study/cuban-puzzle/Engine/obj/Debug/net6.0/Engine.dll
+/home/dario/Study/cuban-puzzle/Engine/obj/Debug/net6.0/ref/Engine.dll
+/home/dario/Study/cuban-puzzle/Engine/obj/Debug/net6.0/Engine.pdb
