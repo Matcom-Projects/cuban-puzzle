@@ -1,30 +1,25 @@
 ﻿using engine_cuban_puzzle;
 namespace console_cuban_puzzle;
-class Program
+class Game
 {
-    static void PrintMenu()
-    {
-        System.Console.WriteLine("Presione [N] para un nuevo juego.");
-        System.Console.WriteLine("Presione [E] para salir.");
-        System.Console.WriteLine("Presione [I] para saber la informacion de una carta.");
-    }
-
-    static void NewGame()
+    public static Bank bank {get; private set;}
+    public static List<Player> Players{get;private set;}
+    public static void NewGame()
     {
         List<PlayingCard> choosecards = new List<PlayingCard>(); //Lista de cartas a escoger
 
-        choosecards.Add(new GameCard1(5,"yellow","Axe Kick",1,0,2,0,0));
-        choosecards.Add(new GameCard2(2,"yellow","Bang then Fizzle",2,0,2,0,0));
-        choosecards.Add(new GameCard3(3,"yellow","Button Machine",2,0,0,0,0));
-        choosecards.Add(new GameCard4(3,"yellow","Draw Three",0,0,3,0,0));
-        choosecards.Add(new GameCard5(5,"yellow","One of each",1,1,1,1,0));
-        choosecards.Add(new GameCard6(6,"yellow","Punch, Punch, Kick",2,0,1,0,0));
-        choosecards.Add(new GameCard7(1,"yellow","Safe Keeping",1,1,0,0,0));
-        choosecards.Add(new GameCard8(2,"yellow","Sales Price",0,0,0,2,0));
-        choosecards.Add(new GameCard9(6,"yellow","Lucky",1,1,3,0,0));
-        choosecards.Add(new GameCard10(7,"yellow","Boss",2,0,3,3,0));
+        choosecards.Add(new PlayingCard(5,"yellow","Axe Kick",1,0,2,0,0,new bool[] {true,false,true,false}));
+        choosecards.Add(new PlayingCard(2,"yellow","Bang then Fizzle",2,0,2,0,0,new bool[] {true,false,true,false}));
+        choosecards.Add(new PlayingCard(3,"yellow","Button Machine",2,0,0,0,0,new bool[] {true,false,false,false}));
+        choosecards.Add(new PlayingCard(3,"yellow","Draw Three",0,0,3,0,0,new bool[] {false,false,true,false}));
+        choosecards.Add(new PlayingCard(5,"yellow","One of each",1,1,1,0,1,new bool[] {true,true,true,false}));
+        choosecards.Add(new PlayingCard(6,"yellow","Punch, Punch, Kick",2,0,1,0,0,new bool[] {true,false,true,false}));
+        choosecards.Add(new PlayingCard(1,"yellow","Safe Keeping",1,1,0,0,0,new bool[] {true,true,false,false}));
+        choosecards.Add(new PlayingCard(2,"yellow","Sales Price",0,0,0,0,2,new bool[] {false,false,false,false}));
+        choosecards.Add(new PlayingCard(6,"yellow","Lucky",1,1,3,0,0,new bool[] {true,true,true,false}));
+        choosecards.Add(new PlayingCard(7,"yellow","Boss",2,0,3,0,3,new bool[] {true,false,true,false}));
 
-        Bank bank = new Bank(choosecards);
+        bank = new Bank(choosecards);
 
         List<Card> InitialDeck = new List<Card>();
         InitialDeck.Add(new CrashGem());
@@ -34,12 +29,10 @@ class Program
             InitialDeck.Add(new Gem (1,1));
         }
 
-        List<Player> Players= new List<Player>();
+        Players= new List<Player>();
         Players.Add(new Player("Manolo",new HeroCards("jose","yellow",1,0,1,0),ChoosePlayingCard(choosecards,InitialDeck)));
         Players.Add( new Player("Juanito",new HeroCards("pedro","yellow",0,1,0,2),ChoosePlayingCard(choosecards,InitialDeck)));
-        
-        List<Card> tableChoose = new List<Card>();
-        
+                
         foreach(Player a in Players)
         {
             a.Draw(5);
@@ -53,8 +46,8 @@ class Program
                 Console.Clear();
                 a.GemPile.Add(new Gem(1,1));
                 
-                Turn(a, tableChoose);
-                tableChoose.Clear();
+                Turn(a);
+
                 
                 gameOver = GameOver(a.GemPile.Count);
                 if(gameOver) 
@@ -68,158 +61,253 @@ class Program
         
     }
 
-    static void PrintTable(Player a, List<Card> tableChoose)
+    static void PrintTable(Player a)
     {
         Console.WriteLine($"     Jugador {a}:");
-        int i = 0;
-        Console.WriteLine("Hand:");
-        foreach(Card l in a.Hand)
-        {
-            Console.WriteLine(i+"-"+l.Name);
-            tableChoose.Add(l);
-            i++;
+        Console.Write("Hand: ");
+        for(int i=0;i < a.Hand.Count ;i++)
+        {        
+            Console.Write(" [" +i + "- " + a.Hand[i].Name + "] ");
         }
         Console.WriteLine("\n");
 
-        Console.WriteLine($"     Campo de Juego:         Gem Pile: {a.GemPile.Count}");
-        Console.WriteLine("Ongoing:");
-        foreach(Card l in a.Ongoing)
+        Console.Write("Gem Pile: ");
+        for(int i = 0; i<a.GemPile.Count;i++)
         {
-            Console.WriteLine(i+"-"+l.Name);
-            tableChoose.Add(l);
-            i++;
+            Console.Write("["+i+"]"+a.GemPile[i]+" ");
         }
         Console.WriteLine("\n");
 
-        Console.WriteLine("Discard Pile:");
-        foreach(Card l in a.DiscardPile)
+        Console.Write("Ongoing:");
+        for(int i =0 ; i<a.Ongoing.Count; i++)
         {
-            Console.WriteLine(i+"-"+l.Name);
-            tableChoose.Add(l);
-            i++;
-        }
-        Console.WriteLine("\n");
-
-
-        Console.WriteLine("Deck:");
-        foreach(Card l in a.Deck)
-        {
-            Console.WriteLine(i+"-"+l.Name);
-            tableChoose.Add(l);
-            i++;
+            Console.Write(" [" +i + "- " + a.Ongoing[i].Name + "] ");
         }
         Console.WriteLine("\n");
     }
 
-    static void Turn(Player a, List<Card> tableChoose)
+    static void Turn(Player a)
     {
-        int actions = 1;
-        bool turn = false;
+        PhaseActions(a);
+        PhaseBuy(a);
+        PhaseCleanUp(a);
+    }
 
-        do
+    static void PhaseActions(Player a)
+    {
+        while(a.NumberActions > 0)
         {
             Console.Clear();
-            PrintTable(a, tableChoose);
-            
-            Console.WriteLine("Opciones:");
-            if(actions>0) Console.WriteLine("Presione [A] para jugar fase de accion");
-            Console.WriteLine("Presione [C] para jugar fase de compra");
-            Console.WriteLine("Presione [I] para ver informacion de una carta");
-            Console.WriteLine("Presione [E] para finalizar turno");        
-
+            System.Console.WriteLine("Fase de accion");
+            System.Console.WriteLine("Acciones: "+a.NumberActions);
+            PrintTable(a);
+            System.Console.WriteLine("[M] Mover una carta de la mano al OnGoing");
+            System.Console.WriteLine("[A] Jugar una accion de una carta del OnGoing");
+            System.Console.WriteLine("[F] Finalizar fase de accion");
             ConsoleKey key = Console.ReadKey(true).Key;
-            Console.Clear();
 
             switch (key)
             {
+                case ConsoleKey.M :
+                {
+                    ToOnGoing(a);
+                    break;
+                }
                 case ConsoleKey.A :
                 {
-                        if(actions>0)
-                        {    
-                            PhaseAction(a, tableChoose);
-                            actions--;
-                        }
-                        break;
-                }
-                case ConsoleKey.C :
-                {
+                    ExecuteAction(a);
                     break;
                 }
-                case ConsoleKey.I :
+                case ConsoleKey.F :
                 {
-                    InformationCard(a, tableChoose);
-                    break;
-                }
-                case ConsoleKey.E :
-                {
-                    PhaseCleanUp(a);
-                    turn = true;
                     return;
                 } 
             }
-
-            turn = false;
-        }while(!turn);
+        }
     }
 
-    static void PhaseAction(Player a, List<Card> tableChoose) //Implementar bien esta fase
+    static void ExecuteAction(Player a)
+    {
+        int opc;
+        Console.Clear();
+        PrintTable(a);
+        Console.WriteLine("Elija una carta del OnGoing"); 
+        opc = int.Parse(Console.ReadLine());
+        
+        if(opc < a.Ongoing.Count && opc >= 0)
+        {
+            Console.Clear();
+            PrintTable(a);
+            Console.WriteLine("Que accion quiere realizar: ");
+            if(((PlayingCard)a.Ongoing[opc]).GameStateActions[0]) Console.WriteLine("[D] Dar acciones");
+            if(((PlayingCard)a.Ongoing[opc]).GameStateActions[1]) Console.WriteLine("[S] Guardar una carta para el proximo turno");
+            if(((PlayingCard)a.Ongoing[opc]).GameStateActions[2]) Console.WriteLine("[R] Coger cartas del deck");
+            if(((PlayingCard)a.Ongoing[opc]).GameStateActions[3]) Console.WriteLine("[F] Meterle un toque a alguien");
+            ConsoleKey key = Console.ReadKey(true).Key;
+
+            switch (key)
+            {
+                case ConsoleKey.D :
+                {
+                    a.Actions(((PlayingCard)a.Ongoing[opc]).Actions);
+                    ((PlayingCard)a.Ongoing[opc]).GameStateActions[0] = false;
+                    break;
+                }
+                case ConsoleKey.S :
+                {
+                    opc=-1;
+                    while(true)
+                    {
+                        Console.Clear();
+                        PrintTable(a);
+                        Console.WriteLine("Elija que carta de su mano quiere guardar para el proximo turno"); 
+                        opc = int.Parse(Console.ReadLine());
+                        if(opc < a.Hand.Count && opc >= 0)
+                        {
+                            a.SaveCard(a.Hand[opc]);
+                            a.Hand.RemoveAt(opc);
+                            ((PlayingCard)a.Ongoing[opc]).GameStateActions[1] = false;
+                            break;
+                        }
+                    }
+                    break;
+                } 
+                case ConsoleKey.R :
+                {
+                    a.Draw(((PlayingCard)a.Ongoing[opc]).DeckRobbery);
+                    ((PlayingCard)a.Ongoing[opc]).GameStateActions[2] = false;
+                    break;
+                }
+                case ConsoleKey.F :
+                {
+                    a.Attack(SelectGem(a),SelectPlayer(a));
+                    ((PlayingCard)a.Ongoing[opc]).GameStateActions[3] = false;
+                    break;
+                }
+            }
+
+            a.NumberActions--;
+        }
+    }
+    static Player SelectPlayer(Player a)
+    {
+        Console.Clear();
+        for(int i = 0;i<Players.Count;i++)
+        {   
+            if(Players[i]==a) continue;
+            Console.WriteLine(i+"-"+Players[i].Name);
+        }
+        System.Console.WriteLine();
+
+        int opc = -1;
+        while(!(opc < Players.Count) || !(opc >= 0))
+        {
+            Console.WriteLine("Elija el jugador que vas a meterle un toque"); 
+            opc = int.Parse(Console.ReadLine());
+        }
+
+        return Players[opc];
+    }
+
+    static List<Gem> SelectGem(Player a)
+    {
+        List<Gem> result = new List<Gem>();
+        int opc = -1;
+
+        while(!(opc < a.GemPile.Count) || !(opc >= 0))
+        {
+            Console.Clear();
+            PrintTable(a);
+            Console.WriteLine("Elija una Gema"); 
+            opc = int.Parse(Console.ReadLine());
+        }
+
+        for(int i =0 ;i < a.GemPile[opc].Count ;i++)
+        {
+            result.Add(bank.gem1);
+        }
+
+        a.GemPile.RemoveAt(opc);
+
+        return result;
+    }
+
+    static void ToOnGoing(Player a)
     {
         int opc;
         
-        do
+        while(true)
         {
             Console.Clear();
-            PrintTable(a, tableChoose);
-            Console.WriteLine("Elija una carta de su mano"); opc = int.Parse(Console.ReadLine());
+            PrintTable(a);
+            Console.WriteLine("Elija una carta de su mano"); 
+            opc = int.Parse(Console.ReadLine());
             
-            if(opc<a.Hand.Count && Object.ReferenceEquals(tableChoose[opc].GetType(),(new PlayingCard(0,"","",0,0,0,0,0)).GetType()))
+            if(opc < a.Hand.Count && opc >= 0 && (a.Hand[opc] is PlayingCard ))
             {
-                a.Ongoing.Add(tableChoose[opc]);
+                a.CantMoney += ((PlayingCard)a.Hand[opc]).Money;
+                a.Ongoing.Add(a.Hand[opc]);
                 a.Hand.RemoveAt(opc);
-                Console.Clear();
-                PrintTable(a, tableChoose);
-                // CardExecution(tableChoose[opc]);
                 break;
             }
-            else
+        }
+    }
+    //  IMPLEMENTAR ESTOOOO!!!!!
+    static void PhaseBuy(Player a)
+    {
+        Console.Clear();
+        foreach(Card l in a.Hand)
+        {
+            if(l is Gem)
             {
-                Console.WriteLine("Esa carta no es posible activarla en el Ongoing");
-                Console.WriteLine("Presione [Enter] para elegir otra carta"); Console.ReadLine();
+                a.CantMoney += ((Gem)l).Count;
             }
-        }while(opc >= a.Hand.Count || !Object.ReferenceEquals(tableChoose[opc].GetType(),(new PlayingCard(0,"","",0,0,0,0,0)).GetType()));
-       
+        }
+
+        if(a.CantMoney<=0)
+        {
+            while(a.CantMoney<=0)
+            {
+                a.Ongoing.Add(bank.wound);
+                a.CantMoney++;
+            }
+        }
+        else
+        {
+            Console.WriteLine("Fase de Compra");
+            Console.WriteLine("Jugador: "+a.Name);
+            Console.WriteLine("Dinero: "+a.CantMoney+"$$$");
+        }
     }
 
-    static void PhaseBuy()
+    static void InformationCard(Player a)
     {
-
-    }
-
-    static void InformationCard(Player a, List<Card> tableChoose)
-    {
-        Console.Clear();
-        PrintTable(a, tableChoose);
-        Console.WriteLine("Elija una carta"); int opc = int.Parse(Console.ReadLine());
-        Console.Clear();
-        Console.WriteLine(tableChoose[opc]);
-        Console.WriteLine("\nAtras: presione [Enter]"); Console.ReadLine();
+        // Console.Clear();
+        // PrintTable(a);
+        // Console.WriteLine("Elija una carta"); int opc = int.Parse(Console.ReadLine());
+        // Console.Clear();
+        // Console.WriteLine(tableChoose[opc]);
+        // Console.WriteLine("\nAtras: presione [Enter]"); Console.ReadLine();
     }
 
     static void PhaseCleanUp(Player a)
     {
-        for(int i=a.Hand.Count-1; i>=0; i--)
+        a.DiscardPile.AddRange(a.Hand);
+        a.Hand.Clear();
+
+        foreach(Card l in a.Ongoing)
         {
-            a.DiscardPile.Add(a.Hand[i]);
-            a.Hand.RemoveAt(i);
-        }
-        for(int i=a.Ongoing.Count-1; i>=0; i--)
-        {
-            a.DiscardPile.Add(a.Ongoing[i]);
-            a.Ongoing.RemoveAt(i);
+            ((PlayingCard)l).Reset();
         }
 
-        //Revisar por que el robo de las cartas no lo implementa correctamente
-        int amountGem = a.GemPile.Count; // cambiar para mas adelante...
+        a.DiscardPile.AddRange(a.Ongoing);
+        a.Ongoing.Clear();
+
+        int amountGem = 0;
+        foreach(Gem gems in a.GemPile)
+        {
+            amountGem += gems.Count;
+        }
         int cantsavingcards = a.SavingCards.Count;
 
         if (amountGem <= 2) a.Draw(5-cantsavingcards);
@@ -228,44 +316,42 @@ class Program
         if (amountGem == 9) a.Draw(8-cantsavingcards);
 
         a.Hand.AddRange(a.SavingCards);
-        a.SavingCards.RemoveRange(0,cantsavingcards);
+        a.SavingCards.Clear();
+        a.Reset();
     }
 
     static bool GameOver(int n) // cambiar para mas adelante...
     {
-        if(n>=10) return true;
+        if(n >= 10) return true;
 
         return false;
     }
     
-    //Este metodo implementarlo mas adelante
-    // static void CardExecution(Card card)
-    // {
-    //     if(card.Actions>0) Console.WriteLine($"Tiene {card.Actions} acciones más");
-    //     if(card.saveCard>0) Console.WriteLine($"Tiene {card.saveCard} cartas salvadas");
-    //     if(card.DeckRobbery>0) Console.WriteLine($"Puede robar {card.DeckRobbery} cartas del deck");
-    //     if(card.Money>0) Console.WriteLine($"Tiene ${card.Money} para su fase de compra");
-    //     if(card.Attack>0) Console.WriteLine($"Tiene {card.Attack} puntos para atacar");
-    // }
-
-
     static List<Card> ChoosePlayingCard(List<PlayingCard> choosecards, List<Card> InitialDeck)
     {
         Random r = new Random();
         List<Card> list = new List<Card>();
+
         foreach(var l in InitialDeck)
         {
             list.Add(l);
         }
 
-        for(int i=0; i<5; i++)
+        for(int i = 0 ; i < 5 ; i++)
         {
             list.Add(choosecards[r.Next(0,choosecards.Count-1)]);
         }
 
         return list;
     }
-
+}
+class Program
+{
+    static void PrintMenu()
+    {
+        System.Console.WriteLine("Presione [N] para un nuevo juego.");
+        System.Console.WriteLine("Presione [E] para salir.");
+    }
     static void Main()
     {
         while(true)
@@ -280,7 +366,7 @@ class Program
             {
                 case ConsoleKey.N :
                 {
-                    NewGame();
+                    Game.NewGame();
                     break;
                 }
                 case ConsoleKey.E :
@@ -291,99 +377,3 @@ class Program
         }
     }
 }
-
-// public class Phases
-// {
-//     public int actions = 1;
-//     public int saveCard = 0;
-//     public int deckRobbery = 0;
-//     public int money = 0;
-
-//     //En esta fase se roba una gema del banco hacia la pila de gemas       
-//     public static void Ante()
-//     {
-//         Fields.GemPile.Add(new Gem(1,1)); 
-//         Bank[Gem(1,1)] --;
-//     }
-    
-//     //En esta fase se decide la accion que va a realizar a partir de las cartas que va a jugar 
-//     public static void Action()
-//     {
-//         List<int> list = Actions.Choose(Fields.Hand);//Escoger una carta de mi mano (se puede hacer en el Main)
-//         Card card = Fields.Hand[list[0]];
-//         Fields.Ongoing.Add(card);//mandarla hacia Ongoing
-//         Fields.Hand.Remove(card);
-//         //Luego activar esta carta a partir de la funcionalidad que realiza
-//         actions += card.Actions;
-//         saveCard += card.SaveCard;
-//         deckRobbery += card.DeckRobbery;
-//         money += card.Money;
-//     }
-    
-//     //En esta fase se decide la compra que va a realizar en funcion del dinero que tienes en la mano 
-//     public static void Buy()
-//     {
-//         if(money <= 0)
-//         {
-//             while(money <= 0)
-//             {
-//                 Fields.DiscardPile.Add(new Wound());
-//                 money++;
-//             }
-//         }
-//         else
-//         {
-//             foreach(Gem a in Fields.Hand)
-//             {
-//                 money += a.Count;
-//             }
-//         }
-//     }
-    
-//     //En esta fase todas las cartas que se quedaron en la mano y todas aquellas que se jugaron y no fueron
-//     //trashadas se envian directamente hacia la pila de descartes         
-//     public static void CleanUp()
-//     {
-//         int amountGem = Player.GemPile.Count;
-//         if(amountGem<=2) Actions.Draw(5);
-//         if(amountGem>=3 && amountGem<=5) Actions.Draw(6);
-//         if(amountGem>=6 && amountGem<=8) Actions.Draw(7);
-//         if(amountGem==9) Actions.Draw(8);
-//         if(amountGem>=10) GameOver();
-//     }
-// }
-
-// public class Actions
-// {
-//     public static List<int> Choose(List<Card> list)
-//     {
-//         for(int i=0; i<list.Count; i++)
-//         {
-//             Console.WriteLine((i+1)+list[i]);
-//         }
-//         List<int> pos = new List<int>();
-//         do{
-//             Console.WriteLine("Elija una opcion(#)/ NO hacerlo(-1): ");
-//             int opc = Console.ReadLine();
-//             if(p!=-1) pos.Add(opc-1);
-//         }while(p!=-1);
-
-//         return pos;
-//     }
-
-//     public static int SumElementsList(List<int> list)
-//     {
-//         int sum = 0;
-//         foreach(var l in list)
-//         {
-//             sum += l;
-//         }
-
-//         return sum;
-//     }
-
-//     public static void Execute(Card card)
-//     {
-
-//     }
-// }

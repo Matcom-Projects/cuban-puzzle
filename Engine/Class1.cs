@@ -57,7 +57,7 @@ public class Gem : BankCards
 
     public override string ToString()
     {
-        return $"[Gem {Count}] Costo: {Cost}";
+        return $"[Gem {Count}]";
     }
 }
 
@@ -69,13 +69,13 @@ public class Wound : BankCards
     }
     public override string ToString()
     {
-        return $"{Name} Costo:{Cost}";
+        return $"[{Name}]";
     }
 }
 
 public class CrashGem : PlayingCard
 {
-    public CrashGem( ) : base(5, "purple","Crash Gem",  0 , 0 ,  0 ,  1 , 1)
+    public CrashGem( ) : base(5, "purple","Crash Gem",  0 , 0 ,  0 ,  1 , 1,new bool[] {false,false,false,true})
     {
 
     }
@@ -83,15 +83,17 @@ public class CrashGem : PlayingCard
 
 public class PlayingCard : BankCards
 {
+    public bool[] OriginStateActions{ get; private set; }
+    public bool[] GameStateActions{ get; private set; }
     public string Color { get ; private set; }
     public int Actions { get ; private set; }
     public int SaveCard { get ; private set; }
     public int DeckRobbery { get ; private set; }
-    public int Money { get ; private set; }
     public int Attack { get ; private set; }
+    public int Money { get ; private set; }
 
 
-    public PlayingCard(int cost , string color , string name , int actions , int savecard , int deckrobbery , int money , int attack) : base (cost,name)
+    public PlayingCard(int cost , string color , string name , int actions , int savecard , int deckrobbery , int attack , int money , bool[] stateactions) : base (cost,name)
     {
         this.Color = color;
         this.Actions = actions;
@@ -99,6 +101,8 @@ public class PlayingCard : BankCards
         this.DeckRobbery = deckrobbery;
         this.Money = money;
         this.Attack = attack;
+        this.OriginStateActions = stateactions;
+        this.GameStateActions = (bool[])stateactions.Clone();
     }
 
     public override string ToString()
@@ -115,13 +119,18 @@ Costo: {Cost}
         return result;
     }
 
+    public void Reset()
+    {
+        this.GameStateActions = (bool[])this.OriginStateActions.Clone();
+    }
+
 }
 public class Bank
 {
-    public Gem gem1 { get {return new Gem(1,1);} private set{} }
-    public Gem gem2 { get{return new Gem(2,3);} private set{} }
-    public Gem gem3 { get{return new Gem(3,5);} private set{} }
-    public Gem gem4 { get{return new Gem(4,7);} private set{} }
+    public Gem gem1 { get { return new Gem(1,1); } private set{} }
+    public Gem gem2 { get { return new Gem(2,3); } private set{} }
+    public Gem gem3 { get { return new Gem(3,5); } private set{} }
+    public Gem gem4 { get {return new Gem(4,7); } private set{} }
     public Wound wound{ get {return new Wound();} private set{} }
     public CrashGem crashgem { get{ return new CrashGem();} private set{}}
     public Dictionary<BankCards,int> bank { get; set; }
@@ -149,7 +158,7 @@ public class Player
     public  List <Card> DiscardPile { get; set; }
     public  List <Gem> GemPile { get; set; }
     public  List <Card> Ongoing { get; set; }
-    public List<Card> SavingCards{get; set;}
+    public List<Card> SavingCards{ get; set; }
 
     public Player(string name,HeroCards a,List<Card> initialdeck)
     {
@@ -163,6 +172,7 @@ public class Player
         this.Deck = new List<Card>();
         this.Deck.Add(a);
         this.Deck.AddRange(initialdeck);
+        this.NumberActions = 1;
     }
 
     public override string ToString()
@@ -201,76 +211,14 @@ public class Player
     {
         NumberActions += n;
     }
-}
 
-public class GameCard1 : PlayingCard
-{
-    public GameCard1(int cost , string color , string name , int actions , int savecard , int deckrobbery , int money , int attack):base(cost , color , name ,  actions , savecard ,  deckrobbery ,  money , attack)
+    public void Reset()
     {
-
-    }
-}
-public class GameCard2 : PlayingCard
-{
-    public GameCard2(int cost , string color , string name , int actions , int savecard , int deckrobbery , int money , int attack):base(cost , color , name ,  actions , savecard ,  deckrobbery ,  money , attack)
-    {
-
-    }
-}
-public class GameCard3 : PlayingCard
-{
-    public GameCard3(int cost , string color , string name , int actions , int savecard , int deckrobbery , int money , int attack):base(cost , color , name ,  actions , savecard ,  deckrobbery ,  money , attack)
-    {
-
-    }
-}
-public class GameCard4 : PlayingCard
-{
-    public GameCard4(int cost , string color , string name , int actions , int savecard , int deckrobbery , int money , int attack):base(cost , color , name ,  actions , savecard ,  deckrobbery ,  money , attack)
-    {
-
-    }
-}
-public class GameCard5 : PlayingCard
-{
-    public GameCard5(int cost , string color , string name , int actions , int savecard , int deckrobbery , int money , int attack):base(cost , color , name ,  actions , savecard ,  deckrobbery ,  money , attack)
-    {
-
-    }
-}
-public class GameCard6 : PlayingCard
-{
-    public GameCard6(int cost , string color , string name , int actions , int savecard , int deckrobbery , int money , int attack):base(cost , color , name ,  actions , savecard ,  deckrobbery ,  money , attack)
-    {
-
-    }
-}
-public class GameCard7 : PlayingCard
-{
-    public GameCard7(int cost , string color , string name , int actions , int savecard , int deckrobbery , int money , int attack):base(cost , color , name ,  actions , savecard ,  deckrobbery ,  money , attack)
-    {
-
-    }
-}
-public class GameCard8 : PlayingCard
-{
-    public GameCard8(int cost , string color , string name , int actions , int savecard , int deckrobbery , int money , int attack):base(cost , color , name ,  actions , savecard ,  deckrobbery ,  money , attack)
-    {
-
-    }
-}
-public class GameCard9 : PlayingCard
-{
-    public GameCard9(int cost , string color , string name , int actions , int savecard , int deckrobbery , int money , int attack):base(cost , color , name ,  actions , savecard ,  deckrobbery ,  money , attack)
-    {
-
-    }
-}
-public class GameCard10 : PlayingCard
-{
-    public GameCard10(int cost , string color , string name , int actions , int savecard , int deckrobbery , int money , int attack):base(cost , color , name ,  actions , savecard ,  deckrobbery ,  money , attack)
-    {
-
+        this.NumberActions = 1;
+        this.CantMoney = 0;
+        this.NumberRoberryCard = 0;
+        this.NumberSaveCard = 0;
+        this.NumberRoberryCard = 0;
     }
 }
 
