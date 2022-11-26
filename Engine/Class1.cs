@@ -133,8 +133,8 @@ public class Bank
     public Gem gem4 { get {return new Gem(4,7); } private set{} }
     public Wound wound{ get {return new Wound();} private set{} }
     public CrashGem crashgem { get{ return new CrashGem();} private set{}}
-    public Dictionary<BankCards,int> bank { get; set; }
-    public Bank(List<PlayingCard> choosecard)
+    public Dictionary <BankCards,int> bank ;
+    public Bank ( List <PlayingCard> choosecard )
     {
         this.bank = new Dictionary<BankCards, int>();
         foreach( PlayingCard a in choosecard)

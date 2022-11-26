@@ -67,21 +67,21 @@ class Game
         Console.Write("Hand: ");
         for(int i=0;i < a.Hand.Count ;i++)
         {        
-            Console.Write(" [" +i + "- " + a.Hand[i].Name + "] ");
+            Console.Write($" [{i}]-[{a.Hand[i].Name}] ");
         }
         Console.WriteLine("\n");
 
         Console.Write("Gem Pile: ");
         for(int i = 0; i<a.GemPile.Count;i++)
         {
-            Console.Write("["+i+"]"+a.GemPile[i]+" ");
+            Console.Write($" [{i}]-{a.GemPile[i]} ");
         }
         Console.WriteLine("\n");
 
         Console.Write("Ongoing:");
         for(int i =0 ; i<a.Ongoing.Count; i++)
         {
-            Console.Write(" [" +i + "- " + a.Ongoing[i].Name + "] ");
+            Console.Write($" [{i}]-[{a.Ongoing[i].Name}] ");
         }
         Console.WriteLine("\n");
     }
@@ -252,7 +252,6 @@ class Game
             }
         }
     }
-    //  IMPLEMENTAR ESTOOOO!!!!!
     static void PhaseBuy(Player a)
     {
         Console.Clear();
@@ -264,7 +263,7 @@ class Game
             }
         }
 
-        if(a.CantMoney<=0)
+        if(a.CantMoney <= 0)
         {
             while(a.CantMoney<=0)
             {
@@ -274,9 +273,127 @@ class Game
         }
         else
         {
-            Console.WriteLine("Fase de Compra");
-            Console.WriteLine("Jugador: "+a.Name);
-            Console.WriteLine("Dinero: "+a.CantMoney+"$$$");
+            while(a.CantMoney > 0)
+            {
+                Console.Clear();
+                Console.WriteLine("Fase de Compra");
+                Console.WriteLine("Jugador: " + a.Name);
+                Console.WriteLine("Dinero: "+ a.CantMoney+" $");
+                Console.WriteLine("[D] Comprar Dinero");
+                Console.WriteLine("[C] Comprar CrashGem");
+                Console.WriteLine("[A] Comprar cartas");
+                Console.WriteLine("[F] Finalizar fase de compra");
+                ConsoleKey key = Console.ReadKey(true).Key;
+
+                switch (key)
+                {
+                    case ConsoleKey.D :
+                    {
+                        BuyGems(a);
+                        break;
+                    }
+                    case ConsoleKey.C :
+                    {
+                        if(a.CantMoney-bank.crashgem.Cost >= 0) 
+                        {
+                            a.Ongoing.Add(bank.crashgem) ;
+                            a.CantMoney = a.CantMoney-bank.crashgem.Cost;
+                        }
+                        break;
+                    }
+                    case ConsoleKey.A :
+                    {
+                        BuyCarts(a);
+                        break;
+                    } 
+                    case ConsoleKey.F :
+                    {
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    static void BuyCarts(Player a)
+    {
+        int opc;
+        while(true)
+        {
+            Console.Clear();
+            PrintBankCartPhaseBuy();
+            opc = int.Parse(Console.ReadLine());
+
+            if(opc >=0 && opc < bank.bank.Count)
+            {
+                if(a.CantMoney - bank.bank.ElementAt(opc).Key.Cost >=0 && bank.bank.ElementAt(opc).Value > 0 )
+                {
+                    a.Ongoing.Add(bank.bank.ElementAt(opc).Key);
+                    bank.bank[bank.bank.ElementAt(opc).Key]--;
+                    a.CantMoney = a.CantMoney - bank.bank.ElementAt(opc).Key.Cost;
+                }
+                break;
+            }
+        }
+    }
+
+    static void BuyGems(Player a)
+    {
+        Console.Clear();
+        Console.WriteLine($"[A]-{bank.gem1}: {bank.gem1.Cost} $");
+        Console.WriteLine($"[B]-{bank.gem2}: {bank.gem2.Cost} $");
+        Console.WriteLine($"[C]-{bank.gem3}: {bank.gem3.Cost} $");
+        Console.WriteLine($"[D]-{bank.gem4}: {bank.gem4.Cost} $");
+
+        ConsoleKey key = Console.ReadKey(true).Key;
+
+        switch(key)
+        {
+            case ConsoleKey.A:
+            {
+                if(a.CantMoney-bank.gem1.Cost >= 0) 
+                {
+                    a.DiscardPile.Add(bank.gem1) ;
+                    a.CantMoney = a.CantMoney-bank.gem1.Cost;
+                }
+                return;
+            }
+            case ConsoleKey.B:
+            {
+                if(a.CantMoney-bank.gem2.Cost >= 0) 
+                {
+                    a.DiscardPile.Add(bank.gem2) ;
+                    a.CantMoney = a.CantMoney-bank.gem2.Cost;
+                }
+                return;
+            }
+            case ConsoleKey.C:
+            {
+                if(a.CantMoney-bank.gem3.Cost >= 0) 
+                {
+                    a.DiscardPile.Add(bank.gem3) ;
+                    a.CantMoney = a.CantMoney-bank.gem3.Cost;
+                }
+                return;
+            }
+            case ConsoleKey.D:
+            {
+                if(a.CantMoney-bank.gem4.Cost >= 0) 
+                {   
+                    a.DiscardPile.Add(bank.gem4) ;
+                    a.CantMoney = a.CantMoney-bank.gem4.Cost;
+                }
+                return;
+            }
+        }
+    }
+    static void PrintBankCartPhaseBuy()
+    {
+        int i = 0;
+        foreach(BankCards l in bank.bank.Keys)
+        {
+            Console.WriteLine($"[{i}]-[{l.Name}]: {l.Cost} $");
+            i++;
         }
     }
 
