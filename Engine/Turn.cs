@@ -29,6 +29,11 @@ public class GameTurns : IEnumerator
         return true;
     }
 
+    public int GameRound()
+    {
+        return (Index/Players.Count)+ 1;
+    }
+
     public void Reset()
     {
         Index = -1;
