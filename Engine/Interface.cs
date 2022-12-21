@@ -11,7 +11,7 @@ public interface IPlayer
     public TablePlayer Table { get; set; }
     
     public int SelectHero();
-    public int SelectActionCard();
+    public int SelectActionCard(List<ICostable> a);
     public void PlayActionPhase();
     public void PlayBuyPhase();
     public void PlayCleanUpPhase();

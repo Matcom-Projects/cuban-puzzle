@@ -14,3 +14,15 @@ public abstract class Card
         this.Money = money;
     }
 }
+
+public class CreateCards
+{
+    public List<Card> AllActionsCard{ get; }
+    public List<Card> AllHeroCards{ get; }
+
+    public CreateCards(List<Card> Actions,List<Card> Hero)
+    {
+        this.AllActionsCard = Actions;
+        this.AllHeroCards = Hero;
+    }
+}

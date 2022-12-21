@@ -506,19 +506,20 @@ class Program
         return result;
     }
 
-    static List<Card> ChooseCards(List<IPlayer> players)
+    static List<ICostable> ChooseCards(List<IPlayer> players,List<ICostable> ActionsCards)
     {
-        List<Card> result = new List<Card>();
+        List<ICostable> result = new List<ICostable>();
         int n = 10;
 
         while( n > 0 )
         {
             foreach( IPlayer pla in players) 
             {
-                pla.SelectActionCard();
+                result.Add ( ActionsCards [ pla.SelectActionCard(ActionsCards) ] ) ;//optimizar bien este metodo
                 n--;
             }
         } 
+
         return result;
     }
 
@@ -526,7 +527,8 @@ class Program
     {
         List<IPlayer> players = AddPlayers();
         players = GameUtils.Mezclar(players);
-        List<Card> ChoosingCards =ChooseCards(players);
+        List<ICostable> ChoosingCards = ChooseCards(players,CreateCards.AllActionsCard);
+        Bank bank=new Bank(ChoosingCards);//me quede x aqui 21/12 1:30 am
     }
     static void Main()
     {

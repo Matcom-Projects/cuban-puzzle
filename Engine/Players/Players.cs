@@ -11,9 +11,9 @@ public class ManualPlayer : IPlayer
         this.Table=new TablePlayer();
     }
 
-    public int SelectActionCard()
+    public int SelectActionCard(List<ICostable> ActionsCards)
     {
-        return 0;
+        return int.Parse(Console.ReadLine());
     }
 
     public int SelectHero()
