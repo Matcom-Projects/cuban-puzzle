@@ -464,10 +464,52 @@ namespace console_cuban_puzzle;
 // }
 class Program
 {
+    List<Card>? ChoosingCards;
     static void PrintMenu()
     {
         System.Console.WriteLine("Presione [N] para un nuevo juego.");
         System.Console.WriteLine("Presione [E] para salir.");
+    }
+
+    static List<Player> AddPlayers()
+    {
+        List<Player> result = new List<Player>();
+        int n = 0;
+
+        while( n < 4 )
+        {
+            Console.Clear();
+            System.Console.WriteLine("[J]-Para anadir jugador manual");
+            System.Console.WriteLine("[E]-Para dejar de anadir jugadores");
+            ConsoleKey key = Console.ReadKey(true).Key;
+
+            switch (key)
+            {
+                case ConsoleKey.J :
+                {
+                    Console.Clear();
+                    System.Console.WriteLine("Escriba su nombre");
+                    result.Add(new ManualPlayer(Console.ReadLine()));
+                    n++;
+                    break;
+                }
+                case ConsoleKey.E :
+                {
+                    if( n != 1 && n!= 0)
+                    {
+                        return result;
+                    }
+                    break;
+                } 
+            }
+        }
+
+        return result;
+    }
+
+    static void NewGame()
+    {
+        List<Player> players = AddPlayers();
     }
     static void Main()
     {
@@ -483,7 +525,7 @@ class Program
             {
                 case ConsoleKey.N :
                 {
-                    //Game.NewGame();
+                    NewGame();
                     break;
                 }
                 case ConsoleKey.E :
