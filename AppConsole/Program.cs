@@ -526,7 +526,7 @@ class Program
     static void NewGame()
     {
         List<IPlayer> players = AddPlayers();
-        players = GameUtils.Mezclar(players);
+        players = GameUtils.MixPlayers(players);
         List<ICostable> ChoosingCards = ChooseCards(players,CreateCards.AllActionsCard);
         Bank bank=new Bank(ChoosingCards);//me quede x aqui 21/12 1:30 am
     }
