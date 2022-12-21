@@ -464,16 +464,15 @@ namespace console_cuban_puzzle;
 // }
 class Program
 {
-    List<Card>? ChoosingCards;
     static void PrintMenu()
     {
         System.Console.WriteLine("Presione [N] para un nuevo juego.");
         System.Console.WriteLine("Presione [E] para salir.");
     }
 
-    static List<Player> AddPlayers()
+    static List<IPlayer> AddPlayers()
     {
-        List<Player> result = new List<Player>();
+        List<IPlayer> result = new List<IPlayer>();
         int n = 0;
 
         while( n < 4 )
@@ -507,9 +506,27 @@ class Program
         return result;
     }
 
+    static List<Card> ChooseCards(List<IPlayer> players)
+    {
+        List<Card> result = new List<Card>();
+        int n = 10;
+
+        while( n > 0 )
+        {
+            foreach( IPlayer pla in players) 
+            {
+                pla.SelectActionCard();
+                n--;
+            }
+        } 
+        return result;
+    }
+
     static void NewGame()
     {
-        List<Player> players = AddPlayers();
+        List<IPlayer> players = AddPlayers();
+        players = GameUtils.Mezclar(players);
+        List<Card> ChoosingCards =ChooseCards(players);
     }
     static void Main()
     {
