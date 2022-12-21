@@ -4,9 +4,9 @@ using System.Collections;
 public class GameTurns : IEnumerator
 {
     private int Index;
-    public List<Player> Players { get; private set; }
+    public List<IPlayer> Players { get; private set; }
 
-    public Player Current
+    public IPlayer Current
     { 
         get
         {
@@ -17,7 +17,7 @@ public class GameTurns : IEnumerator
 
     object IEnumerator.Current => throw new NotImplementedException();
 
-    public GameTurns(List<Player> players)
+    public GameTurns(List<IPlayer> players)
     {
         this.Players = players;
         this.Index = -1;

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+
 namespace AppConsole
 {
     public class GameEngine
@@ -28,23 +29,6 @@ namespace AppConsole
             }
 
             return list;
-        }
-
-        public static Dictionary<Player,Table> LoadScenary() 
-        {
-            Dictionary<Player,Table> dic = new Dictionary<Player, Table>();
-
-            for(int i=0; i<Program.Players; i++)
-            {
-                dic.Add(Program.Players[i],new Table(CreateDeck(Program.heroePlayer[i])));
-            }
-
-            return dic;
-        }
-
-        public static void Turn()
-        {
-            
         }
     }
 }
