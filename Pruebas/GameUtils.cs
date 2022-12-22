@@ -35,7 +35,7 @@ namespace AppConsole//cambios
 
             for( int i = 0 ; i < 8 ; i++ )
             {
-                result += letters [ e.Next(0,letters.Length) ];//mismo comentario que linea 20, pero en este caso Length-1
+                result += letters [ e.Next(0,letters.Length) ];//mismo comentario que linea 17, pero en este caso Length-1
             }
 
             return result;
