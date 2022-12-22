@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System;
 using System.Diagnostics;
-namespace AppConsole
+namespace AppConsole //cambios
 {
     public class ManualPlayer : IPlayer
     {
@@ -19,37 +19,48 @@ namespace AppConsole
             return int.Parse(Console.ReadLine());
         }
 
-        public int SelectHero()
+        public int SelectHero(List<Card> HeroCards)
         {
-            return 0;
+            return int.Parse(Console.ReadLine());
         }
 
-        public int SelectCardHand()
+        public void SelectCardHand()
         {
             Console.Clear();
             Console.WriteLine("HandCards:");
-            for(int i=0; i<TablePlayer.HandCards; i++)
+            for(int i=0; i<Table.HandCards; i++)
             {
-                Console.WriteLine($"[{i}].{TablePlayer.HandCards[i].Name}");
+                Console.WriteLine($"[{i}].{Table.HandCards[i].Name}");
             }
             Console.WriteLine("Escoja una carta: ");
             int opc = int.Parse(Console.ReadLine());
 
-            return opc;
+            GameUtils.Move(a.Table.HandCards, a.Table.OnGoing, opc);//moverla hacia el ongoing
         }
 
         public Card SelectCardOnGoing()
         {
             Console.Clear();
             Console.WriteLine("OnGoing:");
-            for(int i=0; i<TablePlayer.OnGoing; i++)
+            for(int i=0; i<Table.OnGoing; i++)
             {
-                Console.WriteLine($"[{i}].{TablePlayer.OnGoing[i].Name}");
+                Console.WriteLine($"[{i}].{Table.OnGoing[i].Name}");
             }
             Console.WriteLine("Escoja una carta: ");
             int opc = int.Parse(Console.ReadLine());
 
-            return TablePlayer.OnGoing[opc];
+            return Table.OnGoing[opc];
+        }
+
+        public bool SelectField()
+        {
+            Console.WriteLine("[E].Escoger una carta de la mano");
+            Console.WriteLine("[A].Activar una carta del OnGoing");
+            ConsoleKey key = new ConsoleKey.ReadKey(true).Key;
+
+            if(key==ConsoleKey.A) return true;
+
+            return false;
         }
 
         public int SelectGem()
@@ -106,27 +117,32 @@ namespace AppConsole
                 }
                 case ConsoleKey.R :
                 {
-                    card.GetDeck();
+                    card.ExecuteGetDeck();
                     break;
                 }
                 case ConsoleKey.M :
                 {
                     int index = SelectGem();
                     card.Attack(index,SelectPlayer(this));
-                    a.TablePlayer.GemPile.RemoveAt(index);
                     break;
                 }
                 case ConsoleKey.T :
                 {
-                    
+                    card.Trash(bank,this);
+                    break;
+                }
+                case ConsoleKey.G :
+                {
+                    card.GainCard(bank,this);
+                    break;
                 }
             }
 
         }
 
-        public void PlayBuyPhase()
+        public ICostable PlayBuyPhase()
         {
-            
+            return null;
         }
 
         public void PlayCleanUpPhase()
