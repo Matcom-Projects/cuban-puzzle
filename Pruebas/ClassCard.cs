@@ -1,9 +1,8 @@
-namespace AppConsole
+namespace AppConsole //cambios
 {
 
     public abstract class Card
     {
-        public bool[] Actions {get; private set;}
         public string Id{ get; private set; }
         public string Name{get;private set;}
         public string[] Color{get;private set;}
@@ -14,7 +13,6 @@ namespace AppConsole
             this.Name = name;
             this.Color = color;
             this.Money = money;
-            this.Actions = new bool[6];
         }
     }
 
