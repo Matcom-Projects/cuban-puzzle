@@ -2,11 +2,11 @@ namespace engine_cuban_puzzle;
 
 public class TablePlayer
 {
-    private List<Card>? Deck { get; set;}
-    public List<Card> DiscardPile { get; set;}
+    private List<Card>? Deck ;
+    public List<Card> DiscardPile ;
     public  List<Card> OnGoing { get; private set; }
-    private List<Card> HandCards { get; }
-    public List<ICostable> GemPile { get; }
+    private List<Card> HandCards ;
+    public List<ICostable> GemPile ;
 
     public TablePlayer( )
     {

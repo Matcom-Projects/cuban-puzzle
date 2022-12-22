@@ -4,6 +4,8 @@ using System.Collections.Generic;
 public class GameEngine
 {
     string Historial = "";
+    int CantActionsPerTurn = 1;
+    int CantMoneyPerTurn = 0;
     GameTurns? Turns ;
     public void PlayGame(List<IPlayer> players,Bank bank)
     {

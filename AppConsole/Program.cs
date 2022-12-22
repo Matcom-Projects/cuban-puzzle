@@ -528,7 +528,8 @@ class Program
         List<IPlayer> players = AddPlayers();
         players = GameUtils.MixPlayers(players);
         List<ICostable> ChoosingCards = ChooseCards(players,CreateCards.AllActionsCard);
-        Bank bank=new Bank(ChoosingCards);//me quede x aqui 21/12 1:30 am
+        Bank bank = new Bank(ChoosingCards);//me quede x aqui 21/12 1:30 am
+        IPlayer WinPlayer = GameEngine.PlayGame(players,bank);
     }
     static void Main()
     {
