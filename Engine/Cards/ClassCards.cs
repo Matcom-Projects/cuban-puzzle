@@ -15,14 +15,8 @@ public abstract class Card
     }
 }
 
-public class CreateCards
+public static class CreateCards
 {
-    public List<Card> AllActionsCard{ get; }
-    public List<Card> AllHeroCards{ get; }
-
-    public CreateCards(List<Card> Actions,List<Card> Hero)
-    {
-        this.AllActionsCard = Actions;
-        this.AllHeroCards = Hero;
-    }
+    public static List<ICostable>? AllActionsCard;
+    public static List<Card>? AllHeroCards;
 }

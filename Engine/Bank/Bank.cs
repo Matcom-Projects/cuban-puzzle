@@ -22,25 +22,25 @@ public class Bank
         }
     }
 
-    public ICostable Get(ICostable a)
+    public Card Get(ICostable a)
     {
         if( GameBank[a] != 0 )
         {
             GameBank[a] --;
-            return a;
+            return (Card)a;
         }
 
         return null;
     }
 
-    public List<ICostable> GetCant(ICostable a,int n)
+    public List<Card> GetCant(ICostable a,int n)
     {
-        List<ICostable> result = new List<ICostable>();
+        List<Card> result = new List<Card>();
         GameBank[a] -= n;
 
         for(int i =0;i < n;i++)
         {
-            result.Add(a);
+            result.Add((Card)a);
         }
 
         return result;

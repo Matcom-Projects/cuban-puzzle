@@ -1,4 +1,5 @@
 ﻿using engine_cuban_puzzle;
+using System.Collections.Generic;
 namespace console_cuban_puzzle;
 // class Game
 // {
@@ -508,6 +509,8 @@ class Program
 
     static List<ICostable> ChooseCards(List<IPlayer> players,List<ICostable> ActionsCards)
     {
+        if(ActionsCards.Count <= 10) return ActionsCards;
+
         List<ICostable> result = new List<ICostable>();
         int n = 10;
 
@@ -515,6 +518,7 @@ class Program
         {
             foreach( IPlayer pla in players) 
             {
+                if(n <= 0) return result;
                 result.Add ( ActionsCards [ pla.SelectActionCard(ActionsCards) ] ) ;//optimizar bien este metodo
                 n--;
             }
@@ -523,13 +527,44 @@ class Program
         return result;
     }
 
+    static List<IPlayer> ChooseHeroCards(List<IPlayer> players,List<Card> initialdeck)
+    {
+        int index;
+
+        foreach(IPlayer a in players)
+        {
+            index = a.SelectHero(CreateCards.AllHeroCards);//implementar bien este metodo
+            index = index*3;
+
+            List<Card> DeckPLayer = new List<Card>();
+            DeckPLayer.Add( CreateCards.AllHeroCards[index] );
+            DeckPLayer.Add(CreateCards.AllHeroCards[index++]);
+            DeckPLayer.Add(CreateCards.AllHeroCards[index++]);
+            DeckPLayer.AddRange(initialdeck);
+
+            a.Table.CreateDeck(DeckPLayer);
+        }
+
+        return players;
+    }
+
     static void NewGame()
     {
         List<IPlayer> players = AddPlayers();
         players = GameUtils.MixPlayers(players);
+
         List<ICostable> ChoosingCards = ChooseCards(players,CreateCards.AllActionsCard);
-        Bank bank = new Bank(ChoosingCards);//me quede x aqui 21/12 1:30 am
+        Bank bank = new Bank(ChoosingCards);
+
+        List<Card> initialdeck = new List<Card>();
+        initialdeck.AddRange((IEnumerable<Card>)bank.GetCant(new Gem1(),6));
+        initialdeck.Add((Card)bank.Get(new CrashGem()));
+
+        players = ChooseHeroCards(players,initialdeck);
+
         IPlayer WinPlayer = GameEngine.PlayGame(players,bank);
+        Console.WriteLine($"Ha ganado {WinPlayer.Name}. Presione cualquier boton para continuar.");
+        Console.ReadLine();
     }
     static void Main()
     {
@@ -537,7 +572,6 @@ class Program
         {
             Console.Clear();
             PrintMenu();
-
             ConsoleKey key = Console.ReadKey(true).Key;
             Console.Clear();
 

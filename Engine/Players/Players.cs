@@ -8,7 +8,7 @@ public class ManualPlayer : IPlayer
     public ManualPlayer ( string name ) 
     {
         this.Name = name;
-        this.Table=new TablePlayer();
+        this.Table = new TablePlayer();
     }
 
     public int SelectActionCard(List<ICostable> ActionsCards)
@@ -16,9 +16,9 @@ public class ManualPlayer : IPlayer
         return int.Parse(Console.ReadLine());
     }
 
-    public int SelectHero()
+    public int SelectHero(List<Card> HeroCards)
     {
-        return 0;
+        return int.Parse(Console.ReadLine());
     }
 
     public void PlayActionPhase()
@@ -26,13 +26,8 @@ public class ManualPlayer : IPlayer
         
     }
 
-    public void PlayBuyPhase()
+    public ICostable PlayBuyPhase()
     {
-        
-    }
-
-    public void PlayCleanUpPhase()
-    {
-        
+        return null;
     }
 }
