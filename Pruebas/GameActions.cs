@@ -34,7 +34,7 @@ namespace AppConsole//cambios
             list.Remove(card);
         }
 
-        public static void GainCard(Bank bank, IPlayer a, Card card)
+        public static void GainCard (Bank bank, IPlayer a, Card card)
         {
             a.TablePlayer.DiscardPile.Add(bank.Get(card));
         }
