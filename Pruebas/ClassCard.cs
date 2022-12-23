@@ -1,4 +1,5 @@
-namespace AppConsole //cambios
+using System.Collections.Generic;
+namespace AppConsole
 {
 
     public abstract class Card

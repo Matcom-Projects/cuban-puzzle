@@ -51,11 +51,26 @@ public static class GameEngine
 
     public static void ActionPhase(IPlayer a)
     {
-        a.PlayActionPhase();
+        while(CantActionsPerTurn>0)
+        {
+            if(a.Table.OnGoing.Count!=0) //&& a.SelectField()) esta parte esta mal implementada
+            {
+                Card card = a.SelectCardOnGoing();//seleccionando carta del ongoing
+                a.ChooseActionRealize((IActionable)card,bank);//escogiendo y ejecutando accion de la carta
+            }
+            else{
+                a.SelectCardHand();//seleccionar una carta de la mano
+                Card card = a.SelectCardOnGoing();//seleccionando carta del ongoing
+                a.ChooseActionRealize((IActionable)card,bank);//escogiendo y ejecutando accion de la carta
+            }
+            
+            CantActionsPerTurn--;
+        }
     }
 
     public static void BuyPhase(IPlayer a)
     {
+        CantMoneyPerTurn += a.Table.CantMoneyBuyPhases();
         if ( CantMoneyPerTurn <= 0 )
         {
             a.Table.ToDiscardPile((IEnumerable<Card>)bank.GetCant(new Cup(),1-CantActionsPerTurn));     
@@ -86,7 +101,6 @@ public static class GameEngine
 
     public static int CleanUpPhase(IPlayer a)
     {
-        a.Table.CleanUp();
-        return a.Table.CantGem();
+        return a.Table.CleanUp();
     }
 }

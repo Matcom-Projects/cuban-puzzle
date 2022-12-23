@@ -2,11 +2,12 @@ namespace engine_cuban_puzzle;
 
 public class TablePlayer
 {
-    private List<Card> Deck ;
+    public List<Card> Deck {get; private set;}
     public List<Card> DiscardPile ;
     public  List<Card> OnGoing { get; private set; }
-    private List<Card> HandCards ;
+    public List<Card> HandCards { get; private set; }
     public List<ICostable> GemPile ;
+    private List<Card> SaveCards;
 
     public TablePlayer( )
     {
@@ -14,6 +15,7 @@ public class TablePlayer
         this.OnGoing = new List<Card>();
         this.HandCards = new List<Card>();
         this.GemPile = new List<ICostable>();
+        this.SaveCards = new List<Card>();
     }
 
     public void CreateDeck(List<Card> initialdeck)
@@ -21,32 +23,18 @@ public class TablePlayer
         this.Deck = initialdeck;
     }
 
-    public Card GetDeck()
+    public void DrawDeck(int n)
     {
-
-        if(Deck.Count == 0)
-        {
-            Deck.AddRange(DiscardPile);
-            DiscardPile.Clear();
-            MixDeck();
-        }
-
-        Card result = Deck[0];
-        Deck.RemoveAt(0);
-
-        return result;
-    }
-
-    public List<Card> GetCantDeck(int n)
-    {
-        List<Card> result = new List<Card>();
-
         for(int i =0; i < n;i++)
         {
-            result.Add(GetDeck());
+            if(Deck.Count == 0)
+            {
+                Deck.AddRange(DiscardPile);
+                DiscardPile.Clear();
+                MixDeck();
+            }
+            GameUtils.Move(Deck,HandCards,0);
         }
-
-        return result;
     }
 
     public void MixDeck()
@@ -66,6 +54,11 @@ public class TablePlayer
     public void HandToOnGoing(int index)
     {
         GameUtils.Move(HandCards,OnGoing,index);
+    }
+
+    public void HandToSaveCards(int index)
+    {
+        GameUtils.Move(HandCards,SaveCards,index);
     }
     public void DeckToHand(int index)
     {
@@ -100,9 +93,71 @@ public class TablePlayer
         return result;
     }
 
-    public void CleanUp()
+    public int CleanUp()
+    {
+        int CantGemResult = this.CantGem();
+        int CantCardsDraw = SaveCards.Count();
+        CleanOnGoing();
+        CleanHand();
+        CleanSaveCards();
+
+        if( CantGemResult <= 2 )
+        {
+            CantCardsDraw = 5 - CantCardsDraw;
+        }
+        else if ( CantGemResult <= 5 )
+        {
+            CantCardsDraw = 6 - CantCardsDraw;
+        }
+        else if ( CantGemResult <= 8)
+        {
+            CantCardsDraw = 7 - CantCardsDraw;
+        }
+        else if( CantCardsDraw <= 9 )
+        {
+            CantCardsDraw = 8 - CantCardsDraw;
+        }
+        else return CantCardsDraw;
+
+        if( CantCardsDraw > 0 )
+        {
+            DrawDeck(CantCardsDraw);
+        }
+
+        return CantGemResult;
+    }
+
+    private void CleanSaveCards()
+    {
+        HandCards.AddRange(SaveCards);
+    }
+
+    private void CleanOnGoing()
     {
         DiscardPile.AddRange(OnGoing);
-        OnGoing.Clear();
+        OnGoing.Clear();        
+    }
+
+    private void CleanHand()
+    {
+        DiscardPile.AddRange(HandCards);
+        HandCards.Clear();       
+    }
+
+    public int CantMoneyBuyPhases()
+    {
+        int CantMoneyResult=0;
+        foreach(Card ongoingcards in OnGoing)
+        {
+            CantMoneyResult += ongoingcards.Money;
+        }
+        foreach(Card handcards in HandCards)
+        {
+            if(handcards is Gem1||handcards is Gem2||handcards is Gem3||handcards is Gem4)
+            {
+                CantMoneyResult += handcards.Money;
+            }
+        }
+        return CantMoneyResult;
     }
 }
