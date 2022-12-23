@@ -1,7 +1,8 @@
+using System.Linq;
 using System.Collections.Generic;
 using System;
 using System.Diagnostics;
-namespace AppConsole //cambios
+namespace AppConsole //cambios 2.0
 {
     public class ManualPlayer : IPlayer
     {
@@ -24,25 +25,30 @@ namespace AppConsole //cambios
             return int.Parse(Console.ReadLine());
         }
 
-        public void SelectCardHand()
+        public int SelectCardHand()
         {
             Console.Clear();
             Console.WriteLine("HandCards:");
-            for(int i=0; i<Table.HandCards; i++)
+            for(int i=0; i<Table.HandCards.Count; i++)
             {
                 Console.WriteLine($"[{i}].{Table.HandCards[i].Name}");
             }
             Console.WriteLine("Escoja una carta: ");
             int opc = int.Parse(Console.ReadLine());
 
-            GameUtils.Move(a.Table.HandCards, a.Table.OnGoing, opc);//moverla hacia el ongoing
+            return opc;
+        }
+
+        public void SelectCardHandM()
+        {
+            GameUtils.Move(a.Table.HandCards, a.Table.OnGoing, SelectCardHand());//moverla hacia el ongoing
         }
 
         public Card SelectCardOnGoing()
         {
             Console.Clear();
             Console.WriteLine("OnGoing:");
-            for(int i=0; i<Table.OnGoing; i++)
+            for(int i=0; i<Table.OnGoing.Count; i++)
             {
                 Console.WriteLine($"[{i}].{Table.OnGoing[i].Name}");
             }
@@ -66,9 +72,9 @@ namespace AppConsole //cambios
         public int SelectGem()
         {
             Console.WriteLine("GemPile:");
-            for(int i=0; i<TablePlayer.GemPile; i++)
+            for(int i=0; i<Table.GemPile.Count; i++)
             {
-                Console.WriteLine($"[{i}].{TablePlayer.GemPile[i].Name}");
+                Console.WriteLine($"[{i}].{Table.GemPile[i].Name}");
             }
             Console.WriteLine("Escoja una gema: ");
             int opc = int.Parse(Console.ReadLine());
@@ -112,12 +118,12 @@ namespace AppConsole //cambios
                 case ConsoleKey.S :
                 {
                     int index = SelectCardHand();
-                    card.SaveCards(index);
+                    card.SaveCards(index, this);
                     break;
                 }
                 case ConsoleKey.R :
                 {
-                    card.ExecuteGetDeck();
+                    card.ExecuteGetDeck(this);
                     break;
                 }
                 case ConsoleKey.M :
@@ -138,6 +144,32 @@ namespace AppConsole //cambios
                 }
             }
 
+        }
+
+        public Card SelectCardBank(List<Card> list)
+        {
+            Console.Clear();
+            Console.WriteLine("Bank:");
+            for(int i=0; i<list.Count; i++)
+            {
+                Console.WriteLine($"[{i}].{list[i].Name}");
+            }
+            Console.WriteLine("Escoja una carta: ");
+            int opc = int.Parse(Console.ReadLine());
+
+            return list[opc];
+        }
+        public int SelectCardDeck()
+        {
+            Console.WriteLine("Deck:");
+            for(int i=0; i<Table.Deck.Count; i++)
+            {
+                Console.WriteLine($"[{i}].{Table.Deck[i].Name}");
+            }
+            Console.WriteLine("Escoja una carta: ");
+            int opc = int.Parse(Console.ReadLine());
+
+            return opc;
         }
 
         public ICostable PlayBuyPhase()
