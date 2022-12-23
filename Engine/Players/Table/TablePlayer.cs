@@ -130,6 +130,7 @@ public class TablePlayer
     private void CleanSaveCards()
     {
         HandCards.AddRange(SaveCards);
+        SaveCards.Clear();
     }
 
     private void CleanOnGoing()
