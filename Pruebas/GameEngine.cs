@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace AppConsole//cambios
+namespace AppConsole//cambios 2.0
 {
     public class GameEngine
     {
@@ -59,7 +59,7 @@ namespace AppConsole//cambios
                     a.ChooseActionRealize(card,bank);//escogiendo y ejecutando accion de la carta
                 }
                 else{
-                    a.SelectCardHand();//seleccionar una carta de la mano
+                    a.SelectCardHandM();//seleccionar una carta de la mano
                     Card card = a.SelectCardOnGoing();//seleccionando carta del ongoing
                     a.ChooseActionRealize(card,bank);//escogiendo y ejecutando accion de la carta
                 }
