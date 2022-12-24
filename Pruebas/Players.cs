@@ -2,7 +2,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System;
 using System.Diagnostics;
-namespace AppConsole //cambios 2.0
+namespace AppConsole //cambios 3.0
 {
     public class ManualPlayer : IPlayer
     {
@@ -39,11 +39,6 @@ namespace AppConsole //cambios 2.0
             return opc;
         }
 
-        public void SelectCardHandM()
-        {
-            GameUtils.Move(a.Table.HandCards, a.Table.OnGoing, SelectCardHand());//moverla hacia el ongoing
-        }
-
         public Card SelectCardOnGoing()
         {
             Console.Clear();
@@ -60,6 +55,7 @@ namespace AppConsole //cambios 2.0
 
         public bool SelectField()
         {
+            Console.Clear();
             Console.WriteLine("[E].Escoger una carta de la mano");
             Console.WriteLine("[A].Activar una carta del OnGoing");
             ConsoleKey key = new ConsoleKey.ReadKey(true).Key;
@@ -96,7 +92,19 @@ namespace AppConsole //cambios 2.0
             return GameEngine.Turns.Players[opc];
         }
 
-        public void ChooseActionRealize(Card card, Bank bank)
+        public bool Exit()
+        {
+            Console.Clear();
+            Console.WriteLine("[J].Jugar fase de accion");
+            Console.WriteLine("[E].Continuar");
+            ConsoleKey key = new ConsoleKey.ReadKey(true).Key;
+
+            if(key==ConsoleKey.E) return true;
+
+            return false;
+        }
+
+        public void ChooseActionRealize(IActionable card)
         {
             Console.Clear();
             Console.WriteLine("Acciones:");
@@ -134,12 +142,12 @@ namespace AppConsole //cambios 2.0
                 }
                 case ConsoleKey.T :
                 {
-                    card.Trash(bank,this);
+                    card.Trash(this);
                     break;
                 }
                 case ConsoleKey.G :
                 {
-                    card.GainCard(bank,this);
+                    card.GainCard(this);
                     break;
                 }
             }
