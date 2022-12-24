@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace AppConsole//cambios 2.0
+namespace AppConsole//cambios 3.0
 {
     public class GameEngine
     {
@@ -16,7 +16,7 @@ namespace AppConsole//cambios 2.0
             while(true)
             {
                 Turns.MoveNext();
-                ActionPhase(Turns.Current,bank);
+                ActionPhase(Turns.Current);
                 BuyPhase(Turns.Current);
                 CantActionsPerTurn = 1;
                 CantMoneyPerTurn = 0;
@@ -49,19 +49,22 @@ namespace AppConsole//cambios 2.0
             }
         }
 
-        public void ActionPhase(IPlayer a, Bank bank)
+        public void ActionPhase(IPlayer a)
         {
             while(CantActionsPerTurn>0)
             {
-                if(a.Table.OnGoing.Count!=0 && a.SelectField())
-                {
-                    Card card = a.SelectCardOnGoing();//seleccionando carta del ongoing
-                    a.ChooseActionRealize(card,bank);//escogiendo y ejecutando accion de la carta
-                }
+                if(a.Exit()) return;
                 else{
-                    a.SelectCardHandM();//seleccionar una carta de la mano
-                    Card card = a.SelectCardOnGoing();//seleccionando carta del ongoing
-                    a.ChooseActionRealize(card,bank);//escogiendo y ejecutando accion de la carta
+                    if(a.Table.OnGoing.Count!=0 && a.SelectField())
+                    {
+                        Card card = a.SelectCardOnGoing();//seleccionando carta del ongoing
+                        a.ChooseActionRealize((IActionable)card,bank);//escogiendo y ejecutando accion de la carta
+                    }
+                    else{
+                        GameUtils.Move(a.Table.HandCards, a.Table.OnGoing, SelectCardHand());//moverla hacia el ongoing                    
+                        Card card = a.SelectCardOnGoing();//seleccionando carta del ongoing
+                        a.ChooseActionRealize((IActionable)card,bank);//escogiendo y ejecutando accion de la carta
+                    }
                 }
                 
                 CantActionsPerTurn--;
@@ -70,6 +73,7 @@ namespace AppConsole//cambios 2.0
 
         public static void BuyPhase(IPlayer a)
         {
+            CantMoneyPerTurn += a.Table.CantMoneyBuyPhases();
             if ( CantMoneyPerTurn <= 0 )
             {
                 a.Table.ToDiscardPile((IEnumerable<Card>)bank.GetCant(new Cup(),1-CantActionsPerTurn));     
@@ -100,8 +104,7 @@ namespace AppConsole//cambios 2.0
 
         public static int CleanUpPhase(IPlayer a)
         {
-            a.Table.CleanUp();
-            return a.Table.CantGem();
+            return a.Table.CleanUp();
         }
     }
 }
