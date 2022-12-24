@@ -13,18 +13,18 @@ namespace AppConsole
         }
 
         private void GiveActions();
-        private void SaveCards(int index);
+        private void SaveCards(int index, IPlayer a);
         private void ExecuteGetDeck(IPlayer a);
         private void Attack(int index,IPlayer a);
-        private void Trash(Bank bank, IPlayer a);
-        public void GainCard(Bank bank, IPlayer a)
+        private void Trash(IPlayer a);
+        public void GainCard(IPlayer a)
         {
             for(int i=0; i<a.Table.HandCards.Count; i++)
             {
                 if(a.Table.HandCards[i] is Gem1)
                 {
                     GameUtils.Move(a.Table.HandCards, a.Table.GemPile, i);
-                    a.TablePlayer.DiscardPile.Add(bank.Get(new Gem2()));
+                    a.TablePlayer.DiscardPile.Add(GameEngine.bank.Get(new Gem2()));
                     GameEngine.CantMoneyPerTurn += 3;
                     return;
                 }

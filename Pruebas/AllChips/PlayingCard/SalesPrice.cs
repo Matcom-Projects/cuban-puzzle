@@ -5,7 +5,7 @@ namespace AppConsole
         public int Cost{ get; }
         public bool[] Actions {get; set;}
         public string Id{ get; private set; }
-        public SalesPrice() : base("Sales Price", new string[]{"yellow"}, 0)
+        public SalesPrice() : base("Sales Price", new string[]{"yellow"}, 3)
         {
             this.Cost = 2;
             this.Actions = new bool[] {false, false, false, false, false, true};
@@ -13,14 +13,13 @@ namespace AppConsole
         }
 
         private void GiveActions();
-        private void SaveCards(int index);
+        private void SaveCards(int index, IPlayer a);
         private void ExecuteGetDeck(IPlayer a);
         private void Attack(int index,IPlayer a);
-        private void Trash(Bank bank, IPlayer a);
-        public void GainCard(Bank bank, IPlayer a)
+        private void Trash(IPlayer a);
+        public void GainCard(IPlayer a)
         {
-            a.TablePlayer.DiscardPile.Add(bank.Get(new Gem1()));
-            GameEngine.CantMoneyPerTurn += 3;
+            a.TablePlayer.DiscardPile.Add(GamEngine.bank.Get(new Gem1()));
         }
 
         /*Informacion de la carta:

@@ -11,15 +11,15 @@ namespace AppConsole
         }
 
         private void GiveActions();
-        private void SaveCards(int index);
+        private void SaveCards(int index, IPlayer a);
         private void ExecuteGetDeck(IPlayer a);
         private void Attack(int index,IPlayer a);
-        private void Trash(Bank bank, IPlayer a);
-        public void GainCard(Bank bank, IPlayer a)
+        private void Trash(IPlayer a);
+        public void GainCard(IPlayer a)
         {
-            a.TablePlayer.DiscardPile.Add(bank.Get(new DobleCrashGem()));
-            a.TablePlayer.DiscardPile.Add(bank.Get(new Cup()));
-            a.TablePlayer.DiscardPile.Add(bank.Get(new Cup()));
+            a.TablePlayer.DiscardPile.Add(GameEngine.bank.Get(new DobleCrashGem()));
+            a.TablePlayer.DiscardPile.Add(GameEngine.bank.Get(new Cup()));
+            a.TablePlayer.DiscardPile.Add(GameEngine.bank.Get(new Cup()));
         }
 
         /*Informacion de la carta:

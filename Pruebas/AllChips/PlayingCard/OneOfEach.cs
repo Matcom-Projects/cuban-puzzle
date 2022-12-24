@@ -5,7 +5,7 @@ namespace AppConsole
         public int Cost{ get; }
         public bool[] Actions {get; set;}
         public string Id{ get; private set; }
-        public OneOfEach() : base("One Of Each", new string[]{"yellow"}, 0)
+        public OneOfEach() : base("One Of Each", new string[]{"yellow"}, 1)
         {
             this.Cost = 5;
             this.Actions = new bool[] {true, true, true, false, false, false};
@@ -15,7 +15,6 @@ namespace AppConsole
         public void GiveActions()
         {
             GameEngine.CantActionsPerTurn ++;
-            GameEngine.CantMoneyPerTurn ++;
         }
         public void SaveCards(int index, IPlayer a)
         {
@@ -28,8 +27,8 @@ namespace AppConsole
         }
         
         private void Attack(int index,IPlayer a);
-        private void Trash(Bank bank, IPlayer a);
-        private void GainCard(Bank bank, IPlayer a);
+        private void Trash(IPlayer a);
+        private void GainCard(IPlayer a);
 
         /*Informacion de la carta:
         1. Da una accion mas y 1$ para la fase de compra

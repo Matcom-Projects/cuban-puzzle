@@ -13,7 +13,7 @@ namespace AppConsole
         }
 
         private void GiveActions();
-        private void SaveCards(int index);
+        private void SaveCards(int index, IPlayer a);
         public void ExecuteGetDeck(IPlayer a)
         {
             List<Card> indexs = new List<Card>();
@@ -29,13 +29,13 @@ namespace AppConsole
             }
         }
         private void Attack(int index,IPlayer a);
-        private void Trash(Bank bank, IPlayer a)
+        private void Trash(IPlayer a)
         {
             Card card = a.SelectCardHand();
-            bank.Add(card);
+            GameEngine.bank.Add(card);
             a.Table.HandCards.Remove(card);
         }
-        private void GainCard(Bank bank, IPlayer a);
+        private void GainCard(IPlayer a);
 
         /*Informacion de la carta:
         1. Coge tres cartas del deck

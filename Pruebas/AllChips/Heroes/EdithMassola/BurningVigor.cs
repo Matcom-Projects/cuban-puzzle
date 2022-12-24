@@ -12,39 +12,39 @@ namespace AppConsole
             this.Id = GameUtils.CreateId();
         }
         private void GiveActions();
-        private void SaveCards(int index);
+        private void SaveCards(int index, IPlayer a);
         private void ExecuteGetDeck(IPlayer a);
         private void Attack(int index,IPlayer a);
-        public void Trash(Bank bank, IPlayer a)
+        public void Trash(IPlayer a)
         {
             if(a.Table.HandCards.Contains(new Cup()))
             {
                 Card card = new Cup();
-                bank.Add(card);
+                GameEngine.bank.Add(card);
                 a.Table.HandCards.Remove(card);
                 GameEngine.CantActionsPerTurn++;
                 foreach(var p in GameEngine.Turns.Players)
                 {
                     if(p==a) continue;
-                    p.Table.GemPile.Add(bank.Get(new Gem1()));
+                    p.Table.GemPile.Add(gameEngine.bank.Get(new Gem1()));
                 }
                 return;
             }
             else if(a.Table.DiscardPile.Contains(new Cup()))
             {
                 Card card = new Cup();
-                bank.Add(card);
+                gameEngine.bank.Add(card);
                 a.Table.DiscardPile.Remove(card);
                 GameEngine.CantActionsPerTurn++;
                 foreach(var p in GameEngine.Turns.Players)
                 {
                     if(p==a) continue;
-                    p.Table.GemPile.Add(bank.Get(new Gem1()));
+                    p.Table.GemPile.Add(gameEngine.bank.Get(new Gem1()));
                 }
                 return;
             }
         }
-        private void GainCard(Bank bank, IPlayer a);
+        private void GainCard(IPlayer a);
 
         /*Informacion de la carta:
         1. Trashea un CUP de la mano o pila de descartes

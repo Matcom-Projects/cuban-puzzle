@@ -14,15 +14,15 @@ namespace AppConsole
         {
             GameEngine.CantActionsPerTurn += 2;
         }
-        private void SaveCards(int index);
+        private void SaveCards(int index, IPlayer a);
         public void ExecuteGetDeck(IPlayer a)
         {
             int index = a.SelectCardDeck();
             GameUtils.Move(a.Table.Deck, a.Table.DiscardPile, index);
         }
         private void Attack(int index,IPlayer a);
-        private void Trash(Bank bank, IPlayer a);
-        private void GainCard(Bank bank, IPlayer a);
+        private void Trash(IPlayer a);
+        private void GainCard(IPlayer a);
 
         /*Informacion de la carta:
         1. Da dos acciones mas

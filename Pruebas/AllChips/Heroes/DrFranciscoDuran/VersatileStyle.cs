@@ -4,7 +4,7 @@ namespace AppConsole.AllChips.Heroes.DrFrancicoDuran
     {
         public bool[] Actions {get; set;}
         public string Id{ get; private set; }
-        public VersatileStyle() : base("Versatile Style", new string[]{"yellow"}, 0)
+        public VersatileStyle() : base("Versatile Style", new string[]{"yellow"}, 2)
         {
             this.Actions = new bool[] {true, true, true, false, false, false};
             this.Id = GameUtils.CreateId();
@@ -12,12 +12,11 @@ namespace AppConsole.AllChips.Heroes.DrFrancicoDuran
         public void GiveActions()
         {
             GameEngine.CantActionsPerTurn ++;
-            GameEngine.CantMoneyPerTurn += 2;
         }
 
-        public void SaveCards(int index)
+        public void SaveCards(int index, IPlayer a)
         {
-            GameUtils.Move(TablePlayer.HandCards, TablePlayer.SavedCards, index);
+            GameUtils.Move(a.Table.HandCards, a.Table.SavedCards, index);
         }
         public void ExecuteGetDeck(IPlayer a)
         {
@@ -34,8 +33,8 @@ namespace AppConsole.AllChips.Heroes.DrFrancicoDuran
             }
         }
         private void Attack(int index,IPlayer a);
-        private void Trash(Bank bank, IPlayer a);
-        private void GainCard(Bank bank, IPlayer a);
+        private void Trash(IPlayer a);
+        private void GainCard(IPlayer a);
 
         /*Informacion de la carta:
         1. Da una accion mas y 2 pesos mas para la fase de compra
