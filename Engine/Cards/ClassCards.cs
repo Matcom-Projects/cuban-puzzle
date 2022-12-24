@@ -14,9 +14,18 @@ public abstract class Card
         this.Money = money;
     }
 }
+public abstract class BankCard : Card
+{
+    public int Cost{ get; private set; }
+    
+    public BankCard ( string name,string[]color,int money ,int cost): base (name,color,money)
+    {
+        this.Cost = cost;
+    }
+}
 
 public static class CreateCards
 {
-    public static List<ICostable>? AllActionsCard;
+    public static List<BankCard>? AllActionsCard;
     public static List<Card>? AllHeroCards;
 }
