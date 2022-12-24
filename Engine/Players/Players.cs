@@ -12,7 +12,7 @@ public class ManualPlayer : IPlayer
         this.Table = new TablePlayer();
     }
 
-    public int SelectActionCard(List<ICostable> ActionsCards)
+    public int SelectActionCard(List<BankCard> ActionsCards)
     {
         return int.Parse(Console.ReadLine());
     }
@@ -22,7 +22,7 @@ public class ManualPlayer : IPlayer
         return int.Parse(Console.ReadLine());
     }
 
-    public ICostable PlayBuyPhase()
+    public BankCard PlayBuyPhase()
     {
         Console.Clear();
         System.Console.WriteLine($"Fase de Compra: {this.Name}");
@@ -142,7 +142,7 @@ public class ManualPlayer : IPlayer
             }
             case ConsoleKey.R :
             {
-                card.ExecuteGetDeck(GameEngine.Turns.Current);
+                card.Draw(GameEngine.Turns.Current);
                 break;
             }
             case ConsoleKey.M :
@@ -176,7 +176,7 @@ public class ManualPlayer : IPlayer
         return false;
     }
 
-    public Card SelectCardBank(List<Card> list)
+    public BankCard SelectCardBank(List<BankCard> list)
     {
         throw new NotImplementedException();
     }
@@ -185,4 +185,5 @@ public class ManualPlayer : IPlayer
     {
         throw new NotImplementedException();
     }
+
 }

@@ -52,11 +52,11 @@ class Program
         return result;
     }
 
-    static List<ICostable> ChooseCards(List<IPlayer> players,List<ICostable> ActionsCards)
+    static List<BankCard> ChooseCards(List<IPlayer> players,List<BankCard> ActionsCards)
     {
         if(ActionsCards.Count <= 10) return ActionsCards;
 
-        List<ICostable> result = new List<ICostable>();
+        List<BankCard> result = new List<BankCard>();
         int n = 10;
 
         while( n > 0 )
@@ -98,7 +98,7 @@ class Program
         List<IPlayer> players = AddPlayers();
         players = GameUtils.MixPlayers(players);
 
-        List<ICostable> ChoosingCards = ChooseCards(players,CreateCards.AllActionsCard);
+        List<BankCard> ChoosingCards = ChooseCards(players,CreateCards.AllActionsCard);
         Bank bank = new Bank(ChoosingCards);
 
         List<Card> initialdeck = new List<Card>();
@@ -113,6 +113,25 @@ class Program
     }
     static void Main()
     {
+        CreateCards.AllActionsCard = new List<BankCard>();
+        CreateCards.AllActionsCard.Add(new CombosAreHard());
+        CreateCards.AllActionsCard.Add(new DrawThree());
+        CreateCards.AllActionsCard.Add(new GemEssence());
+        CreateCards.AllActionsCard.Add(new Knockdown());
+        CreateCards.AllActionsCard.Add(new OneTwoPunch());
+        CreateCards.AllActionsCard.Add(new OneOfEach());
+        CreateCards.AllActionsCard.Add(new SalesPrice());
+        CreateCards.AllActionsCard.Add(new SalesPrice());
+        CreateCards.AllActionsCard.Add(new SelfImprovement());
+        CreateCards.AllActionsCard.Add(new SneackAttack());
+        CreateCards.AllHeroCards = new List<Card>();
+        CreateCards.AllHeroCards.Add(new MartialMastery());
+        CreateCards.AllHeroCards.Add(new Reversal());
+        CreateCards.AllHeroCards.Add(new VersatileStyle());
+        CreateCards.AllHeroCards.Add(new BurningVigor());
+        CreateCards.AllHeroCards.Add(new PlayingWithFire());
+        CreateCards.AllHeroCards.Add(new UnstablePower());
+
         while(true)
         {
             Console.Clear();
