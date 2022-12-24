@@ -22,8 +22,7 @@ public interface IPlayer
 }
 public interface IActionable
 {
-    public bool[] Actions {get;}
-
+    public bool[] Actions { get; }
     public void GiveActions();
     public void SaveCards(int index);
     public void ExecuteGetDeck();
