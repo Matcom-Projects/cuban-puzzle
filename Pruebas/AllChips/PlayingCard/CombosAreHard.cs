@@ -13,24 +13,24 @@ namespace AppConsole
         }
 
         private void GiveActions();
-        private void SaveCards(int index);
+        private void SaveCards(int index, IPlayer a);
         private void ExecuteGetDeck(IPlayer a);
         private void Attack(int index,IPlayer a);
-        private void Trash(Bank bank, IPlayer a);
-        public void GainCard(Bank bank, IPlayer a)
+        private void Trash(IPlayer a);
+        public void GainCard(IPlayer a)
         {
             for(int i=0; i<2; i++)
             {
                 List<Card> list = new List<Card>();
-                foreach(var key in bank.GameBank.Keys)
+                foreach(var key in GameGameEngine.bank.Keys)
                 {
                     list.Add(key);
                 }
                 
-                a.Table.DiscardPile.Add(bank.Get(a.SelectCardBank(list)));
+                a.Table.DiscardPile.Add(GameEngine.bank.Get(a.SelectCardBank(list)));
             }
 
-            bank.Add(this);
+            GameEngine.bank.Add(this);
             a.Table.OnGoing.Remove(this);
         }
 

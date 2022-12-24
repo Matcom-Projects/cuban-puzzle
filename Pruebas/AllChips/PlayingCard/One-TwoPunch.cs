@@ -16,11 +16,11 @@ namespace AppConsole.AllChips.PlayingCards
         {
             GameEngine.CantActionsPerTurn += 2;
         }
-        private void SaveCards(int index);
+        private void SaveCards(int index, IPlayer a);
         private void ExecuteGetDeck(IPlayer a);
         private void Attack(int index,IPlayer a);
-        private void Trash(Bank bank, IPlayer a);
-        private void GainCard(Bank bank, IPlayer a);
+        private void Trash(IPlayer a);
+        private void GainCard(IPlayer a);
 
         /*Informacion de la carta:
         1. Da dos acciones mas

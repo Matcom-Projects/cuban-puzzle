@@ -16,17 +16,17 @@ namespace AppConsole
         {
             GameEngine.CantActionsPerTurn ++;
         }
-        private void SaveCards(int index);
+        private void SaveCards(int index, IPlayer a);
         private void ExecuteGetDeck(IPlayer a);
         private void Attack(int index,IPlayer a);
-        private void Trash(Bank bank, IPlayer a);
-        public void GainCard(Bank bank, IPlayer a)
+        private void Trash(IPlayer a);
+        public void GainCard(IPlayer a)
         {
-            a.TablePlayer.DiscardPile.Add(bank.Get(new Gem1()));            
+            a.TablePlayer.DiscardPile.Add(GameEngine.bank.Get(new Gem1()));            
             foreach(var p in GameEngine.Turns.Players)
             {
                 if(p==a) continue;
-                p.Table.GemPile.Add(bank.Get(new Gem1()));
+                p.Table.GemPile.Add(GameEngine.bank.Get(new Gem1()));
             }
         }
 

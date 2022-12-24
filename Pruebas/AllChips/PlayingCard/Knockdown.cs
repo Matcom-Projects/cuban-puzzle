@@ -16,22 +16,22 @@ namespace AppConsole
         {
             GameEngine.CantActionsPerTurn ++;
         }
-        private void SaveCards(int index);
+        private void SaveCards(int index, IPlayer a);
         private void ExecuteGetDeck(IPlayer a);
         private void Attack(int index,IPlayer a);
-        public void Trash(Bank bank, IPlayer a)
+        public void Trash(IPlayer a)
         {
             IPlayer b = a.SelectPlayer(a);
             foreach (var card in b.Table.HandCards)
             {
                 if(card.Color.Contains("purple"))
                 {
-                    bank.Add(card);
+                    GameEngine.bank.Add(card);
                     b.Table.HandCards.Remove(card);
                 }
             }
         }
-        private void GainCard(Bank bank, IPlayer a);
+        private void GainCard(IPlayer a);
 
         /*Informacion de la carta:
         1. Da una accion mas
