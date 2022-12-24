@@ -10,6 +10,12 @@ class Program
         System.Console.WriteLine("Presione [E] para salir.");
     }
 
+    static ConsoleKey Read()
+    {
+        ConsoleKey key = Console.ReadKey(true).Key;
+        return key;
+    }
+
     static List<IPlayer> AddPlayers()
     {
         List<IPlayer> result = new List<IPlayer>();

@@ -53,15 +53,18 @@ public static class GameEngine
     {
         while(CantActionsPerTurn>0)
         {
-            if(a.Table.OnGoing.Count!=0) //&& a.SelectField()) esta parte esta mal implementada
-            {
-                Card card = a.SelectCardOnGoing();//seleccionando carta del ongoing
-                a.ChooseActionRealize((IActionable)card,bank);//escogiendo y ejecutando accion de la carta
-            }
+            if(a.Exit()) return;
             else{
-                a.SelectCardHand();//seleccionar una carta de la mano
-                Card card = a.SelectCardOnGoing();//seleccionando carta del ongoing
-                a.ChooseActionRealize((IActionable)card,bank);//escogiendo y ejecutando accion de la carta
+                if(a.Table.OnGoing.Count!=0 && a.SelectField())
+                {
+                    Card card = a.SelectCardOnGoing();//seleccionando carta del ongoing
+                    a.ChooseActionRealize((IActionable)card);//escogiendo y ejecutando accion de la carta
+                }
+                else{
+                    a.Table.HandToOnGoing(a.SelectCardHand());//moverla hacia el ongoing            
+                    Card card = a.SelectCardOnGoing();//seleccionando carta del ongoing
+                    a.ChooseActionRealize((IActionable)card);//escogiendo y ejecutando accion de la carta
+                }
             }
             
             CantActionsPerTurn--;
@@ -71,19 +74,19 @@ public static class GameEngine
     public static void BuyPhase(IPlayer a)
     {
         CantMoneyPerTurn += a.Table.CantMoneyBuyPhases();
-        if ( CantMoneyPerTurn <= 0 )
+        if ( CantMoneyPerTurn < 0 )
         {
             a.Table.ToDiscardPile((IEnumerable<Card>)bank.GetCant(new Cup(),1-CantActionsPerTurn));     
         }
         else
         {
-            while( CantActionsPerTurn > 0 )
+            while( CantMoneyPerTurn >= 0 )
             {
                 ICostable BuyCard = a.PlayBuyPhase();
 
                 if(BuyCard == null)
                 {
-                    break;
+                    continue;
                 }
 
                 if(CantMoneyPerTurn-BuyCard.Cost>=0)
@@ -95,6 +98,8 @@ public static class GameEngine
                         CantMoneyPerTurn -= BuyCard.Cost;
                     }
                 }
+
+                if(a.PlayNextBuyPhases()) break;
             }
         }
     }

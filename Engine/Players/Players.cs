@@ -24,23 +24,42 @@ public class ManualPlayer : IPlayer
 
     public ICostable PlayBuyPhase()
     {
-        return null;
+        Console.Clear();
+        System.Console.WriteLine($"Fase de Compra: {this.Name}");
+        System.Console.WriteLine($"Cantidad de dinero: {GameEngine.CantMoneyPerTurn} $");
+        for( int i = 0 ; i < GameEngine.bank.keys.Count ; i++ )
+        {
+            System.Console.WriteLine($"[{i+1}][{((Card)GameEngine.bank.keys[i]).Name}] : {GameEngine.bank.keys[i].Cost} $");
+        }
+        System.Console.WriteLine();
+        System.Console.WriteLine("Seleccione la carta que desea comprar.(Debe hacer obligatoriamente una compra por turno)");
+        int index = int.Parse(Console.ReadLine());
+
+        return GameEngine.bank.keys[index-1];
+    }
+
+    public bool PlayNextBuyPhases()
+    {
+        Console.Clear();
+        System.Console.WriteLine("Desea finalizar ya la fase de compra??? [S]i o [N]o");
+        ConsoleKey key = Console.ReadKey(true).Key;
+
+        if(key == ConsoleKey.S) return true;
+        return false;
     }
 
     public int SelectCardHand()
     {
         Console.Clear();
         Console.WriteLine("HandCards:");
-
-        for(int i=0; i < Table.HandCards.Count; i++)
+        for(int i=0; i<Table.HandCards.Count; i++)
         {
             Console.WriteLine($"[{i}].{Table.HandCards[i].Name}");
         }
         Console.WriteLine("Escoja una carta: ");
         int opc = int.Parse(Console.ReadLine());
+
         return opc;
-        //Table.HandToOnGoing(opc);//moverla hacia el ongoing
-        //pusiste x alla abajo q este metodo returnaba un int y lo tenias void
     }
 
     public Card SelectCardOnGoing()
@@ -57,16 +76,17 @@ public class ManualPlayer : IPlayer
         return Table.OnGoing[opc];
     }
 
-    // public bool SelectField()
-    // {
-    //     Console.WriteLine("[E].Escoger una carta de la mano");
-    //     Console.WriteLine("[A].Activar una carta del OnGoing");
-    //     ConsoleKey key = ConsoleKey.ReadKey(true).Key;
+    public bool SelectField()
+    {
+        Console.Clear();
+        Console.WriteLine("[E].Escoger una carta de la mano");
+        Console.WriteLine("[A].Activar una carta del OnGoing");
+        ConsoleKey key = Console.ReadKey(true).Key;
 
-    //     if(key==ConsoleKey.A) return true;
+        if(key==ConsoleKey.A) return true;
 
-    //     return false;
-    // }
+        return false;
+    }
 
     public int SelectGem()
     {
@@ -95,7 +115,7 @@ public class ManualPlayer : IPlayer
         return GameEngine.Turns.Players[opc];
     }
 
-    public void ChooseActionRealize(IActionable card, Bank bank)
+    public void ChooseActionRealize(IActionable card)
     {
         Console.Clear();
         Console.WriteLine("Acciones:");
@@ -103,8 +123,8 @@ public class ManualPlayer : IPlayer
         if(card.Actions[1]) Console.WriteLine("[S].Guardar carta para el proximo turno");
         if(card.Actions[2]) Console.WriteLine("[R].Robar cartas del deck");
         if(card.Actions[3]) Console.WriteLine("[M].Meter un toque");
-        // if(card.Actions[4]) Console.WriteLine("[T].Trashear");
-        // if(card.Actions[5]) Console.WriteLine("[G].Ganar cartas");
+        if(card.Actions[4]) Console.WriteLine("[T].Trashear");
+        if(card.Actions[5]) Console.WriteLine("[G].Ganar cartas");
         ConsoleKey key = Console.ReadKey(true).Key;
 
         switch(key)
@@ -117,12 +137,12 @@ public class ManualPlayer : IPlayer
             case ConsoleKey.S :
             {
                 int index = SelectCardHand();
-                card.SaveCards(index);
+                card.SaveCards(index,GameEngine.Turns.Current);
                 break;
             }
             case ConsoleKey.R :
             {
-                card.ExecuteGetDeck();
+                card.ExecuteGetDeck(GameEngine.Turns.Current);
                 break;
             }
             case ConsoleKey.M :
@@ -131,16 +151,38 @@ public class ManualPlayer : IPlayer
                 card.Attack(index,SelectPlayer(this));
                 break;
             }
-            // case ConsoleKey.T :
-            // {
-            //     card.Trash(bank,this);
-            //     break;
-            // }
-            // case ConsoleKey.G :
-            // {
-            //     card.GainCard(bank,this);
-            //     break;
-            // }
+            case ConsoleKey.T :
+            {
+                card.Trash(this);
+                break;
+            }
+            case ConsoleKey.G :
+            {
+                card.GainCard(this);
+                break;
+            }
         }
+    }
+
+    public bool Exit()
+    {
+        Console.Clear();
+        Console.WriteLine("[J].Jugar fase de accion");
+        Console.WriteLine("[E].Continuar");
+        ConsoleKey key = Console.ReadKey(true).Key;
+
+        if(key==ConsoleKey.E) return true;
+
+        return false;
+    }
+
+    public Card SelectCardBank(List<Card> list)
+    {
+        throw new NotImplementedException();
+    }
+
+    public int SelectCardDeck()
+    {
+        throw new NotImplementedException();
     }
 }

@@ -3,44 +3,75 @@ namespace engine_cuban_puzzle;
 public class Bank 
 {
     public Dictionary <ICostable,int> GameBank { get; private set; } 
+    public List<ICostable> keys { get; private set; }
     public Bank ( List<ICostable> choosingcards )
     {
         this.GameBank = new Dictionary<ICostable, int>();
+        this.keys = new List<ICostable>();
+        keys.Add(new Gem1());
+        keys.Add(new Gem2());
+        keys.Add(new Gem3());
+        keys.Add(new Gem4());
+        keys.Add(new CrashGem());
+        keys.Add(new DobleCrashGem());
+        keys.Add(new Combine());
+        keys.Add(new Cup());
 
-        GameBank.Add(new Gem1(),int.MaxValue);
-        GameBank.Add(new Gem2(),int.MaxValue);
-        GameBank.Add(new Gem3(),int.MaxValue);
-        GameBank.Add(new Gem4(),int.MaxValue);
-        GameBank.Add(new CrashGem(),int.MaxValue);
-        GameBank.Add(new DobleCrashGem(),int.MaxValue);
-        GameBank.Add(new Combine(),int.MaxValue);
-        GameBank.Add(new Cup(),int.MaxValue);
+        foreach(ICostable a in keys)
+        {
+            GameBank.Add(a,int.MaxValue);
+        }
 
         foreach(ICostable a in choosingcards)
         {
+            keys.Add(a);
             GameBank.Add(a,5);
         }
     }
 
-    public ICostable Get(ICostable a)
+    public ICostable Get(int index)
     {
-        if( GameBank[a] != 0 )
+        if( GameBank[keys[index]] != 0 )
         {
-            GameBank[a] --;
-            return a;
+            GameBank[keys[index]] --;
+            return keys[index];
         }
 
         return null;
     }
 
-    public List<ICostable> GetCant(ICostable a,int n)
+    public ICostable Get(ICostable card)
+    {
+        if( GameBank[card] != 0 )
+        {
+            GameBank[card] --;
+            return card;
+        }
+
+        return null;
+    }
+
+    public List<ICostable> GetCant(int index,int n)
     {
         List<ICostable> result = new List<ICostable>();
-        GameBank[a] -= n;
+        GameBank[keys[index]] -= n;
 
         for(int i =0;i < n;i++)
         {
-            result.Add(a);
+            result.Add(keys[index]);
+        }
+
+        return result;
+    }
+
+    public List<ICostable> GetCant(ICostable card,int n)
+    {
+        List<ICostable> result = new List<ICostable>();
+        GameBank[card] -= n;
+
+        for(int i =0;i < n;i++)
+        {
+            result.Add(card);
         }
 
         return result;
