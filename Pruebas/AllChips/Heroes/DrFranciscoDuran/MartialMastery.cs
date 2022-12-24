@@ -17,31 +17,31 @@ namespace AppConsole
             GameEngine.CantActionsPerTurn ++;
         }
 
-        private void SaveCards(int index);
+        private void SaveCards(int index, IPlayer a);
         private void ExecuteGetDeck(IPlayer a);
         private void Attack(int index,IPlayer a);
 
-        public void Trash(Bank bank, IPlayer a)
+        public void Trash(IPlayer a)
         {
             do{
                 Card card = a.Table.HandCards[a.SelectCardHand()];
             }while(card.Color.Contains("purple"));
             
-            bank.Add(card);
+            GameEngine.bank.Add(card);
             a.Table.HandCards.Remove(card);
             Actions[5] = true;
             gain = card;
             GameEngine.CantActionsPerTurn ++;
         }
 
-        public void GainCard(Bank bank, IPlayer a)
+        public void GainCard(IPlayer a)
         {
             List<Card> list = new List<Card>();
-            foreach(var key in bank.GameBank.Keys)
+            foreach(var key in GameEngine.bank.GameGameEngine.bank.Keys)
             {
                 if(key.Cost == (gain.Cost+2)) list.Add(key);
             }
-            a.Table.DiscardPile.Add(bank.Get(a.SelectCardBank(list)));
+            a.Table.DiscardPile.Add(GameEngine.bank.Get(a.SelectCardGameEngine.bank(list)));
         }
 
         /*Informacion de la carta:
