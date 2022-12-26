@@ -4,18 +4,6 @@ namespace console_cuban_puzzle;
 
 class Program
 {
-    static void PrintMenu()
-    {
-        System.Console.WriteLine("Presione [N] para un nuevo juego.");
-        System.Console.WriteLine("Presione [E] para salir.");
-    }
-
-    static ConsoleKey Read()
-    {
-        ConsoleKey key = Console.ReadKey(true).Key;
-        return key;
-    }
-
     static List<IPlayer> AddPlayers()
     {
         List<IPlayer> result = new List<IPlayer>();
@@ -88,6 +76,8 @@ class Program
             DeckPLayer.AddRange(initialdeck);
 
             a.Table.CreateDeck(DeckPLayer);
+            a.Table.MixDeck();
+            a.Table.DrawDeck(5);
         }
 
         return players;
@@ -102,8 +92,8 @@ class Program
         Bank bank = new Bank(ChoosingCards);
 
         List<Card> initialdeck = new List<Card>();
-        initialdeck.AddRange((IEnumerable<Card>)bank.GetCant(new Gem1(),6));
-        initialdeck.Add((Card)bank.Get(new CrashGem()));
+        initialdeck.AddRange(bank.GetCant(0,6));
+        initialdeck.Add((Card)bank.Get(4));
 
         players = ChooseHeroCards(players,initialdeck);
 
@@ -135,7 +125,7 @@ class Program
         while(true)
         {
             Console.Clear();
-            PrintMenu();
+            GamePrint.PrintMenu();
             ConsoleKey key = Console.ReadKey(true).Key;
             Console.Clear();
 
