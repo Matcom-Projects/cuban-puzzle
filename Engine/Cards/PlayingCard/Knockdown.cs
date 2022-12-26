@@ -17,7 +17,7 @@ public class Knockdown : BankCard, IActionable
     public void Attack(int index,IPlayer a){}
     public void Trash(IPlayer a)
     {
-        IPlayer b = a.SelectPlayer(a);
+        IPlayer b = a.SelectPlayer();
         foreach (BankCard card in b.Table.HandCards)
         {
             if(card.Color.Contains("purple"))
