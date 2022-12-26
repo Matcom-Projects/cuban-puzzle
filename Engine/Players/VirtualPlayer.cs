@@ -19,9 +19,11 @@ namespace engine_cuban_puzzle
         }
         public int SelectCardHand()
         {
-            if(Table.HandCards.Contains(new DobleCrashGem())) return Table.HandCards.IndexOf(new DobleCrashGem());
-            if(Table.HandCards.Contains(new CrashGem())) return Table.HandCards.IndexOf(new CrashGem());
-            if(Table.HandCards.Contains(new Combine())) return Table.HandCards.IndexOf(new Combine());
+            Console.ReadLine();
+            
+            if(Table.HandCards.Contains(GameEngine.bank.keys[5])) return Table.HandCards.IndexOf(GameEngine.bank.keys[5]);
+            if(Table.HandCards.Contains(GameEngine.bank.keys[4])) return Table.HandCards.IndexOf(GameEngine.bank.keys[4]);
+            if(Table.HandCards.Contains(GameEngine.bank.keys[6])) return Table.HandCards.IndexOf(GameEngine.bank.keys[6]);
             
             for(int i=0; i<Table.HandCards.Count; i++)
             {
@@ -33,15 +35,20 @@ namespace engine_cuban_puzzle
         }
         public Card SelectCardOnGoing()
         {
+            Console.ReadLine();
+            
             if(Table.OnGoing.Count == 0) return null;
             return Table.OnGoing[Table.OnGoing.Count-1];
         }
         public bool SelectField()
-        {
+        {   
             return false;
         }
         public void ChooseActionRealize(IActionable card)
         {
+            System.Console.WriteLine($"Seleccionó del OnGoing {card.Name}");
+            Console.ReadLine();
+            
             if(card is Combine)
             {
                 card.Trash(this);
@@ -97,6 +104,8 @@ namespace engine_cuban_puzzle
         }
         public int SelectGem()
         {
+            Console.ReadLine();
+            
             int max = int.MinValue;
             int index = 0;
             for(int i=0; i<Table.GemPile.Count; i++)
@@ -111,6 +120,8 @@ namespace engine_cuban_puzzle
         }
         public IPlayer SelectPlayer()
         {
+            Console.ReadLine();
+            
             int max = int.MinValue;
             int index = 0;
             for(int i=0; i<GameEngine.Turns.Players.Count; i++)
@@ -123,11 +134,39 @@ namespace engine_cuban_puzzle
             }
             return GameEngine.Turns.Players[index];
         }
+
+        public BankCard PlayBuyPhase()
+        {
+            Console.ReadLine();
+            
+            int money = GameEngine.CantMoneyPerTurn;
+            if(money >= 9) return GameEngine.bank.keys[5];
+            if(money >= 7) return GameEngine.bank.keys[3];
+            if(money >= 5) return GameEngine.bank.keys[4];
+            if(money >= 4) return GameEngine.bank.keys[6];
+            if(money >= 3) return GameEngine.bank.keys[1];
+            if(money >= 1) return GameEngine.bank.keys[0];
+            if(money == 0)
+            {
+                for(int i=0; i<GameEngine.bank.keys.Count; i++)
+                {
+                    if(GameEngine.bank.keys[i].Cost==0 && GameEngine.bank.keys[i] !is Cup) return GameEngine.bank.keys[i];
+                }
+            } 
+
+            return GameEngine.bank.keys[7];
+        }
+        public bool PlayNextBuyPhases()
+        {
+            Console.ReadLine();
+            
+            int money = GameEngine.CantMoneyPerTurn;
+            if(money <= 0) return true;
+            return false;
+        }
         public BankCard SelectCardBank(List<BankCard> list){return list[0];}
         public int SelectCardDeck(){return 0;}
-        public BankCard PlayBuyPhase(){return new Gem2();}
-        public void PlayCleanUpPhase(){}
-        public bool PlayNextBuyPhases(){return true;} //creo que quitar desp
+         
 
     }
 }
