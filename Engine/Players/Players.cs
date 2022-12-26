@@ -127,13 +127,13 @@ public class ManualPlayer : IPlayer
             Console.WriteLine($"Cantidad de dinero: {GameEngine.CantMoneyPerTurn} $");
             for( int i = 0 ; i < GameEngine.bank.keys.Count ; i++ )
             {
-                Console.WriteLine($"[{i+1}][{(GameEngine.bank.keys[i]).Name}] : {GameEngine.bank.keys[i].Cost} $");
+                Console.WriteLine($"[{i}][{(GameEngine.bank.keys[i]).Name}] : {GameEngine.bank.keys[i].Cost} $");
             }
             Console.WriteLine();
-            Console.WriteLine("Seleccione la carta que desea comprar.(Debe hacer obligatoriamente una compra por turno)");
-            int index = int.Parse(Console.ReadLine());
+            Console.WriteLine("Nota: Debe hacer una compra obligatoriamente por turno. En caso de no querer comprar ninguna carta, compre un Cup");
+            Console.WriteLine("Para efectuar su compra");
 
-            return GameEngine.bank.keys[index-1];
+            return GameEngine.bank.keys[GamePrint.SelectCard(GameEngine.bank.keys)];
         }
 
         public bool PlayNextBuyPhases()
