@@ -12,10 +12,10 @@ public interface IPlayer
             public void ChooseActionRealize(IActionable card);
             public int SelectGem();
             public IPlayer SelectPlayer();
-            public BankCard SelectCardBank(List<BankCard> list);//este metodo quitarlo desp
-            public int SelectCardDeck();//este metodo quitarlo desp
             public BankCard PlayBuyPhase();
             public bool PlayNextBuyPhases();
+            public BankCard SelectCardBank(List<BankCard> list);//este metodo quitarlo desp
+            public int SelectCardDeck();//este metodo quitarlo desp
             
     }
     public interface IActionable
