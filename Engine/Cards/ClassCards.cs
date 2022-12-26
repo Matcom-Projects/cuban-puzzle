@@ -1,4 +1,5 @@
 ﻿namespace engine_cuban_puzzle;
+using System.Collections.Generic;
 
 public abstract class Card
 {

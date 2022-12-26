@@ -1,29 +1,29 @@
-namespace AppConsole.AllChips.PlayingCards
+namespace engine_cuban_puzzle;
+
+public class OneTwoPunch : BankCard, IActionable
 {
-    public class OneTwoPunch : Card, ICostable, IActionable
+    public bool[] Actions {get; set;}
+    public OneTwoPunch() : base("One-Two Punch", new string[]{"yellow"}, 0,4)
     {
-        public int Cost{ get; }
-        public bool[] Actions {get; set;}
-        public string Id{ get; private set; }
-        public OneTwoPunch() : base("One-Two Punch", new string[]{"yellow"}, 0)
-        {
-            this.Cost = 4;
-            this.Actions = new bool[] {true, false, false, false, false, false};
-            this.Id = GameUtils.CreateId();
-        }
-
-        public void GiveActions()
-        {
-            GameEngine.CantActionsPerTurn += 2;
-        }
-        private void SaveCards(int index, IPlayer a);
-        private void ExecuteGetDeck(IPlayer a);
-        private void Attack(int index,IPlayer a);
-        private void Trash(IPlayer a);
-        private void GainCard(IPlayer a);
-
-        /*Informacion de la carta:
-        1. Da dos acciones mas
-        */
+        this.Actions = new bool[] {true, false, false, false, false, false};
     }
+
+    public void GiveActions()
+    {
+        GameEngine.CantActionsPerTurn += 2;
+    }
+    public void SaveCards(int index, IPlayer a){}
+    public void Draw(IPlayer a){}
+    public void Attack(int index,IPlayer a){}
+    public void Trash(IPlayer a){}
+    public void GainCard(IPlayer a){}
+    public override string ToString()
+    {
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        return $"[{this.Name}]";
+    }
+
+    /*Informacion de la carta:
+    1. Da dos acciones mas
+    */
 }

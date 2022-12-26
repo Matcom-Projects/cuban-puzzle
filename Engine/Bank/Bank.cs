@@ -2,12 +2,12 @@ namespace engine_cuban_puzzle;
 
 public class Bank 
 {
-    public Dictionary <ICostable,int> GameBank { get; private set; } 
-    public List<ICostable> keys { get; private set; }
-    public Bank ( List<ICostable> choosingcards )
+    public Dictionary <BankCard,int> GameBank { get; private set; } 
+    public List<BankCard> keys { get; private set; }
+    public Bank ( List<BankCard> choosingcards )
     {
-        this.GameBank = new Dictionary<ICostable, int>();
-        this.keys = new List<ICostable>();
+        this.GameBank = new Dictionary<BankCard, int>();
+        this.keys = new List<BankCard>();
         keys.Add(new Gem1());
         keys.Add(new Gem2());
         keys.Add(new Gem3());
@@ -17,19 +17,19 @@ public class Bank
         keys.Add(new Combine());
         keys.Add(new Cup());
 
-        foreach(ICostable a in keys)
+        foreach(BankCard a in keys)
         {
             GameBank.Add(a,int.MaxValue);
         }
 
-        foreach(ICostable a in choosingcards)
+        foreach(BankCard a in choosingcards)
         {
             keys.Add(a);
             GameBank.Add(a,5);
         }
     }
 
-    public ICostable Get(int index)
+    public BankCard Get(int index)
     {
         if( GameBank[keys[index]] != 0 )
         {
@@ -40,7 +40,7 @@ public class Bank
         return null;
     }
 
-    public ICostable Get(ICostable card)
+    public BankCard Get(BankCard card)
     {
         if( GameBank[card] != 0 )
         {
@@ -51,9 +51,9 @@ public class Bank
         return null;
     }
 
-    public List<ICostable> GetCant(int index,int n)
+    public List<BankCard> GetCant(int index,int n)
     {
-        List<ICostable> result = new List<ICostable>();
+        List<BankCard> result = new List<BankCard>();
         GameBank[keys[index]] -= n;
 
         for(int i =0;i < n;i++)
@@ -64,9 +64,9 @@ public class Bank
         return result;
     }
 
-    public List<ICostable> GetCant(ICostable card,int n)
+    public List<BankCard> GetCant(BankCard card,int n)
     {
-        List<ICostable> result = new List<ICostable>();
+        List<BankCard> result = new List<BankCard>();
         GameBank[card] -= n;
 
         for(int i =0;i < n;i++)
@@ -77,12 +77,12 @@ public class Bank
         return result;
     }
 
-    public void Add(ICostable a)
+    public void Add(BankCard a)
     {
         GameBank[a]++;
     }
 
-    public void AddCant(List<ICostable> a)
+    public void AddCant(List<BankCard> a)
     {
         GameBank[a[0]] += a.Count;
     }

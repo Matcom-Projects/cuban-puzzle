@@ -6,6 +6,11 @@ public class Gem1 : BankCard
     {
 
     }
+    public override string ToString()
+    {
+        Console.ForegroundColor = ConsoleColor.Green;
+        return $"[{this.Name}]";
+    }
 }
 
 public class Gem2 : BankCard 
@@ -13,6 +18,11 @@ public class Gem2 : BankCard
     public Gem2() : base ("Gem 2",new string[]{"Green"},2,3)
     {
 
+    }
+    public override string ToString()
+    {
+        Console.ForegroundColor = ConsoleColor.Green;
+        return $"[{this.Name}]";
     }
 }
 
@@ -22,6 +32,11 @@ public class Gem3 : BankCard
     {
 
     }
+    public override string ToString()
+    {
+        Console.ForegroundColor = ConsoleColor.Green;
+        return $"[{this.Name}]";
+    }
 }
 
 public class Gem4 : BankCard 
@@ -29,6 +44,11 @@ public class Gem4 : BankCard
     public Gem4() : base ("Gem 4",new string[]{"Green"},4,7)
     {
 
+    }
+    public override string ToString()
+    {
+        Console.ForegroundColor = ConsoleColor.Green;
+        return $"[{this.Name}]";
     }
 }
 
@@ -40,21 +60,26 @@ public class CrashGem : BankCard , IActionable
         this.Actions = new bool[] {false, false, false, true, false, false};
     }
     
-        public void GiveActions (){}
-        public void SaveCards (int index, IPlayer a){}
-        public void Draw (IPlayer a){}
-        public void Attack (int index,IPlayer a)
+    public void GiveActions (){}
+    public void SaveCards (int index, IPlayer a){}
+    public void Draw (IPlayer a){}
+    public void Attack (int index,IPlayer a)
+    {
+        int x = GameEngine.Turns.Current.Table.GemPile[index].Money;
+        List<BankCard> list = GameEngine.bank.GetCant(GameEngine.Turns.Current.Table.GemPile[index], x);
+        foreach(var l in list)
         {
-            int x = GameEngine.Turns.Current.Table.GemPile[index].Money;
-            List<BankCard> list = GameEngine.bank.GetCant(GameEngine.Turns.Current.Table.GemPile[index], x);
-            foreach(var l in list)
-            {
-                a.Table.GemPile.Add(l);
-            }
+            a.Table.GemPile.Add(l);
         }
-        public void Trash (IPlayer a){}
-        public void GainCard (IPlayer a){}
+    }
+    public void Trash (IPlayer a){}
+    public void GainCard (IPlayer a){}
 
+    public override string ToString()
+    {
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        return $"[{this.Name}]";
+    }
 }
 
 public class DobleCrashGem : BankCard  
@@ -86,6 +111,11 @@ public class DobleCrashGem : BankCard
     public void Trash (IPlayer a){}
     public void GainCard (IPlayer a){}
 
+    public override string ToString()
+    {
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        return $"[{this.Name}]";
+    }
 }
 
 public class Combine : BankCard , IActionable 
@@ -120,6 +150,11 @@ public class Combine : BankCard , IActionable
         GameEngine.CantActionsPerTurn++ ;
     }
     public void GainCard(IPlayer a){}
+    public override string ToString()
+    {
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        return $"[{this.Name}]";
+    }
 }
 
 public class Cup : BankCard 
@@ -127,5 +162,10 @@ public class Cup : BankCard
     public Cup() : base("Cup",new string[]{"gray"},0,0)
     {
 
+    }
+    public override string ToString()
+    {
+        Console.ForegroundColor = ConsoleColor.Gray;
+        return $"[{this.Name}]";
     }
 }

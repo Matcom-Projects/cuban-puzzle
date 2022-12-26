@@ -6,7 +6,7 @@ public class TablePlayer
     public List<Card> DiscardPile ;
     public  List<Card> OnGoing { get; private set; }
     public List<Card> HandCards { get; private set; }
-    public List<ICostable> GemPile ;
+    public List<BankCard> GemPile ;
     private List<Card> SaveCards;
 
     public TablePlayer( )
@@ -14,7 +14,7 @@ public class TablePlayer
         this.DiscardPile = new List<Card>();
         this.OnGoing = new List<Card>();
         this.HandCards = new List<Card>();
-        this.GemPile = new List<ICostable>();
+        this.GemPile = new List<BankCard>();
         this.SaveCards = new List<Card>();
     }
 
@@ -81,11 +81,32 @@ public class TablePlayer
     {
         DiscardPile.AddRange(a);
     }
+
+    public void ToGemPile(BankCard gem)
+    {
+        GemPile.Add(gem);
+    }
+    public void ToGemPile(List<BankCard> gem)
+    {
+        GemPile.AddRange(gem);
+    }
+    public List<BankCard> GetGemPile(params int[] index)
+    {
+        List<BankCard> result = new List<BankCard>();
+
+        foreach(int i in index)
+        {
+            result.Add(GemPile[i]);
+            GemPile.RemoveAt(i);
+        }
+        
+        return result;
+    }
     public int CantGem()
     {
         int result = 0;
 
-        foreach(ICostable gems in GemPile)
+        foreach(BankCard gems in GemPile)
         {
             result += ((Card)gems).Money;
         }
@@ -147,7 +168,7 @@ public class TablePlayer
 
     public int CantMoneyBuyPhases()
     {
-        int CantMoneyResult=0;
+        int CantMoneyResult = 0;
         foreach(Card ongoingcards in OnGoing)
         {
             CantMoneyResult += ongoingcards.Money;

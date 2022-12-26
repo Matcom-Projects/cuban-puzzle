@@ -19,20 +19,25 @@ public class ManualPlayer : IPlayer
 
     public int SelectHero(List<Card> HeroCards)
     {
+        Console.Clear();
+        for(int i =0;i<CreateCards.AllHeroCards.Count;i++)
+        {
+            System.Console.WriteLine($"[{i/3}][{CreateCards.AllHeroCards[i].Name}]");
+        }
         return int.Parse(Console.ReadLine());
     }
 
     public BankCard PlayBuyPhase()
     {
         Console.Clear();
-        System.Console.WriteLine($"Fase de Compra: {this.Name}");
-        System.Console.WriteLine($"Cantidad de dinero: {GameEngine.CantMoneyPerTurn} $");
+        Console.WriteLine($"Fase de Compra: {this.Name}");
+        Console.WriteLine($"Cantidad de dinero: {GameEngine.CantMoneyPerTurn} $");
         for( int i = 0 ; i < GameEngine.bank.keys.Count ; i++ )
         {
-            System.Console.WriteLine($"[{i+1}][{((Card)GameEngine.bank.keys[i]).Name}] : {GameEngine.bank.keys[i].Cost} $");
+            Console.WriteLine($"[{i+1}][{(GameEngine.bank.keys[i]).Name}] : {GameEngine.bank.keys[i].Cost} $");
         }
-        System.Console.WriteLine();
-        System.Console.WriteLine("Seleccione la carta que desea comprar.(Debe hacer obligatoriamente una compra por turno)");
+        Console.WriteLine();
+        Console.WriteLine("Seleccione la carta que desea comprar.(Debe hacer obligatoriamente una compra por turno)");
         int index = int.Parse(Console.ReadLine());
 
         return GameEngine.bank.keys[index-1];
@@ -83,7 +88,7 @@ public class ManualPlayer : IPlayer
         Console.WriteLine("[A].Activar una carta del OnGoing");
         ConsoleKey key = Console.ReadKey(true).Key;
 
-        if(key==ConsoleKey.A) return true;
+        if( key == ConsoleKey.A ) return true;
 
         return false;
     }
@@ -91,7 +96,7 @@ public class ManualPlayer : IPlayer
     public int SelectGem()
     {
         Console.WriteLine("GemPile:");
-        for(int i=0; i<Table.GemPile.Count; i++)
+        for( int i = 0 ; i < Table.GemPile.Count ; i++ )
         {
             Console.WriteLine($"[{i}].{Table.GemPile[i]}");
         }

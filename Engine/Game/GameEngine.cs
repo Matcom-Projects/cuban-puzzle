@@ -6,16 +6,19 @@ public static class GameEngine
     public static string Historial = "";
     public static int CantActionsPerTurn = 1;
     public static int CantMoneyPerTurn = 0;
+    public static List<IPlayer> Players;
     public static GameTurns Turns;
     public static Bank bank;
 
     public static IPlayer PlayGame(List<IPlayer> players,Bank b)
     {
+        Players = players;
         Turns = new GameTurns(players);
         bank = b;
         while(true)
         {
             Turns.MoveNext();
+            Turns.Current.Table.ToGemPile(bank.Get(0));
             ActionPhase(Turns.Current);
             BuyPhase(Turns.Current);
             CantActionsPerTurn = 1;
@@ -51,22 +54,29 @@ public static class GameEngine
 
     public static void ActionPhase(IPlayer a)
     {
-        while(CantActionsPerTurn>0)
+        while( CantActionsPerTurn > 0 )
         {
+            GamePrint.PrintTable(Players);
             if(a.Exit()) return;
             else{
+                GamePrint.PrintTable(Players);
                 if(a.Table.OnGoing.Count!=0 && a.SelectField())
                 {
+                    GamePrint.PrintTable(Players);
                     Card card = a.SelectCardOnGoing();//seleccionando carta del ongoing
+                    GamePrint.PrintTable(Players);
                     a.ChooseActionRealize((IActionable)card);//escogiendo y ejecutando accion de la carta
                 }
                 else{
-                    a.Table.HandToOnGoing(a.SelectCardHand());//moverla hacia el ongoing            
+                    GamePrint.PrintTable(Players);
+                    a.Table.HandToOnGoing(a.SelectCardHand());//moverla hacia el ongoing    
+                    GamePrint.PrintTable(Players);        
                     Card card = a.SelectCardOnGoing();//seleccionando carta del ongoing
+                    GamePrint.PrintTable(Players);
                     a.ChooseActionRealize((IActionable)card);//escogiendo y ejecutando accion de la carta
                 }
             }
-            
+            GamePrint.PrintTable(Players);
             CantActionsPerTurn--;
         }
     }
@@ -76,13 +86,13 @@ public static class GameEngine
         CantMoneyPerTurn += a.Table.CantMoneyBuyPhases();
         if ( CantMoneyPerTurn < 0 )
         {
-            a.Table.ToDiscardPile((IEnumerable<Card>)bank.GetCant(new Cup(),1-CantActionsPerTurn));     
+            a.Table.ToDiscardPile(bank.GetCant(bank.keys[7],1-CantActionsPerTurn));     
         }
         else
         {
             while( CantMoneyPerTurn >= 0 )
             {
-                ICostable BuyCard = a.PlayBuyPhase();
+                BankCard BuyCard = a.PlayBuyPhase();
 
                 if(BuyCard == null)
                 {
