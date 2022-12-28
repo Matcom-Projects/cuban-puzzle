@@ -17,6 +17,15 @@ namespace engine_cuban_puzzle
         {
             return false;
         }
+        public bool ExistIActionable()
+        {
+            for(int i=0; i<Table.HandCards.Count; i++)
+            {
+                if(Table.HandCards[i] is IActionable) return true;
+            }
+
+            return false;
+        }
         public int SelectCardHand()
         {
             Console.ReadLine();
@@ -46,7 +55,7 @@ namespace engine_cuban_puzzle
         }
         public void ChooseActionRealize(IActionable card)
         {
-            System.Console.WriteLine($"Seleccionó del OnGoing {card.Name}");
+            System.Console.WriteLine($"Seleccionó del OnGoing {((Card)card).Name}");
             Console.ReadLine();
             
             if(card is Combine)
@@ -56,7 +65,11 @@ namespace engine_cuban_puzzle
             }
             if(card.Actions[3])
             {
-                card.Attack(SelectGem(), SelectPlayer());
+                int x = SelectGem();
+                IPlayer player = SelectPlayer();
+                card.Attack(x, player);
+                System.Console.WriteLine($"Atacó a {player.Name} con {Table.GemPile[x].Money} gemas");
+                Console.ReadLine();
                 return;
             }
             
@@ -69,33 +82,45 @@ namespace engine_cuban_puzzle
             int index = 0;
             do
             {
-                index = GameUtils.GetRandom(0,list.Count);
+                index = list[GameUtils.GetRandom(0,list.Count)];
             } while (index==3);
             switch (index)
             {
                 case 0:
                 {
                     card.GiveActions();
+                    System.Console.WriteLine("Tiene una accion mas");
+                    Console.ReadLine();
                     break;
                 }
                 case 1:
                 {
-                    card.SaveCards(SelectCardHand(),this);
+                    int pos = SelectCardHand();
+                    Card hand = Table.HandCards[pos];
+                    card.SaveCards(pos,this);
+                    System.Console.WriteLine($"Guardo {hand.Name} para el proximo turno");
+                    Console.ReadLine();
                     break;
                 }
                 case 2:
                 {
                     card.Draw(this);
+                    System.Console.WriteLine("Robo una carta del deck");
+                    Console.ReadLine();
                     break;
                 }
                 case 4:
                 {
                     card.Trash(this);
+                    System.Console.WriteLine("Trasheo una carta");
+                    Console.ReadLine();
                     break;
                 }
                 case 5:
                 {
                     card.GainCard(this);
+                    System.Console.WriteLine("Gano una carta");
+                    Console.ReadLine();
                     break;
                 }
                 default : break;
@@ -103,9 +128,7 @@ namespace engine_cuban_puzzle
             
         }
         public int SelectGem()
-        {
-            Console.ReadLine();
-            
+        {            
             int max = int.MinValue;
             int index = 0;
             for(int i=0; i<Table.GemPile.Count; i++)
@@ -119,9 +142,7 @@ namespace engine_cuban_puzzle
             return index;
         }
         public IPlayer SelectPlayer()
-        {
-            Console.ReadLine();
-            
+        {   
             int max = int.MinValue;
             int index = 0;
             for(int i=0; i<GameEngine.Turns.Players.Count; i++)
@@ -140,20 +161,57 @@ namespace engine_cuban_puzzle
             Console.ReadLine();
             
             int money = GameEngine.CantMoneyPerTurn;
-            if(money >= 9) return GameEngine.bank.keys[5];
-            if(money >= 7) return GameEngine.bank.keys[3];
-            if(money >= 5) return GameEngine.bank.keys[4];
-            if(money >= 4) return GameEngine.bank.keys[6];
-            if(money >= 3) return GameEngine.bank.keys[1];
-            if(money >= 1) return GameEngine.bank.keys[0];
+            if(money >= 9)
+            {
+                System.Console.WriteLine("Compro un Double CrashGem");
+                Console.ReadLine();
+                return GameEngine.bank.keys[5];
+            }
+            if(money >= 7)
+            {
+                System.Console.WriteLine("Compro un Gem 4");
+                Console.ReadLine();
+                return GameEngine.bank.keys[3];
+            }
+            if(money >= 5)
+            {
+                System.Console.WriteLine("Compro un CrashGem");
+                Console.ReadLine();
+                return GameEngine.bank.keys[4];
+            }
+            if(money >= 4)
+            {
+                System.Console.WriteLine("Compro un Combine");
+                Console.ReadLine();
+                return GameEngine.bank.keys[6];
+            }
+            if(money >= 3) 
+            {
+                System.Console.WriteLine("Compro un Gem 2");
+                Console.ReadLine();
+                return GameEngine.bank.keys[1];
+            }
+            if(money >= 1) 
+            {
+                System.Console.WriteLine("Compro un Gem 1");
+                Console.ReadLine();
+                return GameEngine.bank.keys[0];
+            }
             if(money == 0)
             {
                 for(int i=0; i<GameEngine.bank.keys.Count; i++)
                 {
-                    if(GameEngine.bank.keys[i].Cost==0 && GameEngine.bank.keys[i] !is Cup) return GameEngine.bank.keys[i];
+                    if(GameEngine.bank.keys[i].Cost==0 && GameEngine.bank.keys[i] !is Cup)
+                    {
+                        System.Console.WriteLine($"Compro un {GameEngine.bank.keys[i].Name}");
+                        Console.ReadLine();
+                        return GameEngine.bank.keys[i];
+                    }
                 }
             } 
 
+            System.Console.WriteLine("Compro un Cup");
+            Console.ReadLine();
             return GameEngine.bank.keys[7];
         }
         public bool PlayNextBuyPhases()
@@ -161,7 +219,15 @@ namespace engine_cuban_puzzle
             Console.ReadLine();
             
             int money = GameEngine.CantMoneyPerTurn;
-            if(money <= 0) return true;
+            if(money <= 0) 
+            {
+                System.Console.WriteLine("Termino su fase de compra");
+                Console.ReadLine();
+                return true;
+            }
+
+            System.Console.WriteLine("Sigue su fase de compra");
+            Console.ReadLine();
             return false;
         }
         public BankCard SelectCardBank(List<BankCard> list){return list[0];}
