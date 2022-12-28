@@ -140,11 +140,11 @@ public class Gem1 : BankCard
             }while(x.Money+y.Money > 4);
             
             if(x is Gem1 && y is Gem1) 
-                a.Table.GemPile.Add(GameEngine.bank.Get(new Gem2()));
+                a.Table.GemPile.Add(GameEngine.bank.Get(GameEngine.bank.keys[1]));
             if((x is Gem1 && y is Gem2) || (x is Gem2 && y is Gem1)) 
-                a.Table.GemPile.Add(GameEngine.bank.Get(new Gem3()));
+                a.Table.GemPile.Add(GameEngine.bank.Get(GameEngine.bank.keys[2]));
             if((x is Gem1 && y is Gem3) || (x is Gem2 && y is Gem2) || (x is Gem3 && y is Gem1)) 
-                a.Table.GemPile.Add(GameEngine.bank.Get(new Gem4()));
+                a.Table.GemPile.Add(GameEngine.bank.Get(GameEngine.bank.keys[3]));
             GameEngine.bank.Add(x); a.Table.GemPile.Remove(x);
             GameEngine.bank.Add(y); a.Table.GemPile.Remove(y);
             GameEngine.CantActionsPerTurn++ ;
