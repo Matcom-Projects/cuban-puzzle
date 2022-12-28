@@ -1,7 +1,7 @@
 namespace engine_cuban_puzzle;
 
 public class MartialMastery : Card, IActionable
-    {
+{
         public bool[] Actions {get; set;}
         public MartialMastery() : base("Martial Mastery", new string[]{"yellow"}, 0)
         {
@@ -19,12 +19,13 @@ public class MartialMastery : Card, IActionable
         public void Trash(IPlayer a)
         {
             Card card;
-            do{
-                card = a.Table.HandCards[a.SelectCardHand()];
-            }while(card.Color.Contains("purple"));
-            
             while(true)
-            {
+            {    
+                do{
+                    card = a.Table.HandCards[a.SelectCardHand()];
+                }while(card.Color.Contains("purple"));
+            
+            
                 try
                 {
                     GameEngine.bank.Add((BankCard)card);
