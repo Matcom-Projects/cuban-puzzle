@@ -1,0 +1,16 @@
+Tutuncalmon
+{
+	color red
+	cost 8
+	money 1
+	draw 2
+	giveaction 3
+	savecard 1
+	action
+	{
+		if trash(card.color.green)
+		{	
+			gain(card.color.yellow)
+		}
+	}
+}
