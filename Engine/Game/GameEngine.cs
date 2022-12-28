@@ -67,11 +67,14 @@ public static class GameEngine
                         a.ChooseActionRealize((IActionable)card);//escogiendo y ejecutando accion de la carta
                     }
                     else{
-                        a.Table.HandToOnGoing(a.SelectCardHand());//moverla hacia el ongoing    
-                        GamePrint.PrintTable(Players);        
-                        Card card = a.SelectCardOnGoing();//seleccionando carta del ongoing
-                        GamePrint.PrintTable(Players);
-                        a.ChooseActionRealize((IActionable)card);//escogiendo y ejecutando accion de la carta
+                        if(a.ExistIActionable())
+                        {
+                            a.Table.HandToOnGoing(a.SelectCardHand());//moverla hacia el ongoing    
+                            GamePrint.PrintTable(Players);        
+                            Card card = a.SelectCardOnGoing();//seleccionando carta del ongoing
+                            GamePrint.PrintTable(Players);
+                            a.ChooseActionRealize((IActionable)card);//escogiendo y ejecutando accion de la carta
+                        }
                     }
                 }
     
@@ -84,7 +87,7 @@ public static class GameEngine
             CantMoneyPerTurn += a.Table.CantMoneyBuyPhases();
             if ( CantMoneyPerTurn < 0 )
             {
-                a.Table.ToDiscardPile(bank.GetCant(bank.keys[7],1-CantActionsPerTurn));     
+                a.Table.ToDiscardPile(bank.GetCant(bank.keys[7],1-CantMoneyPerTurn));     
             }
             else
             {
