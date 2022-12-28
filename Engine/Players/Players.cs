@@ -22,8 +22,18 @@ public class ManualPlayer : IPlayer
             return false;
         }
 
-        public int SelectCardHand()
+        public bool ExistIActionable()
         {
+            for(int i=0; i<Table.HandCards.Count; i++)
+            {
+                if(Table.HandCards[i] is IActionable) return true;
+            }
+
+            return false;
+        }
+
+        public int SelectCardHand()
+        { 
             Console.WriteLine("De HandCards:");
 
             return GamePrint.SelectCard(Table.HandCards);
