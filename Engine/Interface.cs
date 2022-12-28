@@ -6,6 +6,7 @@ public interface IPlayer
         public TablePlayer Table { get; set; }
         
             public bool Exit();
+            public bool ExistIActionable();
             public int SelectCardHand();
             public Card SelectCardOnGoing();
             public bool SelectField();
