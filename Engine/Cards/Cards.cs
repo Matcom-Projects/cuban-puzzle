@@ -133,11 +133,15 @@ public class Gem1 : BankCard
         public void Attack(int index,IPlayer a){}
         public void Trash(IPlayer a)
         {
+            Aux1(a);
             BankCard x;
             BankCard y;
             do{
                 x = a.Table.GemPile[a.SelectGem()];
+                int aux = x.Money;
+                x.Money = 0;
                 y = a.Table.GemPile[a.SelectGem()];
+                x.Money = aux;
             }while(x.Money+y.Money > 4);
             
             if(x is Gem1 && y is Gem1) 
@@ -149,6 +153,21 @@ public class Gem1 : BankCard
             GameEngine.bank.Add(x); a.Table.GemPile.Remove(x);
             GameEngine.bank.Add(y); a.Table.GemPile.Remove(y);
             GameEngine.CantActionsPerTurn++ ;
+            Aux2(a);
+        }
+        private void Aux1(IPlayer a)
+        {
+            foreach(var l in a.Table.GemPile)
+            {
+                if(l is Gem4) l.Money = 0;
+            }
+        }
+        private void Aux2(IPlayer a)
+        {
+            foreach(var l in a.Table.GemPile)
+            {
+                if(l is Gem4) l.Money = 4;
+            }
         }
         public void GainCard(IPlayer a){}
         public override string ToString()
