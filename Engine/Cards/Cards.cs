@@ -65,8 +65,7 @@ public class Gem1 : BankCard
         public void Draw (IPlayer a){}
         public void Attack (int index,IPlayer a)
         {
-            int x = GameEngine.Turns.Current.Table.GemPile[index].Money;
-            List<BankCard> list = GameEngine.bank.GetCant(GameEngine.Turns.Current.Table.GemPile[index], x);
+            List<BankCard> list = GameEngine.bank.GetCant(0, GameEngine.Turns.Current.Table.GemPile[index].Money);
             
             foreach(var l in list)
             {
@@ -84,7 +83,7 @@ public class Gem1 : BankCard
         }
     }
 
-    public class DobleCrashGem : BankCard  
+    public class DobleCrashGem : BankCard ,IActionable
     {
         public bool[] Actions {get; }
         public DobleCrashGem() : base ("Doble CrashGem",new string[]{"Purple"},2,9)
@@ -97,14 +96,14 @@ public class Gem1 : BankCard
         public void Draw (IPlayer a){}
         public void Attack (int index,IPlayer a)
         {
-            Auxiliar(index, a);
             int gem = GameEngine.Turns.Current.SelectGem();
+            Auxiliar(index, a);
             Auxiliar(gem, a);
         }
         public void Auxiliar(int index,IPlayer a)
         {
             int x = GameEngine.Turns.Current.Table.GemPile[index].Money;
-            List<BankCard> list = GameEngine.bank.GetCant(GameEngine.Turns.Current.Table.GemPile[index], x);
+            List<BankCard> list = GameEngine.bank.GetCant(0, x);
             foreach(var l in list)
             {
                 a.Table.GemPile.Add(l);
