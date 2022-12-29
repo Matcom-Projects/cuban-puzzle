@@ -156,14 +156,16 @@ public class ManualPlayer : IPlayer
             return false;
         }
 
-        public BankCard SelectCardBank(List<BankCard> list)
-        {
-            throw new NotImplementedException();
-        }
+        // public BankCard SelectCardBank(List<BankCard> list)
+        // {
+        //     throw new NotImplementedException();
+        // }
 
         public int SelectCardDeck()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Del Deck:");
+
+            return GamePrint.SelectCard(Table.Deck);
         }
 
     }

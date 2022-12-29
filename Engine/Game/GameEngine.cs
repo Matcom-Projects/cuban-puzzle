@@ -100,7 +100,7 @@ public static class GameEngine
                         continue;
                     }
 
-                    if(CantMoneyPerTurn-BuyCard.Cost>=0)
+                    if(CantMoneyPerTurn-BuyCard.Cost >= 0)
                     {
                         BuyCard = bank.Get(BuyCard);
                         if(BuyCard != null)

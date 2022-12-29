@@ -15,7 +15,7 @@ public class CombosAreHard : BankCard, IActionable
     public void Trash(IPlayer a){}
     public void GainCard(IPlayer a)
     {
-        for(int i=0; i<2; i++)
+        for(int i=0; i < 2; i++)
         {
             List<BankCard> list = new List<BankCard>();
             foreach(var key in GameEngine.bank.keys)
@@ -23,7 +23,7 @@ public class CombosAreHard : BankCard, IActionable
                 list.Add(key);
             }
             
-            a.Table.DiscardPile.Add(GameEngine.bank.Get(a.SelectCardBank(list)));
+            a.Table.DiscardPile.Add(GameEngine.bank.Get(list[GamePrint.SelectCard(list)]));
         }
 
         GameEngine.bank.Add(this);
