@@ -116,7 +116,7 @@ public class GamePrint
         public static int SelectCard(List<BankCard> list)//cambios Kpiro
         {
             int index = int.MaxValue;
-            while(index >= list.Count || index<0)
+            while(index >= list.Count || index < 0)
             {
                 try
                 {

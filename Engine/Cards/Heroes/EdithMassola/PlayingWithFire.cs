@@ -15,8 +15,7 @@ public class PlayingWithFire : Card, IActionable
     public void SaveCards(int index, IPlayer a){}
     public void Draw(IPlayer a)
     {
-        int index = a.SelectCardDeck();
-        a.Table.DeckToHand(index);
+        a.Table.DrawDeck(1);
     }
     public void Attack(int index,IPlayer a){}
     public void Trash(IPlayer a){}

@@ -15,11 +15,11 @@ public class SneackAttack : BankCard, IActionable
 
     public void GainCard(IPlayer a)
     {
-        a.Table.DiscardPile.Add((Card)GameEngine.bank.Get(new Gem1()));            
+        a.Table.DiscardPile.Add((Card)GameEngine.bank.Get(0));            
         foreach(var p in GameEngine.Turns.Players)
         {
             if(p==a) continue;
-            p.Table.GemPile.Add(GameEngine.bank.Get(new Gem1()));
+            p.Table.GemPile.Add(GameEngine.bank.Get(0));
         }
     }
 

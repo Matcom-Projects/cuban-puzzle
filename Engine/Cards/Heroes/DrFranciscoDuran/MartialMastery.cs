@@ -5,7 +5,7 @@ public class MartialMastery : Card, IActionable
         public bool[] Actions {get; set;}
         public MartialMastery() : base("Martial Mastery", new string[]{"yellow"}, 0)
         {
-            this.Actions = new bool[] {true, false, false, false, true, false};
+            this.Actions = new bool[] {true, false, false, false, false, false};
         }
         public void GiveActions()
         {
@@ -21,7 +21,8 @@ public class MartialMastery : Card, IActionable
             Card card;
             while(true)
             {    
-                do{
+                do
+                {
                     card = a.Table.HandCards[a.SelectCardHand()];
                 }while(card.Color.Contains("purple"));
             

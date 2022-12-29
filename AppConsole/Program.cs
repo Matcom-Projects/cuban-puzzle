@@ -94,8 +94,8 @@ namespace console_cuban_puzzle;
 
                 List<Card> DeckPLayer = new List<Card>();
                 DeckPLayer.Add( CreateCards.AllHeroCards[index] );
-                DeckPLayer.Add(CreateCards.AllHeroCards[index++]);
-                DeckPLayer.Add(CreateCards.AllHeroCards[index++]);
+                DeckPLayer.Add(CreateCards.AllHeroCards[index+1]);
+                DeckPLayer.Add(CreateCards.AllHeroCards[index+2]);
                 DeckPLayer.AddRange(initialdeck);
 
                 a.Table.CreateDeck(DeckPLayer);

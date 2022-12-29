@@ -66,12 +66,13 @@ public class Gem1 : BankCard
         public void Attack (int index,IPlayer a)
         {
             int x = GameEngine.Turns.Current.Table.GemPile[index].Money;
-            GameEngine.Turns.Current.Table.GemPile.RemoveAt(index);
             List<BankCard> list = GameEngine.bank.GetCant(GameEngine.Turns.Current.Table.GemPile[index], x);
+            
             foreach(var l in list)
             {
                 a.Table.GemPile.Add(l);
             }
+            GameEngine.Turns.Current.Table.GemPile.RemoveAt(index);
         }
         public void Trash (IPlayer a){}
         public void GainCard (IPlayer a){}

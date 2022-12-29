@@ -15,9 +15,8 @@ public class UnstablePower : Card, IActionable
     public void Trash(IPlayer a){}
     public void GainCard(IPlayer a)
     {
-        a.Table.DiscardPile.Add(GameEngine.bank.Get(new DobleCrashGem()));
-        a.Table.DiscardPile.Add(GameEngine.bank.Get(new Cup()));
-        a.Table.DiscardPile.Add(GameEngine.bank.Get(new Cup()));
+        a.Table.DiscardPile.Add(GameEngine.bank.Get(5));
+        a.Table.DiscardPile.AddRange(GameEngine.bank.GetCant(7,2));
     }
 
     /*Informacion de la carta:

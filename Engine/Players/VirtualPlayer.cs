@@ -40,7 +40,7 @@ namespace engine_cuban_puzzle
                     return i;
             }
 
-            return -1;
+            return 0;//esta dando bateo esto cada vez q llega aqui indexa en menos 1 y da error, lo cambie a 0 para q pare
         }
         public Card SelectCardOnGoing()
         {
@@ -67,8 +67,8 @@ namespace engine_cuban_puzzle
             {
                 int x = SelectGem();
                 IPlayer player = SelectPlayer();
-                card.Attack(x, player);
                 System.Console.WriteLine($"Atacó a {player.Name} con {Table.GemPile[x].Money} gemas");
+                card.Attack(x, player);
                 Console.ReadLine();
                 return;
             }
@@ -230,9 +230,6 @@ namespace engine_cuban_puzzle
             Console.ReadLine();
             return false;
         }
-        public BankCard SelectCardBank(List<BankCard> list){return list[0];}
         public int SelectCardDeck(){return 0;}
-         
-
     }
 }

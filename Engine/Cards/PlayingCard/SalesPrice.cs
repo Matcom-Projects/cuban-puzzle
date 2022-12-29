@@ -15,7 +15,7 @@ public class SalesPrice : BankCard, IActionable
     public void Trash(IPlayer a){}
     public void GainCard(IPlayer a)
     {
-        a.Table.DiscardPile.Add((Card)GameEngine.bank.Get(new Gem1()));
+        a.Table.DiscardPile.Add((Card)GameEngine.bank.Get(0));
     }
     public override string ToString()
     {
