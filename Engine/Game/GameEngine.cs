@@ -85,13 +85,13 @@ public static class GameEngine
         public static void BuyPhase(IPlayer a)
         {
             CantMoneyPerTurn += a.Table.CantMoneyBuyPhases();
-            if ( CantMoneyPerTurn < 0 )
+            if ( CantMoneyPerTurn <= 0 )
             {
                 a.Table.ToDiscardPile(bank.GetCant(bank.keys[7],1-CantMoneyPerTurn));     
             }
             else
             {
-                while( CantMoneyPerTurn >= 0 )
+                while( CantMoneyPerTurn > 0 )
                 {
                     BankCard BuyCard = a.PlayBuyPhase();
 
