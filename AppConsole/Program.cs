@@ -64,10 +64,14 @@ namespace console_cuban_puzzle;
             {
                 Console.Clear();
                 System.Console.WriteLine("\tSeleccione las cartas del juego:");
-                GamePrint.PrintList(ActionsCards);
+                for(int i=0; i<ActionsCards.Count; i++)
+                {
+                    System.Console.WriteLine($"[{i}].{ActionsCards[i].Name}  ");
+                }
                 foreach( IPlayer pla in players) 
                 {
                     if(n <= 0) return result;
+                    System.Console.WriteLine($"-{pla.Name}-");
                     result.Add ( ActionsCards [ GamePrint.SelectCard(ActionsCards) ] ) ;//optimizar bien este metodo
                     n--;
                 }
@@ -113,6 +117,11 @@ namespace console_cuban_puzzle;
 
             List<BankCard> ChoosingCards = ChooseCards(players,CreateCards.AllActionsCard);
             Bank bank = new Bank(ChoosingCards);
+            foreach(var l in CreateCards.ListBankCardByUser)
+            {
+                bank.keys.Add(l);
+                bank.GameBank.Add(l,int.MaxValue);
+            }
 
             List<Card> initialdeck = new List<Card>();
             initialdeck.AddRange(bank.GetCant(0,6));
@@ -126,6 +135,7 @@ namespace console_cuban_puzzle;
         }
         static void Main()
         {
+            Interperter.Execute();
             CreateCards.AllActionsCard = new List<BankCard>();
             CreateCards.AllActionsCard.Add(new CombosAreHard());
             CreateCards.AllActionsCard.Add(new DrawThree());
@@ -137,6 +147,7 @@ namespace console_cuban_puzzle;
             CreateCards.AllActionsCard.Add(new SalesPrice());
             CreateCards.AllActionsCard.Add(new SelfImprovement());
             CreateCards.AllActionsCard.Add(new SneackAttack());
+            CreateCards.AllActionsCard.AddRange(CreateCards.ListActionCardByUser);
             CreateCards.AllHeroCards = new List<Card>();
             CreateCards.AllHeroCards.Add(new MartialMastery());
             CreateCards.AllHeroCards.Add(new Reversal());
@@ -144,6 +155,7 @@ namespace console_cuban_puzzle;
             CreateCards.AllHeroCards.Add(new BurningVigor());
             CreateCards.AllHeroCards.Add(new PlayingWithFire());
             CreateCards.AllHeroCards.Add(new UnstablePower());
+            CreateCards.AllHeroCards.AddRange(CreateCards.ListHeroeByUser);
 
             while(true)
             {
