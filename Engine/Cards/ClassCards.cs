@@ -29,4 +29,7 @@ public static class CreateCards
 {
     public static List<BankCard>? AllActionsCard;
     public static List<Card>? AllHeroCards;
+    public static List<Card> ListHeroeByUser = new List<Card>();
+    public static List<BankCard> ListActionCardByUser = new List<BankCard>();
+    public static List<BankCard> ListBankCardByUser = new List<BankCard>();
 }
