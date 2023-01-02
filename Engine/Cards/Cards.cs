@@ -108,6 +108,7 @@ public class Gem1 : BankCard
             {
                 a.Table.GemPile.Add(l);
             }
+            GameEngine.Turns.Current.Table.GemPile.RemoveAt(index);
         }
         public void Trash (IPlayer a){}
         public void GainCard (IPlayer a){}
