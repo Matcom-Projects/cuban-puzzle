@@ -33,7 +33,7 @@ public class TablePlayer
                 DiscardPile.Clear();
                 MixDeck();
             }
-            GameUtils.Move(Deck,HandCards,0);
+            GameActions.Move(Deck,HandCards,0);
         }
     }
 
@@ -53,20 +53,20 @@ public class TablePlayer
     }
     public void HandToOnGoing(int index)
     {
-        GameUtils.Move(HandCards,OnGoing,index);
+        GameActions.Move(HandCards,OnGoing,index);
     }
 
     public void HandToSaveCards(int index)
     {
-        GameUtils.Move(HandCards,SaveCards,index);
+        GameActions.Move(HandCards,SaveCards,index);
     }
     public void DeckToHand(int index)
     {
-        GameUtils.Move(Deck,HandCards,index);
+        GameActions.Move(Deck,HandCards,index);
     }
     public void DiscardPileToHand(int index)
     {
-        GameUtils.Move(DiscardPile,HandCards,index);
+        GameActions.Move(DiscardPile,HandCards,index);
     }
     public void ToOnGoing(Card a)
     {
