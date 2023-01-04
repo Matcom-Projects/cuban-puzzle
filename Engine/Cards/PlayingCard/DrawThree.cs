@@ -7,6 +7,7 @@ public class DrawThree : BankCard, IActionable
     {
         this.Actions = new bool[] {false, false, true, false, false, false};
     }
+    public void Action(){}
 
     public void GiveActions(){}
     public void SaveCards(int index, IPlayer a){}
