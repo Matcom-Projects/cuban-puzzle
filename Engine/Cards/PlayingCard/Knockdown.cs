@@ -1,41 +1,35 @@
 namespace engine_cuban_puzzle;
 
-public class Knockdown : BankCard, IActionable
-{
-    public bool[] Actions {get; set;}
-    public Knockdown() : base("Knockdown", new string[]{"red"}, 0,2)
+public class Knockdown : ActionBankCard
     {
-        this.Actions = new bool[] {true, false, false, false, true, false};
-    }
-
-    public void GiveActions()
-    {
-        GameEngine.CantActionsPerTurn ++;
-    }
-    public void SaveCards(int index, IPlayer a){}
-    public void Draw(IPlayer a){}
-    public void Attack(int index,IPlayer a){}
-    public void Trash(IPlayer a)
-    {
-        IPlayer b = a.SelectPlayer();
-        foreach (BankCard card in b.Table.HandCards)
+        public Knockdown() : base("Knockdown", new string[]{"red"}, 0,2)
         {
-            if(card.Color.Contains("purple"))
+            
+        }
+
+        public override void Action(IPlayer a)
+        {
+            GameActions.GiveActions();
+            IPlayer b = a.SelectPlayer();
+            foreach (Card card in b.Table.HandCards)
             {
-                GameEngine.bank.Add(card);
-                b.Table.HandCards.Remove(card);
+                if(card.Color.Contains("purple"))
+                {
+                    int index = a.Table.HandCards.IndexOf(card);
+                    GameActions.Trash(index, a.Table.HandCards);
+                    return;
+                }
             }
         }
-    }
-    public void GainCard(IPlayer a){}
-    public override string ToString()
-    {
-        Console.ForegroundColor = ConsoleColor.Red;
-        return $"[{this.Name}]";
-    }
+    
+        public override string ToString()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            return $"[{this.Name}]";
+        }
 
-    /*Informacion de la carta:
-    1. Da una accion mas
-    2. Trashea una carta morada de la mano de un oponente seleccionado
-    */
-}
+        /*Informacion de la carta:
+        1. Da una accion mas
+        2. Trashea una carta morada de la mano de un oponente seleccionado
+        */
+    }
