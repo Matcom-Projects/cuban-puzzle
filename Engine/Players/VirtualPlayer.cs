@@ -33,7 +33,6 @@ namespace engine_cuban_puzzle
             if(Table.HandCards.Contains(GameEngine.bank.keys[6])) return Table.HandCards.IndexOf(GameEngine.bank.keys[6]);
             if(Table.HandCards.Contains(GameEngine.bank.keys[5])) return Table.HandCards.IndexOf(GameEngine.bank.keys[5]);
             if(Table.HandCards.Contains(GameEngine.bank.keys[4])) return Table.HandCards.IndexOf(GameEngine.bank.keys[4]);
-
             
             for(int i=0; i<Table.HandCards.Count; i++)
             {
@@ -41,7 +40,7 @@ namespace engine_cuban_puzzle
                     return i;
             }
 
-            return 0;//esta dando bateo esto cada vez q llega aqui indexa en menos 1 y da error, lo cambie a 0 para q pare
+            return 0;
         }
         public Card SelectCardOnGoing()
         {
@@ -50,83 +49,28 @@ namespace engine_cuban_puzzle
             if(Table.OnGoing.Count == 0) return null;
             return Table.OnGoing[Table.OnGoing.Count-1];
         }
-        public bool SelectField()
-        {   
-            return false;
-        }
-        public void ChooseActionRealize(IActionable card)
+        public void ExecuteAction(IActionable card)
         {
-            System.Console.WriteLine($"Seleccionó del OnGoing {((Card)card).Name}");
+            System.Console.WriteLine($"Jugó {((Card)card).Name}");
             Console.ReadLine();
             
             if(card is Combine)
             {
-                card.Trash(this);
+                card.Action(this);
                 return;
             }
-            if(card.Actions[3])
+            if(card is CrashGem)
             {
-                int x = SelectGem();
-                IPlayer player = SelectPlayer();
-                System.Console.WriteLine($"Atacó a {player.Name} con {Table.GemPile[x].Money} gemas");
-                card.Attack(x, player);
-                Console.ReadLine();
+                card.Action(this);
+                return;
+            }
+            if(card is DobleCrashGem)
+            {
+                card.Action(this);
                 return;
             }
             
-            List<int> list = new List<int>();
-            for(int i=0; i<card.Actions.Length; i++)
-            {
-                if(card.Actions[i]) list.Add(i);
-            }
-
-            int index = 0;
-            do
-            {
-                index = list[GameUtils.GetRandom(0,list.Count)];
-            } while (index==3);
-            switch (index)
-            {
-                case 0:
-                {
-                    card.GiveActions();
-                    System.Console.WriteLine("Tiene una accion mas");
-                    Console.ReadLine();
-                    break;
-                }
-                case 1:
-                {
-                    int pos = SelectCardHand();
-                    Card hand = Table.HandCards[pos];
-                    card.SaveCards(pos,this);
-                    System.Console.WriteLine($"Guardo {hand.Name} para el proximo turno");
-                    Console.ReadLine();
-                    break;
-                }
-                case 2:
-                {
-                    card.Draw(this);
-                    System.Console.WriteLine("Robo una carta del deck");
-                    Console.ReadLine();
-                    break;
-                }
-                case 4:
-                {
-                    card.Trash(this);
-                    System.Console.WriteLine("Trasheo una carta");
-                    Console.ReadLine();
-                    break;
-                }
-                case 5:
-                {
-                    card.GainCard(this);
-                    System.Console.WriteLine("Gano una carta");
-                    Console.ReadLine();
-                    break;
-                }
-                default : break;
-            }
-            
+            card.Action(this);
         }
         public int SelectGem()
         {            
@@ -231,6 +175,6 @@ namespace engine_cuban_puzzle
             Console.ReadLine();
             return false;
         }
-        public int SelectCardDeck(){return 0;}
+       
     }
 }
