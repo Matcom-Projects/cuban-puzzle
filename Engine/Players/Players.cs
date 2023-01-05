@@ -32,11 +32,15 @@ public class ManualPlayer : IPlayer
             return false;
         }
 
-        public int SelectCardHand()
+        public int SelectCardHand()//commit
         { 
             Console.WriteLine("De HandCards:");
+            int i = 0;
+            do{
+                i = GamePrint.SelectCard(Table.HandCards);
+            }while(Table.HandCards[i] is Gem1 || Table.HandCards[i] is Gem2 || Table.HandCards[i] is Gem3 || Table.HandCards[i] is Gem4);
 
-            return GamePrint.SelectCard(Table.HandCards);
+            return i;
         }
 
         public Card SelectCardOnGoing()
@@ -46,64 +50,9 @@ public class ManualPlayer : IPlayer
             return Table.OnGoing[GamePrint.SelectCard(Table.OnGoing)];
         }
 
-        public bool SelectField()
+        public void ExecuteAction(IActionable card)
         {
-            Console.WriteLine("[E].Escoger una carta de la mano");
-            Console.WriteLine("[A].Activar una carta del OnGoing");
-            ConsoleKey key = new ConsoleKey();
-            do{
-                key = Console.ReadKey(true).Key;
-            }while(key!=ConsoleKey.A && key!=ConsoleKey.E);
-            
-            if(key==ConsoleKey.A) return true;
-
-            return false;
-        }
-
-        public void ChooseActionRealize(IActionable card)
-        {
-            Console.WriteLine($"{((Card)card).Name} --> Acciones:");
-            if(card.Actions[0]) Console.WriteLine("[D].Dar acciones");
-            if(card.Actions[1]) Console.WriteLine("[S].Guardar carta para el proximo turno");
-            if(card.Actions[2]) Console.WriteLine("[R].Robar cartas del deck");
-            if(card.Actions[3]) Console.WriteLine("[M].Meter un toque");
-            if(card.Actions[4]) Console.WriteLine("[T].Trashear");
-            if(card.Actions[5]) Console.WriteLine("[G].Ganar cartas");
-            ConsoleKey key = Console.ReadKey(true).Key;
-
-            switch(key)
-            {
-                case ConsoleKey.D :
-                {
-                    card.GiveActions();
-                    break;
-                }
-                case ConsoleKey.S :
-                {
-                    card.SaveCards(SelectCardHand(),this);
-                    break;
-                }
-                case ConsoleKey.R :
-                {
-                    card.Draw(this);
-                    break;
-                }
-                case ConsoleKey.M :
-                {
-                    card.Attack(SelectGem(),SelectPlayer());
-                    break;
-                }
-                case ConsoleKey.T :
-                {
-                    card.Trash(this);
-                    break;
-                }
-                case ConsoleKey.G :
-                {
-                    card.GainCard(this);
-                    break;
-                }
-            }
+            card.Action(this);
         }
 
         public int SelectGem()
@@ -154,18 +103,6 @@ public class ManualPlayer : IPlayer
 
             if(key == ConsoleKey.S) return true;
             return false;
-        }
-
-        // public BankCard SelectCardBank(List<BankCard> list)
-        // {
-        //     throw new NotImplementedException();
-        // }
-
-        public int SelectCardDeck()
-        {
-            Console.WriteLine("Del Deck:");
-
-            return GamePrint.SelectCard(Table.Deck);
         }
 
     }
