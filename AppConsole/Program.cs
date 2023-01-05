@@ -145,7 +145,7 @@ namespace console_cuban_puzzle;
             CreateCards.AllActionsCard.Add(new OneTwoPunch());
             CreateCards.AllActionsCard.Add(new OneOfEach());
             CreateCards.AllActionsCard.Add(new SalesPrice());
-            CreateCards.AllActionsCard.Add(new SalesPrice());
+            CreateCards.AllActionsCard.Add(new RiskyMove());
             CreateCards.AllActionsCard.Add(new SelfImprovement());
             CreateCards.AllActionsCard.Add(new SneackAttack());
             CreateCards.AllActionsCard.AddRange(CreateCards.ListActionCardByUser);
