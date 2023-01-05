@@ -1,74 +1,38 @@
 namespace engine_cuban_puzzle;
 
 public class BankCardByUser : BankCard
-{
-    public BankCardByUser() : base (Result.Name, new string[] {Result.Color}, Result.Money, Result.Cost)
     {
+        public BankCardByUser() : base (Result.Name, new string[] {Result.Color}, Result.Money, Result.Cost)
+        {
 
-    }
-}
-
-public class HeroeByUser : Card, IActionable
-{
-    public bool[] Actions {get; set;}
-    public HeroeByUser() : base(Result.Name, new string[]{Result.Color}, Result.Money)
-    {
-        this.Actions = Result.MapActions;
-    }
-    public void GiveActions()
-    {
-        GameEngine.CantActionsPerTurn += Result.GiveAction;
+        }
     }
 
-    public void SaveCards(int index, IPlayer a)
+    public class HeroeByUser : ActionCard
     {
-        a.Table.HandToSaveCards(index);
-    }
-    public void Draw(IPlayer a)
-    {
-        a.Table.DrawDeck(Result.Draw);
-    }
-    public void Attack(int index,IPlayer a){}
+        public HeroeByUser() : base(Result.Name, new string[]{Result.Color}, Result.Money)
+        {
+            
+        }
 
-    public void Trash(IPlayer a)
-    {
-                
-    }
-
-    public void GainCard(IPlayer a)
-    {
-    }
-}
-
-public class ActionCardByUser : BankCard, IActionable
-{
-    public bool[] Actions {get; set;}
-    public ActionCardByUser() : base(Result.Name, new string[]{Result.Color}, Result.Money, Result.Cost)
-    {
-        this.Actions = Result.MapActions;
+        public override void Action(IPlayer a)
+        {
+            GameEngine.CantActionsPerTurn += Result.GiveAction;
+            GameActions.Draw(Result.Draw, a);
+        }
+        
     }
 
-    public void GiveActions()
+    public class ActionCardByUser : ActionBankCard
     {
-        GameEngine.CantActionsPerTurn += Result.GiveAction;
-    }
+        public ActionCardByUser() : base(Result.Name, new string[]{Result.Color}, Result.Money, Result.Cost)
+        {
+            
+        }
 
-    public void SaveCards(int index, IPlayer a)
-    {
-        a.Table.HandToSaveCards(index);
+        public override void Action(IPlayer a)
+        {
+            GameEngine.CantActionsPerTurn += Result.GiveAction;
+            GameActions.Draw(Result.Draw, a);
+        }
     }
-    public void Draw(IPlayer a)
-    {
-        a.Table.DrawDeck(Result.Draw);
-    }
-    public void Attack(int index,IPlayer a){}
-
-    public void Trash(IPlayer a)
-    {
-                
-    }
-
-    public void GainCard(IPlayer a)
-    {
-    }
-}
