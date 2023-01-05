@@ -60,21 +60,11 @@ public static class GameEngine
                 if(a.Exit()) return;
                 else{
                     GamePrint.PrintTable(Players);
-                    if(a.Table.OnGoing.Count!=0 && a.SelectField())
+                    if(a.ExistIActionable())//commit
                     {
-                        Card card = a.SelectCardOnGoing();//seleccionando carta del ongoing
+                        a.Table.HandToOnGoing(a.SelectCardHand());//moverla hacia el ongoing     
                         GamePrint.PrintTable(Players);
-                        a.ChooseActionRealize((IActionable)card);//escogiendo y ejecutando accion de la carta
-                    }
-                    else{
-                        if(a.ExistIActionable())
-                        {
-                            a.Table.HandToOnGoing(a.SelectCardHand());//moverla hacia el ongoing    
-                            GamePrint.PrintTable(Players);        
-                            Card card = a.SelectCardOnGoing();//seleccionando carta del ongoing
-                            GamePrint.PrintTable(Players);
-                            a.ChooseActionRealize((IActionable)card);//escogiendo y ejecutando accion de la carta
-                        }
+                        a.ExecuteAction((IActionable)a.Table.OnGoing[a.Table.OnGoing.Count-1]);//escogiendo y ejecutando accion de la carta
                     }
                 }
     
