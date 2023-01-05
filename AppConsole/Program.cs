@@ -130,12 +130,13 @@ namespace console_cuban_puzzle;
             players = ChooseHeroCards(players,initialdeck);
 
             IPlayer WinPlayer = GameEngine.PlayGame(players,bank);
+            Console.Clear();
             Console.WriteLine($"Ha ganado {WinPlayer.Name}. Presione cualquier boton para continuar.");
             Console.ReadLine();
         }
         static void Main()
         {
-            Interperter.Execute();
+//             Interperter.Execute();
             CreateCards.AllActionsCard = new List<BankCard>();
             CreateCards.AllActionsCard.Add(new CombosAreHard());
             CreateCards.AllActionsCard.Add(new DrawThree());
