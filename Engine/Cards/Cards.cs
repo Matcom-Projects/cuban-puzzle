@@ -52,29 +52,22 @@ public class Gem1 : BankCard
         }
     }
 
-    public class CrashGem : BankCard , IActionable
+    public class CrashGem : ActionBankCard
     {
-        public bool[] Actions {get; }
         public CrashGem() : base ("CrashGem",new string[] {"Purple"},1,5)
         {
-            this.Actions = new bool[] {false, false, false, true, false, false};
-        }
-        
-        public void GiveActions (){}
-        public void SaveCards (int index, IPlayer a){}
-        public void Draw (IPlayer a){}
-        public void Attack (int index,IPlayer a)
-        {
-            List<BankCard> list = GameEngine.bank.GetCant(0, GameEngine.Turns.Current.Table.GemPile[index].Money);
             
-            foreach(var l in list)
-            {
-                a.Table.GemPile.Add(l);
-            }
-            GameEngine.Turns.Current.Table.GemPile.RemoveAt(index);
         }
-        public void Trash (IPlayer a){}
-        public void GainCard (IPlayer a){}
+
+        public override void Action(IPlayer a)
+        {
+            IPlayer Victim = a.SelectPlayer();
+            if(a is VirtualPlayer){
+                System.Console.WriteLine($"El jugador atacó a {Victim.Name}"); 
+                Console.ReadLine();
+            }
+            GameActions.Attack(a, Victim, 1);
+        }
 
         public override string ToString()
         {
@@ -83,35 +76,22 @@ public class Gem1 : BankCard
         }
     }
 
-    public class DobleCrashGem : BankCard ,IActionable
+    public class DobleCrashGem : ActionBankCard  
     {
-        public bool[] Actions {get; }
         public DobleCrashGem() : base ("Doble CrashGem",new string[]{"Purple"},2,9)
         {
-            this.Actions = new bool[] {false, false, false, true, false, false};
+            
         }
-        
-        public void GiveActions (){}
-        public void SaveCards (int index, IPlayer a){}
-        public void Draw (IPlayer a){}
-        public void Attack (int index,IPlayer a)
+
+        public override void Action(IPlayer a)
         {
-            int gem = GameEngine.Turns.Current.SelectGem();
-            Auxiliar(index, a);
-            Auxiliar(gem, a);
-        }
-        public void Auxiliar(int index,IPlayer a)
-        {
-            int x = GameEngine.Turns.Current.Table.GemPile[index].Money;
-            List<BankCard> list = GameEngine.bank.GetCant(0, x);
-            foreach(var l in list)
-            {
-                a.Table.GemPile.Add(l);
+            IPlayer Victim = a.SelectPlayer();
+            if(a is VirtualPlayer){
+                System.Console.WriteLine($"El jugador atacó a {Victim.Name}"); 
+                Console.ReadLine();
             }
-            GameEngine.Turns.Current.Table.GemPile.RemoveAt(index);
+            GameActions.Attack(a, Victim, 2);
         }
-        public void Trash (IPlayer a){}
-        public void GainCard (IPlayer a){}
 
         public override string ToString()
         {
@@ -120,19 +100,14 @@ public class Gem1 : BankCard
         }
     }
 
-    public class Combine : BankCard , IActionable 
+    public class Combine : ActionBankCard 
     {
-        public bool[] Actions {get; }
         public Combine() : base("Combine",new string[]{"Purple"},-1,4) 
         {
-            this.Actions = new bool[] {false, false, false, false, true, false};
+            
         }
         
-        public void GiveActions(){}
-        public void SaveCards(int index, IPlayer a){}
-        public void Draw(IPlayer a){}
-        public void Attack(int index,IPlayer a){}
-        public void Trash(IPlayer a)
+        public override void Action(IPlayer a)
         {
             Aux1(a);
             BankCard x;
@@ -141,7 +116,9 @@ public class Gem1 : BankCard
                 x = a.Table.GemPile[a.SelectGem()];
                 int aux = x.Money;
                 x.Money = 0;
+
                 y = a.Table.GemPile[a.SelectGem()];
+
                 x.Money = aux;
             }while(x.Money+y.Money > 4);
             
@@ -170,7 +147,7 @@ public class Gem1 : BankCard
                 if(l is Gem4) l.Money = 4;
             }
         }
-        public void GainCard(IPlayer a){}
+        
         public override string ToString()
         {
             Console.ForegroundColor = ConsoleColor.Magenta;
