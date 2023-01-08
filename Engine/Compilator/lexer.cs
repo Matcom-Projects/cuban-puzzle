@@ -30,6 +30,7 @@ public class Lexer
         Ids.Add("ongoing",new Token(Type.ongoing,"ongoing"));
         Ids.Add("discardpile",new Token(Type.discardpile,"discardpile"));
         Ids.Add("savecard",new Token(Type.savecard,"savecard"));
+        Ids.Add("bankcards",new Token(Type.bankcards,"bankcards"));
     }
     private bool IsInt()
     {

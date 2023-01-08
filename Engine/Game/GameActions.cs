@@ -8,24 +8,24 @@ public class GameActions
         a.RemoveAt(index);
     }
 
-    public static void GiveActions(int n)
+    public static void GiveActions(int cant)
     {
-        GameEngine.CantActionsPerTurn += n;
+        GameEngine.CantActionsPerTurn += cant;
     }
 
-    public static void GiveMoney(int n)
+    public static void GiveMoney(int cant)
     {
-        GameEngine.CantMoneyPerTurn += n;
+        GameEngine.CantMoneyPerTurn += cant;
     }
 
-    public static void Draw(int n,IPlayer Player)
+    public static void Draw(int cant)
     {
-        Player.Table.DrawDeck(n);
+        GameEngine.Turns.Current.Table.DrawDeck(cant);
     }
 
-    public static void SaveCards(int index,IPlayer Player)
+    public static void SaveCards(int index)
     {
-        Player.Table.HandToSaveCards(index);
+        GameEngine.Turns.Current.Table.HandToSaveCards(index);
     }
     public static void Trash(int index, List<Card> list)
     {
@@ -40,13 +40,14 @@ public class GameActions
         {
             int index = Player.SelectGem();
             result.AddRange(GameEngine.bank.GetCant(0,Player.Table.GemPile[index].Money));
+            Player.Table.GemPile.RemoveAt(index);
         }
         Victim.Table.ToGemPile(result);
     }
 
-    public static void GainCard ( IPlayer Player, BankCard card )
+    public static void GainCard ( IPlayer Player, int index )
     {
-        Player.Table.ToDiscardPile( GameEngine.bank.Get(card));
+        Player.Table.ToDiscardPile( GameEngine.bank.Get(index));
     }
 
     public static void Sacrifice(IPlayer Player, int index)
