@@ -21,6 +21,15 @@ public class Lexer
         Ids.Add("abcard",new Token(Type.ABCard,"abcard"));
         Ids.Add("true",new Token(Type.True,"true"));
         Ids.Add("false",new Token(Type.False,"false"));
+        Ids.Add("for",new Token(Type.For,"for"));
+        Ids.Add("if",new Token(Type.If,"if"));
+        Ids.Add("else",new Token(Type.Else,"else"));
+        Ids.Add("me",new Token(Type.Me,"me"));
+        Ids.Add("deck",new Token(Type.deck,"deck"));
+        Ids.Add("hand",new Token(Type.hand,"hand"));
+        Ids.Add("ongoing",new Token(Type.ongoing,"ongoing"));
+        Ids.Add("discardpile",new Token(Type.discardpile,"discardpile"));
+        Ids.Add("savecard",new Token(Type.savecard,"savecard"));
     }
     private bool IsInt()
     {
@@ -28,9 +37,7 @@ public class Lexer
     }
     private bool IsLetter()
     {
-        char letter = char.ToLower(Current);
-
-        return (letter >= 97 && letter <= 122);
+        return (Current >= 97 && Current <= 122);
     }
     private bool IsSpace()
     {

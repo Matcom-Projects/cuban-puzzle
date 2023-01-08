@@ -52,7 +52,7 @@ public class ManualPlayer : IPlayer
 
         public void ExecuteAction(IActionable card)
         {
-            card.Action(this);
+            card.Action();
         }
 
         public int SelectGem()
