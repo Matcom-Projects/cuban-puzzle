@@ -1,0 +1,8 @@
+money = 0;
+color = red;
+action
+{
+    draw <2>;
+    CantActions += 2;
+    CantMoney -= 2;
+}
