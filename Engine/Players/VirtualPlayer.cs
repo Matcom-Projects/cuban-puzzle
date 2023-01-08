@@ -56,21 +56,21 @@ namespace engine_cuban_puzzle
             
             if(card is Combine)
             {
-                card.Action(this);
+                card.Action();
                 return;
             }
             if(card is CrashGem)
             {
-                card.Action(this);
+                card.Action();
                 return;
             }
             if(card is DobleCrashGem)
             {
-                card.Action(this);
+                card.Action();
                 return;
             }
             
-            card.Action(this);
+            card.Action();
         }
         public int SelectGem()
         {            
