@@ -17,5 +17,5 @@ public interface IPlayer
     }
     public interface IActionable
     {
-        public void Action(IPlayer a);
+        public void Action();
     }
