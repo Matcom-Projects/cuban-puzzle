@@ -13,9 +13,6 @@ public class Lexer
         this.Current = Text[0];
         this.Ids = new Dictionary<string, Token>();
 
-        Ids.Add("int",new Token(Type.Int,"int"));
-        Ids.Add("bool",new Token(Type.Boolean,"bool"));
-        Ids.Add("player",new Token(Type.iPlayer,"player"));
         Ids.Add("true",new Token(Type.True,"true"));
         Ids.Add("false",new Token(Type.False,"false"));
         Ids.Add("for",new Token(Type.For,"for"));

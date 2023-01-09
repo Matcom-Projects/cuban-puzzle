@@ -58,12 +58,12 @@ public class Bool_Node : AST_Node
     }
 }
 
-public class Conditional_Node
+public class Conditional_Node : AST_Node
 {
-    public Compound_Node WhenTrue;
-    public Compound_Node WhenFalse;
-    public BinaryOperation_Node Condition;
-    public Conditional_Node(BinaryOperation_Node condition,Compound_Node whentrue,Compound_Node whenfalse)
+    public AST_Node WhenTrue;
+    public AST_Node WhenFalse;
+    public AST_Node Condition;
+    public Conditional_Node(AST_Node condition,AST_Node whentrue,AST_Node whenfalse)
     {
         this.WhenTrue = whentrue;
         this.WhenFalse = whenfalse;
@@ -91,42 +91,36 @@ public class Compound_Node : AST_Node
 public class Var_Node : AST_Node
 {
     public Token token;
-    public Type Type;
     public string Value;
-    public Var_Node(Token id,Type type)
+    public Var_Node(Token id)
     {
-        this.Type = type;
         this.token = id;
         this.Value = id.Value;
     }
 }
 
-public class VarDeclaring_Node : AST_Node
-{
-    public Type typeResult;
-    public Var_Node Left;
-    public Token Op;
-    public AST_Node Right;
-
-    public VarDeclaring_Node(Type type,Var_Node left,Token op,AST_Node right)
-    {
-        this.typeResult = type;
-        this.Left = left;
-        this.Op = op;
-        this.Right = right;
-    }
-
-}
-
 public class Function_Node : AST_Node
 {
-    public Token Function;
+    public Type Function;
     public Type TypeReturn;
+    public List<AST_Node> Pass;
 
-    public Function_Node(Token function,Type typereturn)
+    public Function_Node(Type function,Type typereturn,List<AST_Node> pass)
     {
         this.Function = function;
         this.TypeReturn = typereturn;
+        this.Pass = pass;
+    }
+}
+
+public class Expression_Node : AST_Node
+{
+    public Type TypeReturn;
+    public AST_Node Expression;
+    public Expression_Node(Type typereturn , AST_Node expression)
+    {
+        this.TypeReturn = typereturn;
+        this.Expression = expression;
     }
 }
 
@@ -138,6 +132,17 @@ public class DotReference_Node : AST_Node
     {
         this.User = user;
         this.Reference = reference;
+    }
+}
+
+public class For_Node : AST_Node
+{
+    public AST_Node Times;
+    public AST_Node Execute;
+    public For_Node(AST_Node times,AST_Node execute)
+    {
+        this.Times = times;
+        this.Execute = execute;
     }
 }
 

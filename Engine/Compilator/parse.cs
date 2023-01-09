@@ -4,10 +4,12 @@ public class Parse
 {
     public Lexer Lexer;
     private Token Current_Token;
+    private Dictionary<string,Type> PrivateScope;
     public Parse(Lexer lexxer)
     {
         this.Lexer = lexxer;
         this.Current_Token = lexxer.Get_Next_Token();
+        this.PrivateScope = new Dictionary<string, Type>();
     }
     public void Eat(Type token_type)
     {
@@ -15,30 +17,40 @@ public class Parse
         else throw new Exception("Se esperaba un " + token_type);
     }
 
-    public AST_Node Factor()
+    public Expression_Node Factor()
     {
         Token token = Current_Token;
         if(token.Type == Type.Sum)
         {
             Eat(Type.Sum);
-            return new UnaryOperation_Node(token,Factor());
+            return new Expression_Node(Type.Int,new UnaryOperation_Node(token,Factor()));
         }
         else if(token.Type == Type.Rest)
         {
             Eat(Type.Rest);
-            return new UnaryOperation_Node(token,Factor());
+            return new Expression_Node(Type.Int,new UnaryOperation_Node(token,Factor()));
         }
         else if(token.Type == Type.Int)
         {
             Eat(Type.Int);
-            return new Num_Node(token);
+            return new Expression_Node(Type.Int,new Num_Node(token));
         }
         else if (token.Type == Type.LParen)
         {
             Eat(Type.LParen);
-            AST_Node result = Exp();
+            Expression_Node result = Exp();
             Eat(Type.RParen);
             return result;
+        }
+        else if (token.Type == Type.True)
+        {
+            Eat(Type.True);
+            return new Expression_Node(Type.Boolean,new Bool_Node(token));
+        }
+        else if (token.Type == Type.False)
+        {
+            Eat(Type.False);
+            return new Expression_Node(Type.Boolean,new Bool_Node(token));
         }
         else
         {
@@ -48,9 +60,9 @@ public class Parse
         throw new Exception("Sintaxis error");
     }
 
-    public AST_Node Term()
+    public Expression_Node Term()
     {
-        AST_Node result = Factor();
+        Expression_Node result = Factor();
 
         while( Current_Token.Type == Type.Mult || Current_Token.Type == Type.Div ) 
         {
@@ -64,15 +76,16 @@ public class Parse
             {
                 Eat(Type.Div);
             }
-            result = new BinaryOperation_Node(result,token,Factor(),Type.Int);
+            Expression_Node right = Factor();
+            result = new Expression_Node(Type.Int,new BinaryOperation_Node(result,token,right,Type.Int));
         }
 
         return result;
     }
 
-    public AST_Node Exp()
+    public Expression_Node Exp()
     {
-        AST_Node result = Term();
+        Expression_Node result = Term();
 
         while( Current_Token.Type == Type.Sum || Current_Token.Type == Type.Rest ) 
         {
@@ -87,7 +100,8 @@ public class Parse
                 Eat(Type.Rest);
             }
 
-            result = new BinaryOperation_Node(result,token,Term(),Type.Int);
+            Expression_Node right = Term();
+            result = new Expression_Node(Type.Int,new BinaryOperation_Node(result,token,Term(),Type.Int));
         }
 
         return result;
@@ -121,7 +135,7 @@ public class Parse
         List<AST_Node> result = new List<AST_Node>();
 
         result.Add(Statement());
-        while(Current_Token.Type==Type.Semi)
+        while(Current_Token.Type == Type.Semi)
         {
             Eat(Type.Semi);
             result.Add(Statement());
@@ -140,23 +154,120 @@ public class Parse
         {
             return Assignment_statement();
         }
+        else if (Current_Token.Type == Type.If)
+        {
+            return Conditional_statement();
+        }
+        else if (Current_Token.Type == Type.For)
+        {
+            return For_statement();
+        }
+        else if (Current_Token.Type == Type.move)
+        {
+            return Function_statement(Type.move,3);
+        }
+        else if (Current_Token.Type == Type.giveactions)
+        {
+            return Function_statement(Type.giveactions,1);
+        }
+        else if (Current_Token.Type == Type.givemoney)
+        {
+            return Function_statement(Type.givemoney,1);
+        }
+        else if (Current_Token.Type == Type.draw)
+        {
+            return Function_statement(Type.draw,1);
+        }
+        else if (Current_Token.Type == Type.savecards)
+        {
+            return Function_statement(Type.savecards,1);
+        }
+        else if (Current_Token.Type == Type.trash)
+        {
+            return Function_statement(Type.trash,2);
+        }
+        else if (Current_Token.Type == Type.attack)
+        {
+            return Function_statement(Type.attack,3);
+        }
+        else if (Current_Token.Type == Type.gaincard)
+        {
+            return Function_statement(Type.gaincard,2);
+        }
+        else if (Current_Token.Type == Type.sacrifice)
+        {
+            return Function_statement(Type.sacrifice,2);
+        }
+        else if (Current_Token.Type == Type.revive)
+        {
+            return Function_statement(Type.revive,2);
+        }
+        else if (Current_Token.Type == Type.overtaking)
+        {
+            return Function_statement(Type.overtaking,2);
+        }
 
         return new NoOp_Node();
     }
-    public AST_Node Assignment_statement()
+    public AST_Node Conditional_statement()
     {
-        Var_Node left = Variable();
-        Token token = Current_Token;
-        Eat(Type.Assign);
-        AST_Node right = Exp();
-
-        return new ASSIGN_Node(left,token,right);
+        Eat(Type.If);
+        AST_Node condition = Exp();
+        AST_Node whentrue = Compound_statement();
+        if(Current_Token.Type == Type.Else) return new Conditional_Node(condition,whentrue,Compound_statement());
+        return new Conditional_Node(condition,whentrue,new NoOp_Node());
     }
 
-    public Var_Node Variable()
+    public AST_Node Function_statement(Type functiontype,int cantexp)
     {
-        Var_Node node = new Var_Node(Current_Token,Type.Int);
+        Eat(functiontype);
+        List<AST_Node> pass = new List<AST_Node>();
+
+        if(cantexp == 0) return new Function_Node(functiontype,Type.Void,new List<AST_Node>());
+
+        while(true)
+        {
+            pass.Add(Exp());
+            cantexp--;
+            if(cantexp == 0) break;
+            Eat(Type.Comma);
+        }
+
+        return new Function_Node(functiontype,Type.Void,pass);
+    }
+
+    public AST_Node Assignment_statement()
+    {
+        Expression_Node left = Variable();
+        Var_Node Var = (Var_Node)left.Expression;
+        Token token = Current_Token;
+        Eat(Type.Assign);
+        Expression_Node right = Exp();
+
+        if(Var.token.Type == Type.Var) 
+        {
+            PrivateScope.Add(Var.Value,right.TypeReturn);
+        }
+
+        left.TypeReturn = right.TypeReturn;
+        PrivateScope[Var.Value] = right.TypeReturn;
+        
+        return new ASSIGN_Node((Var_Node)left.Expression,token,right);
+    }
+
+    public AST_Node For_statement()
+    {
+        Eat(Type.For);
+        AST_Node times = Exp();
+        return new For_Node(times,Compound_statement());
+    }
+
+    public Expression_Node Variable()
+    {
+        Var_Node Var = new Var_Node(Current_Token);
         Eat(Type.ID);
-        return node;
+
+        if(PrivateScope.ContainsKey(Var.Value)) return new Expression_Node(PrivateScope[Var.Value],Var);
+        return new Expression_Node(Type.Var,Var);
     }
 }
