@@ -10,7 +10,7 @@ public interface IPlayer
     public int SelectCardDiscardPile();
     public int SelectCardHand();
     public int SelectCardOnGoing();
-    public int SelectBankCard();
+    public int SelectCardBank();
     public void ExecuteAction(IActionable card);
     public int SelectGem();
     public IPlayer SelectPlayer();

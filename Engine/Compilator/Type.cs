@@ -22,5 +22,10 @@ public enum Type
 
     Me,
 
+    deck,hand,discardpile,ongoing,gempile,save,bankcards,gem1,gem2,gem3,gem4,cup,crashgem,doblecrashgem,combine,
+
+    selectplayer,selectcard,selectcardongoing,selectcardhand,selectcarddeck,selectcarddiscardpile,selectcardbank,selectgem,
+    round,cantgem,move,giveactions,givemoney,draw,savecards,trash,attack,gaincard,sacrifice,revive,overtaking,
+
     EOF,
 }

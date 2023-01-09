@@ -12,13 +12,10 @@ public class Lexer
         this.Pos = 0;
         this.Current = Text[0];
         this.Ids = new Dictionary<string, Token>();
-        Ids.Add("{",new Token(Type.LBrace,"{"));
-        Ids.Add("}",new Token(Type.RBrace,"}"));
+
         Ids.Add("int",new Token(Type.Int,"int"));
         Ids.Add("bool",new Token(Type.Boolean,"bool"));
         Ids.Add("player",new Token(Type.iPlayer,"player"));
-        Ids.Add("acard",new Token(Type.ACard,"acard"));
-        Ids.Add("abcard",new Token(Type.ABCard,"abcard"));
         Ids.Add("true",new Token(Type.True,"true"));
         Ids.Add("false",new Token(Type.False,"false"));
         Ids.Add("for",new Token(Type.For,"for"));
@@ -29,8 +26,38 @@ public class Lexer
         Ids.Add("hand",new Token(Type.hand,"hand"));
         Ids.Add("ongoing",new Token(Type.ongoing,"ongoing"));
         Ids.Add("discardpile",new Token(Type.discardpile,"discardpile"));
-        Ids.Add("savecard",new Token(Type.savecard,"savecard"));
+        Ids.Add("save",new Token(Type.save,"save"));
         Ids.Add("bankcards",new Token(Type.bankcards,"bankcards"));
+        Ids.Add("gempile",new Token(Type.gempile,"gempile"));
+        Ids.Add("gem1",new Token(Type.gem1,"gem1"));
+        Ids.Add("gem2",new Token(Type.gem2,"gem2"));
+        Ids.Add("gem3",new Token(Type.gem3,"gem3"));
+        Ids.Add("gem4",new Token(Type.gem4,"gem4"));
+        Ids.Add("cup",new Token(Type.cup,"cup"));
+        Ids.Add("crashgem",new Token(Type.crashgem,"crashgem"));
+        Ids.Add("doblecrashgem",new Token(Type.doblecrashgem,"doblecrashgem"));
+        Ids.Add("combine",new Token(Type.combine,"combine"));
+        Ids.Add("selectplayer",new Token(Type.selectplayer,"selecplayer"));
+        Ids.Add("selectcardongoing",new Token(Type.selectcardongoing,"selectcardongoing"));
+        Ids.Add("selectcardhand",new Token(Type.selectcardhand,"selectcardhand"));
+        Ids.Add("selectcarddeck",new Token(Type.selectcarddeck,"selectcarddeck"));
+        Ids.Add("selectcarddiscardpile",new Token(Type.selectcarddiscardpile,"selectcarddiscardpile"));
+        Ids.Add("selectcardbank",new Token(Type.selectcardbank,"selectcardbank"));
+        Ids.Add("selectgem",new Token(Type.selectgem,"selectgem"));
+        Ids.Add("round",new Token(Type.round,"round"));
+        Ids.Add("cantgem",new Token(Type.cantgem,"cantgem"));
+        Ids.Add("selectcard",new Token(Type.selectcard,"selectcard"));
+        Ids.Add("move",new Token(Type.move,"move"));
+        Ids.Add("giveactions",new Token(Type.giveactions,"giveactions"));
+        Ids.Add("givemoney",new Token(Type.givemoney,"givemoney"));
+        Ids.Add("draw",new Token(Type.draw,"draw"));
+        Ids.Add("savecards",new Token(Type.savecards,"savecards"));
+        Ids.Add("trash",new Token(Type.trash,"trash"));
+        Ids.Add("attack",new Token(Type.attack,"attack"));
+        Ids.Add("gaincard",new Token(Type.gaincard,"gaincard"));
+        Ids.Add("sacrifice",new Token(Type.sacrifice,"sacrifice"));
+        Ids.Add("revive",new Token(Type.revive,"revive"));
+        Ids.Add("overtaking",new Token(Type.overtaking,"overtaking"));
     }
     private bool IsInt()
     {
@@ -39,6 +66,11 @@ public class Lexer
     private bool IsLetter()
     {
         return (Current >= 97 && Current <= 122);
+    }
+
+    private bool IsAlfaNumeric()
+    {
+        return (IsLetter()|| IsInt());
     }
     private bool IsSpace()
     {
@@ -87,7 +119,7 @@ public class Lexer
     {
         string result = "";
 
-        while(Current!='#'&& IsLetter())
+        while(Current != '#' && IsAlfaNumeric())
         {
             result += Current;
             Advance();
@@ -156,6 +188,16 @@ public class Lexer
                 Advance();
                 return new Token(Type.RBrace,"}");
             }
+            if(Current == '[')
+            {
+                Advance();
+                return new Token(Type.LBracket,"[");
+            }
+            if(Current == ']')
+            {
+                Advance();
+                return new Token(Type.RBracket,"]");
+            }
             if(Current == '=' && Peek() == '=')
             {
                 Advance();
@@ -199,6 +241,10 @@ public class Lexer
             {
                 Advance();
                 return new Token(Type.Semi,";");
+            }
+            if(Current == ',')
+            {
+                return new Token(Type.Colon,",");
             }
             if(Current == '.')
             {

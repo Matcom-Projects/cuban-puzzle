@@ -119,7 +119,7 @@ public class ManualPlayer : IPlayer
         return GamePrint.SelectCard(Table.DiscardPile);
     }
 
-    public int SelectBankCard()
+    public int SelectCardBank()
     {
         return GamePrint.SelectCard(GameEngine.bank.keys);
     }

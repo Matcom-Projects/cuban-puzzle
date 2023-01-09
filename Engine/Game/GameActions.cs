@@ -50,13 +50,18 @@ public class GameActions
         Player.Table.ToDiscardPile( GameEngine.bank.Get(index));
     }
 
-    public static void Sacrifice(IPlayer Player, int index)
+    public static void Sacrifice (IPlayer Player, int index)
     {
-        Move(Player.Table.HandCards,Player.Table.DiscardPile,index);
+        Player.Table.HandToDiscardPile(index);
+    }
+
+    public static void OverTaking(IPlayer Player, int index)
+    {
+        Player.Table.DeckToHand(index);
     }
 
     public static void Revive(IPlayer Player, int index)
     {
-        Move(Player.Table.DiscardPile,Player.Table.HandCards,index);
+        Player.Table.DiscardPileToHand(index);
     }
 }

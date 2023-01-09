@@ -1,6 +1,3 @@
-using System.Linq;
-using System.Collections.Generic;
-using System.Collections;
 namespace engine_cuban_puzzle
 {
     public class VirtualPlayer : IPlayer
@@ -42,7 +39,7 @@ namespace engine_cuban_puzzle
 
             return 0;
         }
-        public Card SelectCardOnGoing()
+        public Card? SelectCardOnGoing()
         {
             Console.ReadLine();
             
@@ -175,6 +172,20 @@ namespace engine_cuban_puzzle
             Console.ReadLine();
             return false;
         }
-       
+
+        public int SelcetCardDeck()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int SelectCardDiscardPile()
+        {
+            throw new NotImplementedException();
+        }
+
+        int IPlayer.SelectCardOnGoing()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -68,6 +68,11 @@ public class TablePlayer
     {
         GameActions.Move(DiscardPile,HandCards,index);
     }
+
+    public void HandToDiscardPile(int index)
+    {
+        GameActions.Move(HandCards,DiscardPile,index);
+    }
     public void ToOnGoing(Card a)
     {
         OnGoing.Add(a);
@@ -108,7 +113,7 @@ public class TablePlayer
 
         foreach(BankCard gems in GemPile)
         {
-            result += ((Card)gems).Money;
+            result += gems.Money;
         }
 
         return result;
