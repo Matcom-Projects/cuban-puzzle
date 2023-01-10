@@ -50,23 +50,20 @@ public class Gem4 : BankCard
     }
 }
 
-public class CrashGem : BankCard , IActionable //arreglar esto y poner todo dentro del metodo action
+public class CrashGem : ActionBankCard //arreglar esto y poner todo dentro del metodo action
 {
     public CrashGem() : base ("CrashGem","Purple",1,5)
     {
     }
-    public void Action(){}
-
-    public void Attack (int index,IPlayer a)
-    {
-        List<BankCard> list = GameEngine.bank.GetCant(0, GameEngine.Turns.Current.Table.GemPile[index].Money);
-        
-        foreach(var l in list)
+    public override void Action(IPlayer a)
         {
-            a.Table.GemPile.Add(l);
+            IPlayer Victim = a.SelectPlayer();
+            if(a is VirtualPlayer){
+                System.Console.WriteLine($"El jugador atacó a {Victim.Name}"); 
+                Console.ReadLine();
+            }
+            GameActions.Attack(a, Victim, 1);
         }
-        GameEngine.Turns.Current.Table.GemPile.RemoveAt(index);
-    }
 
     public override string ToString()
     {
@@ -75,90 +72,83 @@ public class CrashGem : BankCard , IActionable //arreglar esto y poner todo dent
     }
 }
 
-public class DobleCrashGem : BankCard ,IActionable //arreglar esto y poner todo dentro del metodo action
-{
-    public bool[] Actions {get; }
-    public DobleCrashGem() : base ("Doble CrashGem","Purple",2,9)
+public class DobleCrashGem : ActionBankCard  
     {
-        this.Actions = new bool[] {false, false, false, true, false, false};
-    }
-    public void Action(){}
-    public void Attack (int index,IPlayer a)
-    {
-        int gem = GameEngine.Turns.Current.SelectGem();
-        Auxiliar(index, a);
-        Auxiliar(gem, a);
-    }
-    public void Auxiliar(int index,IPlayer a)
-    {
-        int x = GameEngine.Turns.Current.Table.GemPile[index].Money;
-        List<BankCard> list = GameEngine.bank.GetCant(0, x);
-        foreach(var l in list)
+        public DobleCrashGem() : base ("Doble CrashGem",new string[]{"Purple"},2,9)
         {
-            a.Table.GemPile.Add(l);
+            
         }
-        GameEngine.Turns.Current.Table.GemPile.RemoveAt(index);
+
+        public override void Action(IPlayer a)
+        {
+            IPlayer Victim = a.SelectPlayer();
+            if(a is VirtualPlayer){
+                System.Console.WriteLine($"El jugador atacó a {Victim.Name}"); 
+                Console.ReadLine();
+            }
+            GameActions.Attack(a, Victim, 2);
+        }
+
+        public override string ToString()
+        {
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            return $"[{this.Name}]";
+        }
     }
 
-    public override string ToString()
-    {
-        Console.ForegroundColor = ConsoleColor.Magenta;
-        return $"[{this.Name}]";
-    }
-}
-
-public class Combine : BankCard , IActionable //arreglar esto y poner todo dentro del metodo action
+public class Combine : ActionBankCard 
 {
-    public bool[] Actions {get; }
-    public Combine() : base("Combine","Purple",-1,4) 
-    {
-        this.Actions = new bool[] {false, false, false, false, true, false};
-    }
-    public void Action(){}
-    public void Trash(IPlayer a)
-    {
-        Aux1(a);
-        BankCard x;
-        BankCard y;
-        do{
-            x = a.Table.GemPile[a.SelectGem()];
-            int aux = x.Money;
-            x.Money = 0;
-            y = a.Table.GemPile[a.SelectGem()];
-            x.Money = aux;
-        }while(x.Money+y.Money > 4);
+        public Combine() : base("Combine",new string[]{"Purple"},-1,4) 
+        {
+            
+        }
         
-        if(x is Gem1 && y is Gem1) 
-            a.Table.GemPile.Add(GameEngine.bank.Get(GameEngine.bank.keys[1]));
-        if((x is Gem1 && y is Gem2) || (x is Gem2 && y is Gem1)) 
-            a.Table.GemPile.Add(GameEngine.bank.Get(GameEngine.bank.keys[2]));
-        if((x is Gem1 && y is Gem3) || (x is Gem2 && y is Gem2) || (x is Gem3 && y is Gem1)) 
-            a.Table.GemPile.Add(GameEngine.bank.Get(GameEngine.bank.keys[3]));
-        GameEngine.bank.Add(x); a.Table.GemPile.Remove(x);
-        GameEngine.bank.Add(y); a.Table.GemPile.Remove(y);
-        GameEngine.CantActionsPerTurn++ ;
-        Aux2(a);
-    }
-    private void Aux1(IPlayer a)
-    {
-        foreach(var l in a.Table.GemPile)
+        public override void Action(IPlayer a)
         {
-            if(l is Gem4) l.Money = 0;
-        }
-    }
-    private void Aux2(IPlayer a)
-    {
-        foreach(var l in a.Table.GemPile)
-        {
-            if(l is Gem4) l.Money = 4;
-        }
-    }
+            Aux1(a);
+            BankCard x;
+            BankCard y;
+            do{
+                x = a.Table.GemPile[a.SelectGem()];
+                int aux = x.Money;
+                x.Money = 0;
 
-    public override string ToString()
-    {
-        Console.ForegroundColor = ConsoleColor.Magenta;
-        return $"[{this.Name}]";
-    }
+                y = a.Table.GemPile[a.SelectGem()];
+
+                x.Money = aux;
+            }while(x.Money+y.Money > 4);
+            
+            if(x is Gem1 && y is Gem1) 
+                a.Table.GemPile.Add(GameEngine.bank.Get(GameEngine.bank.keys[1]));
+            if((x is Gem1 && y is Gem2) || (x is Gem2 && y is Gem1)) 
+                a.Table.GemPile.Add(GameEngine.bank.Get(GameEngine.bank.keys[2]));
+            if((x is Gem1 && y is Gem3) || (x is Gem2 && y is Gem2) || (x is Gem3 && y is Gem1)) 
+                a.Table.GemPile.Add(GameEngine.bank.Get(GameEngine.bank.keys[3]));
+            GameEngine.bank.Add(x); a.Table.GemPile.Remove(x);
+            GameEngine.bank.Add(y); a.Table.GemPile.Remove(y);
+            GameEngine.CantActionsPerTurn++ ;
+            Aux2(a);
+        }
+        private void Aux1(IPlayer a)
+        {
+            foreach(var l in a.Table.GemPile)
+            {
+                if(l is Gem4) l.Money = 0;
+            }
+        }
+        private void Aux2(IPlayer a)
+        {
+            foreach(var l in a.Table.GemPile)
+            {
+                if(l is Gem4) l.Money = 4;
+            }
+        }
+        
+        public override string ToString()
+        {
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            return $"[{this.Name}]";
+        }
 }
 
 public class Cup : BankCard 
