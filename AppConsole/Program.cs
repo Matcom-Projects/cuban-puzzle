@@ -60,19 +60,28 @@ namespace console_cuban_puzzle;
             List<BankCard> result = new List<BankCard>();
             int n = 10;
 
+            List<BankCard> list = new List<BankCard>();
+            foreach(var l in ActionsCards)
+            {
+                list.Add(l);
+            }
+
             while( n > 0 )
             {
-                Console.Clear();
-                System.Console.WriteLine("\tSeleccione las cartas del juego:");
-                for(int i=0; i<ActionsCards.Count; i++)
-                {
-                    System.Console.WriteLine($"[{i}].{ActionsCards[i].Name}  ");
-                }
                 foreach( IPlayer pla in players) 
-                {
+                {    
+                    Console.Clear();
+                    System.Console.WriteLine("\tSeleccione las cartas del juego:");
+                    for(int i=0; i<list.Count; i++)
+                    {
+                        System.Console.WriteLine($"[{i}].{list[i].Name}  ");
+                    }
+                
                     if(n <= 0) return result;
                     System.Console.WriteLine($"-{pla.Name}-");
-                    result.Add ( ActionsCards [ GamePrint.SelectCard(ActionsCards) ] ) ;//optimizar bien este metodo
+                    BankCard bankCard = list [ GamePrint.SelectCard(list) ];
+                    result.Add ( bankCard ) ;
+                    list.Remove(bankCard);
                     n--;
                 }
             } 
