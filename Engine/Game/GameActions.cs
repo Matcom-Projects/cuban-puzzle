@@ -52,9 +52,9 @@ public class GameActions
         }
         
 
-    public static void GainCard ( IPlayer Player, int index )
+    public static void GainCard ( IPlayer Player, BankCard bankcard )
     {
-        Player.Table.ToDiscardPile( GameEngine.bank.Get(index));
+        Player.Table.ToDiscardPile(bankcard);
     }
 
     public static void Sacrifice (IPlayer Player, int index)
