@@ -175,17 +175,17 @@ namespace engine_cuban_puzzle
 
         public int SelectCardDeck()
         {
-            throw new NotImplementedException();
+            return 0;
         }
 
         public int SelectCardDiscardPile()
         {
-            throw new NotImplementedException();
+            return 0;
         }
 
         public BankCard SelectCardBank()
         {
-            throw new NotImplementedException();
+            return GameEngine.bank.keys[4];
         }
     }
 }
