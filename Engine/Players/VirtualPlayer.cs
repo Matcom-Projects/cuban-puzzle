@@ -173,7 +173,7 @@ namespace engine_cuban_puzzle
             return false;
         }
 
-        public int SelcetCardDeck()
+        public int SelectCardDeck()
         {
             throw new NotImplementedException();
         }
@@ -183,7 +183,7 @@ namespace engine_cuban_puzzle
             throw new NotImplementedException();
         }
 
-        int IPlayer.SelectCardOnGoing()
+        public BankCard SelectCardBank()
         {
             throw new NotImplementedException();
         }
