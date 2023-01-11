@@ -105,7 +105,7 @@ public class ManualPlayer : IPlayer
         return false;
     }
 
-    public int SelcetCardDeck()
+    public int SelectCardDeck()
     {
         Console.WriteLine("De Deck");
 
@@ -119,7 +119,7 @@ public class ManualPlayer : IPlayer
         return GamePrint.SelectCard(Table.DiscardPile);
     }
 
-    public int SelectCardBank()
+    public BankCard SelectCardBank()
     {
         return GamePrint.SelectCard(GameEngine.bank.keys);
     }
