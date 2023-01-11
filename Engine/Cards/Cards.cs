@@ -55,14 +55,14 @@ public class CrashGem : ActionBankCard //arreglar esto y poner todo dentro del m
     public CrashGem() : base ("CrashGem","Purple",1,5)
     {
     }
-    public override void Action(IPlayer a)
+    public override void Action()
         {
-            IPlayer Victim = a.SelectPlayer();
-            if(a is VirtualPlayer){
+            IPlayer Victim = GameTurns.Current.SelectPlayer();
+            if(GameTurns.Current is VirtualPlayer){
                 System.Console.WriteLine($"El jugador atacó a {Victim.Name}"); 
                 Console.ReadLine();
             }
-            GameActions.Attack(a, Victim, 1);
+            GameActions.Attack(Victim, 1);
         }
 
     public override string ToString()
@@ -79,14 +79,14 @@ public class DobleCrashGem : ActionBankCard
             
         }
 
-        public override void Action(IPlayer a)
+        public override void Action()
         {
-            IPlayer Victim = a.SelectPlayer();
-            if(a is VirtualPlayer){
+            IPlayer Victim = GameTurns.Current.SelectPlayer();
+            if(GameTurns.Current is VirtualPlayer){
                 System.Console.WriteLine($"El jugador atacó a {Victim.Name}"); 
                 Console.ReadLine();
             }
-            GameActions.Attack(a, Victim, 2);
+            GameActions.Attack(Victim, 2);
         }
 
         public override string ToString()
@@ -103,31 +103,31 @@ public class Combine : ActionBankCard
             
         }
         
-        public override void Action(IPlayer a)
+        public override void Action()
         {
-            Aux1(a);
+            Aux1(GameTurns.Current);
             BankCard x;
             BankCard y;
             do{
-                x = a.Table.GemPile[a.SelectGem()];
+                x = GameTurns.Current.Table.GemPile[GameTurns.Current.SelectGem()];
                 int aux = x.Money;
                 x.Money = 0;
 
-                y = a.Table.GemPile[a.SelectGem()];
+                y = GameTurns.Current.Table.GemPile[GameTurns.Current.SelectGem()];
 
                 x.Money = aux;
             }while(x.Money+y.Money > 4);
             
             if(x is Gem1 && y is Gem1) 
-                a.Table.GemPile.Add(GameEngine.bank.Get(GameEngine.bank.keys[1]));
+                GameTurns.Current.Table.GemPile.Add(GameEngine.bank.Get(GameEngine.bank.keys[1]));
             if((x is Gem1 && y is Gem2) || (x is Gem2 && y is Gem1)) 
-                a.Table.GemPile.Add(GameEngine.bank.Get(GameEngine.bank.keys[2]));
+                GameTurns.Current.Table.GemPile.Add(GameEngine.bank.Get(GameEngine.bank.keys[2]));
             if((x is Gem1 && y is Gem3) || (x is Gem2 && y is Gem2) || (x is Gem3 && y is Gem1)) 
-                a.Table.GemPile.Add(GameEngine.bank.Get(GameEngine.bank.keys[3]));
-            GameEngine.bank.Add(x); a.Table.GemPile.Remove(x);
-            GameEngine.bank.Add(y); a.Table.GemPile.Remove(y);
+                GameTurns.Current.Table.GemPile.Add(GameEngine.bank.Get(GameEngine.bank.keys[3]));
+            GameEngine.bank.Add(x); GameTurns.Current.Table.GemPile.Remove(x);
+            GameEngine.bank.Add(y); GameTurns.Current.Table.GemPile.Remove(y);
             GameEngine.CantActionsPerTurn++ ;
-            Aux2(a);
+            Aux2(GameTurns.Current);
         }
         private void Aux1(IPlayer a)
         {
