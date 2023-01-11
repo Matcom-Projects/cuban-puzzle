@@ -6,11 +6,11 @@ public interface IPlayer
     public TablePlayer Table { get; set; }
     public bool Exit();
     public bool ExistIActionable();
-    public int SelcetCardDeck();
+    public int SelectCardDeck();
     public int SelectCardDiscardPile();
     public int SelectCardHand();
     public int SelectCardOnGoing();
-    public int SelectCardBank();
+    public BankCard SelectCardBank();
     public void ExecuteAction(IActionable card);
     public int SelectGem();
     public IPlayer SelectPlayer();
