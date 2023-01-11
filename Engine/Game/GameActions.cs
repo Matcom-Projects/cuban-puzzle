@@ -33,17 +33,24 @@ public class GameActions
         list.RemoveAt(index);
     }
 
-    public static void Attack(IPlayer Player,IPlayer Victim,int cantgem)
+    public static void Attack(IPlayer Victim,int cantgem)
     {
         List<BankCard> result = new List<BankCard>();
+        List<int> indexs = new List<int>();
         for(int i = 0 ; i < cantgem ; i++ )
         {
-            int index = Player.SelectGem();
-            result.AddRange(GameEngine.bank.GetCant(0,Player.Table.GemPile[index].Money));
-            Player.Table.GemPile.RemoveAt(index);
+            int index = GameTurns.Current.SelectGem();
+            result.AddRange(GameEngine.bank.GetCant(0,GameTurns.Table.GemPile[index].Money));
+            indexs.Add(index);
         }
         Victim.Table.ToGemPile(result);
-    }
+
+        indexs.Sort();
+        for(int j = indexs.Count-1; j >= 0; j--)
+        {
+            GameTurns.Current.Table.GemPile.RemoveAt(j);
+        }
+        
 
     public static void GainCard ( IPlayer Player, int index )
     {
