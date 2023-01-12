@@ -131,11 +131,11 @@ public class ManualPlayer : IPlayer
 
     public int SelectCard(List<Card> list)
     {
-        throw new NotImplementedException();
+        return GamePrint.SelectCard(list);
     }
 
     public int SelectBCard(List<Card> cardslist)
     {
-        throw new NotImplementedException();
+        return GamePrint.SelectBCard(cardslist);
     }
 }

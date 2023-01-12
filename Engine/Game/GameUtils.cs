@@ -71,7 +71,7 @@ public class GameUtils
                 {
                     Console.Clear();
                     System.Console.WriteLine("HeroCards:");
-                    for(int j=0; j<CreateCards.AllHeroCards.Count; j++)
+                    for(int j = 0; j < CreateCards.AllHeroCards.Count; j++)
                     {
                         System.Console.WriteLine($"[{j}].{CreateCards.AllHeroCards[j].Name}  ");
                     }

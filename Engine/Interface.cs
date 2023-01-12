@@ -13,11 +13,16 @@ public interface IPlayer
     public BankCard SelectCardBank();
     public void ExecuteAction(IActionable card);
     public int SelectGem();
+    public int[] SelectGem(int cantgem);
     public IPlayer SelectPlayer();
     public BankCard PlayBuyPhase();
     public bool PlayNextBuyPhases();
+    public int SelectCard(List<Card> cardlist);
+    public int SelectBCard(List<Card> cardslist);
 }
 public interface IActionable
 {
     public void Action();
 }
+
+public interface AST_Node{}
