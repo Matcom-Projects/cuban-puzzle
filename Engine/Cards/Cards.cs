@@ -110,7 +110,7 @@ public class Gem1 : BankCard
         public override void Action()
         {
             GameUtils.CombineFunction();
-            GameActions.GiveActions();
+            GameActions.GiveActions(1);
         }
         
         public override string ToString()
