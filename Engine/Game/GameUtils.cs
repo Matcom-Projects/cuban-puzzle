@@ -40,4 +40,85 @@ public class GameUtils
 
         return result;
     }
+    
+    public static void InformationCard()
+    {
+        Console.WriteLine("Informacion de las cartas");
+        do{
+            Console.Clear();
+            Console.WriteLine("[B].BankCards");
+            Console.WriteLine("[H].HeroCards");
+
+            ConsoleKey key = GamePrint.Read();
+            switch(key)
+            {
+                case ConsoleKey.B: 
+                {
+                    Console.Clear();
+                    System.Console.WriteLine("BankCards:");
+                    for(int i=0; i<GameEngine.bank.keys.Count; i++)
+                    {
+                        System.Console.WriteLine($"[{i}].{GameEngine.bank.keys[i].Name}  ");
+                    }
+                    int index = GamePrint.SelectCard(GameEngine.bank.keys);
+
+                    Console.Clear();
+                    System.Console.WriteLine($"{GameEngine.bank.keys[index].Name}:");
+                    System.Console.WriteLine($"{GameEngine.bank.keys[index].Information}:");
+                    return;
+                    break;
+                }
+                case ConsoleKey.H:
+                {
+                    Console.Clear();
+                    System.Console.WriteLine("HeroCards:");
+                    for(int j=0; j<CreateCards.AllHeroCards.Count; j++)
+                    {
+                        System.Console.WriteLine($"[{j}].{CreateCards.AllHeroCards[j].Name}  ");
+                    }
+                    int pos = GamePrint.SelectCard(CreateCards.AllHeroCards);
+
+                    Console.Clear();
+                    System.Console.WriteLine($"{CreateCards.AllHeroCards[pos].Name}:");
+                    System.Console.WriteLine($"{CreateCards.AllHeroCards[pos].Information}:");
+                    return;
+                    break;
+                } 
+            }
+
+        }while(key!=ConsoleKey.B && key!=ConsoleKey.H);
+
+    }
+
+    public static void CombineFunction(int gems)
+    {
+        IPlayer a = GameTurns.Current;
+        int money = 0;
+        List<int> indexs = new List<int>();
+        do{
+            money = 0;
+            indexs.Clear();
+            for(int i=0; i<gems; i++)
+            {
+                BankCard x;
+                do{
+                    x = a.Table.GemPile[a.SelectGem()];
+                }while(x is Gem4);
+                money += x.Money;
+                indexs.Add(a.Table.GemPile.IndexOf(x));
+            }
+            System.Console.WriteLine();
+        }while(money>4);
+
+        if(money==2) a.Table.GemPile.Add(GameEngine.bank.Get(GameEngine.bank.keys[1]));
+        if(money==3) a.Table.GemPile.Add(GameEngine.bank.Get(GameEngine.bank.keys[2]));
+        if(money==4) a.Table.GemPile.Add(GameEngine.bank.Get(GameEngine.bank.keys[3]));
+
+        indexs.Sort();
+        for(int j = indexs.Count-1; j >= 0; j--)
+        {
+            GameEngine.bank.Add(a.Table.GemPile[j]);
+            a.Table.GemPile.RemoveAt(j);
+        }
+    }
 }
