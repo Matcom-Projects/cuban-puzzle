@@ -14,10 +14,18 @@ public class ManualPlayer : IPlayer
 
     public bool Exit()
     {
-        Console.WriteLine("[J].Jugar fase de accion");
-        Console.WriteLine("[E].Continuar");
+        ConsoleKey key;
+        do{
+            Console.Clear();
+            GamePrint.PrintTable(GameEngine.Turns.Players);
+            Console.WriteLine("[J].Jugar fase de accion");
+            Console.WriteLine("[E].Continuar");
+            Console.WriteLine("[I].Informacion de la carta");
 
-        if(GamePrint.Read()==ConsoleKey.E) return true;
+            key = GamePrint.Read();
+            if(key==ConsoleKey.E) return true;
+            if(key==ConsoleKey.I) GameUtils.InformationCard();
+        }while(key!=ConsoleKey.J);
 
         return false;
     }
