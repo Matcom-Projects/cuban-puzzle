@@ -10,7 +10,7 @@ public class HeroCard_Node
 
     public HeroCard_Node(string text)
     {
-        this.Text = text.ToLower();
+        this.Text = text;
         BasicPropieties = new Dictionary<string, string>();
         ReadPropieties();
         this.Color = BasicPropieties["color"];
@@ -22,18 +22,24 @@ public class HeroCard_Node
         {
             throw new System.Exception("Se esperaba un numero en la propiedad money.");
         }
+        Lexer lexer = new Lexer(Text);
+        Parse parser = new Parse(lexer);
+        this.Action = new Interpreter(parser);
     }
 
     private void ReadPropieties()
     {
-        int color = Text.IndexOf("color");
+        int color = Text.IndexOf("Color");
         if(color == -1) throw new Exception("No esta definida la propiedad color.");
         BasicPropieties.Add("color",ReadAssing(color+5));
 
-        int money = Text.IndexOf("money");
+        int money = Text.IndexOf("Money");
         if(money == -1) throw new Exception("No esta definida la propiedad money.");
         BasicPropieties.Add("money",ReadAssing(money+5));
 
+        int action = Text.IndexOf("Action");
+        if(action == -1) throw new Exception("No esta definida la accion");
+        Text = Text[(action + 6) .. (CountBracket(action+6))];
     }
     private string ReadAssing(int n)
     {
@@ -77,6 +83,22 @@ public class HeroCard_Node
     {
         return (caracter >= 97 && caracter <= 122);
     }
+    private int CountBracket(int index)
+    {
+        int cantLbraacket = 1;
+        index = SkipSpaces(index);
+        if (Text[index] != '{') throw new Exception("aqui deberia haber un {");
+        index ++;
+
+        while(cantLbraacket > 0)
+        {
+            if(Text[index]=='{') cantLbraacket++;
+            else if (Text[index] == '}') cantLbraacket--;
+            index ++;
+        }
+
+        return index;
+    }
 }
 
 public class ActionCard_Node
@@ -110,20 +132,27 @@ public class ActionCard_Node
         {
             throw new System.Exception("Se esperaba un numero en la propiedad cost.");
         }
+        Lexer lexer = new Lexer(Text);
+        Parse parser = new Parse(lexer);
+        this.Action = new Interpreter(parser);
     }
     private void ReadPropieties()
     {
-        int cost = Text.IndexOf("cost");
+        int cost = Text.IndexOf("Cost");
         if(cost == -1) throw new Exception("No esta definida la propiedad cost.");
         BasicPropieties.Add("cost",ReadAssing(cost+4));
 
-        int color = Text.IndexOf("color");
+        int color = Text.IndexOf("Color");
         if(color == -1) throw new Exception("No esta definida la propiedad color.");
         BasicPropieties.Add("color",ReadAssing(color+5));
 
-        int money = Text.IndexOf("money");
+        int money = Text.IndexOf("Money");
         if(money == -1) throw new Exception("No esta definida la propiedad money.");
         BasicPropieties.Add("money",ReadAssing(money+5));
+
+        int action = Text.IndexOf("Action");
+        if(action == -1) throw new Exception("No esta definida la accion");
+        Text = Text[(action + 6) .. (CountBracket(action+6))];
     }
 
     private string ReadAssing(int n)
@@ -167,5 +196,21 @@ public class ActionCard_Node
     private bool IsLetter(char caracter)
     {
         return (caracter >= 97 && caracter <= 122);
+    }
+    private int CountBracket(int index)
+    {
+        int cantLbraacket = 1;
+        index = SkipSpaces(index);
+        if (Text[index] != '{') throw new Exception("aqui deberia haber un {");
+        index ++;
+
+        while(cantLbraacket > 0)
+        {
+            if(Text[index]=='{') cantLbraacket++;
+            else if (Text[index] == '}') cantLbraacket--;
+            index ++;
+        }
+
+        return index;
     }
 }

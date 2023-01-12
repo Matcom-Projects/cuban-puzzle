@@ -2,11 +2,11 @@ namespace engine_cuban_puzzle;
 
 public class BinaryOperation_Node : AST_Node
 {
-    public AST_Node Left;
-    public Token Operation;
+    public Expression_Node Left;
+    public Type Operation;
     public Type TypeReturn;
-    public AST_Node Right;
-    public BinaryOperation_Node (AST_Node left, Token op, AST_Node right,Type typereturn)
+    public Expression_Node Right;
+    public BinaryOperation_Node (Expression_Node left, Type op, Expression_Node right,Type typereturn)
     {
         this.TypeReturn = typereturn;
         this.Left = left;
@@ -17,9 +17,9 @@ public class BinaryOperation_Node : AST_Node
 
 public class UnaryOperation_Node : AST_Node
 {
-    public AST_Node Node;
+    public Expression_Node Node;
     public Token Operation;
-    public UnaryOperation_Node (Token op,AST_Node node)
+    public UnaryOperation_Node (Token op,Expression_Node node)
     {
         this.Operation = op;
         this.Node = node;
@@ -28,12 +28,11 @@ public class UnaryOperation_Node : AST_Node
 
 public class Num_Node : AST_Node
 {
-    public Token Token;
     public int Value;
-    public Num_Node(Token token)
+    public Num_Node(int value)
     {
-        this.Token = token;
-        this.Value = int.Parse(token.Value);
+        
+        this.Value = value;
     }
 }
 
@@ -48,34 +47,23 @@ public class Player_Node : AST_Node
 
 public class Bool_Node : AST_Node
 {
-    public Token Token;
     public bool Value;
-    public Bool_Node(Token token)
+    public Bool_Node(bool value)
     {
-        this.Token = token;
-        if(token.Value=="true") this.Value = true;
-        else this.Value = false;
+        this.Value = value;
     }
 }
 
 public class Conditional_Node : AST_Node
 {
-    public AST_Node WhenTrue;
-    public AST_Node WhenFalse;
-    public AST_Node Condition;
-    public Conditional_Node(AST_Node condition,AST_Node whentrue,AST_Node whenfalse)
+    public Compound_Node WhenTrue;
+    public Compound_Node WhenFalse;
+    public Expression_Node Condition;
+    public Conditional_Node(Expression_Node condition,Compound_Node whentrue,Compound_Node whenfalse)
     {
         this.WhenTrue = whentrue;
         this.WhenFalse = whenfalse;
         this.Condition = condition;
-    }
-}
-
-public abstract class AST_Node
-{
-    public AST_Node()
-    {
-
     }
 }
 
@@ -90,12 +78,14 @@ public class Compound_Node : AST_Node
 
 public class Var_Node : AST_Node
 {
+    public Type Type;
     public Token token;
     public string Value;
-    public Var_Node(Token id)
+    public Var_Node(Token id,Type type)
     {
         this.token = id;
         this.Value = id.Value;
+        this.Type = type;
     }
 }
 
@@ -103,13 +93,22 @@ public class Function_Node : AST_Node
 {
     public Type Function;
     public Type TypeReturn;
-    public List<AST_Node> Pass;
+    public List<Expression_Node> Pass;
 
-    public Function_Node(Type function,Type typereturn,List<AST_Node> pass)
+    public Function_Node(Type function,Type typereturn,List<Expression_Node> pass)
     {
         this.Function = function;
         this.TypeReturn = typereturn;
         this.Pass = pass;
+    }
+}
+
+public class BankCard_Node : AST_Node
+{
+    public  BankCard Card;
+    public BankCard_Node(BankCard card)
+    {
+        this.Card = card;
     }
 }
 
@@ -126,20 +125,30 @@ public class Expression_Node : AST_Node
 
 public class DotReference_Node : AST_Node
 {
-    public Token User;
-    public Token Reference;
-    public DotReference_Node(Token user,Token reference)
+    public Expression_Node User;
+    public Expression_Node Reference;
+    public DotReference_Node(Expression_Node user,Expression_Node reference)
     {
         this.User = user;
         this.Reference = reference;
     }
 }
 
+public class List_Node : AST_Node
+{
+    public Type List;
+
+    public List_Node(Type list)
+    {
+        this.List = list;
+    }
+}
+
 public class For_Node : AST_Node
 {
-    public AST_Node Times;
-    public AST_Node Execute;
-    public For_Node(AST_Node times,AST_Node execute)
+    public Expression_Node Times;
+    public Compound_Node Execute;
+    public For_Node(Expression_Node times,Compound_Node execute)
     {
         this.Times = times;
         this.Execute = execute;
@@ -148,14 +157,12 @@ public class For_Node : AST_Node
 
 public class ASSIGN_Node : AST_Node
 {
-    public Var_Node Left;
-    public Token Op;
-    public AST_Node Right;
-    public ASSIGN_Node(Var_Node left,Token op,AST_Node right)
+    public Var_Node Variable;
+    public Expression_Node Value;
+    public ASSIGN_Node(Var_Node variable,Expression_Node value)
     {
-        this.Left = left;
-        this.Op = op;
-        this.Right = right;
+        this.Variable = variable;
+        this.Value = value;
     }
 }
 public class NoOp_Node : AST_Node

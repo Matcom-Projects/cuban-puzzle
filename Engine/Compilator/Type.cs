@@ -2,30 +2,33 @@ namespace engine_cuban_puzzle;
 
 public enum Type
 {
-    ACard,ABCard,Int,Boolean,iPlayer,True,False,Void,
+    Int,Boolean,BCard,iPlayer,True,False,Void,Var,list,//types
 
-    EqualEqual,MinorEqual,GreaterEqual,Greater,Minor,Different,
+    EqualEqual,MinorEqual,GreaterEqual,Greater,Minor,Different,// == | <= | >= | > | < | !=
 
-    LBrace,RBrace,LParen,RParen,
+    LBrace,RBrace,LParen,RParen,LBracket,RBracket,//{}()[]
 
-    DOT,Semi,Colon,
+    DOT,Semi,Comma,//.;,
 
-    Assign,
+    Assign, //=
 
-    ID,
+    ID, // nombre da las variable
 
-    Mult,Div,Rest,Sum,
+    Mult,Div,Rest,Sum, //operaciones 
 
-    For,
+    For, //ciclo
 
-    If,Else,
+    If,Else,And,Or, //condicionales
 
-    Me,
+    Me, //player de turno
 
-    deck,hand,discardpile,ongoing,gempile,save,bankcards,gem1,gem2,gem3,gem4,cup,crashgem,doblecrashgem,combine,
+    deck,hand,discardpile,ongoing,gempile, //listas
+
+    gem1,gem2,gem3,gem4,cup,crashgem,doblecrashgem,combine,//basic bankcard
 
     selectplayer,selectcard,selectcardongoing,selectcardhand,selectcarddeck,selectcarddiscardpile,selectcardbank,selectgem,
-    round,cantgem,move,giveactions,givemoney,draw,savecards,trash,attack,gaincard,sacrifice,revive,overtaking,
+    round,cantgem,move,giveactions,givemoney,draw,savecards,trash,attack,gaincard,sacrifice,revive,overtaking,getrandomplayer,
+    getrandomcard,selectbcard, // metodos
 
-    EOF,
+    EOF,//fin
 }

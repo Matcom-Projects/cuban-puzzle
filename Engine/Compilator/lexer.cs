@@ -17,44 +17,46 @@ public class Lexer
         Ids.Add("false",new Token(Type.False,"false"));
         Ids.Add("for",new Token(Type.For,"for"));
         Ids.Add("if",new Token(Type.If,"if"));
+        Ids.Add("and",new Token(Type.And,"and"));
+        Ids.Add("or",new Token(Type.Or,"or"));
         Ids.Add("else",new Token(Type.Else,"else"));
         Ids.Add("me",new Token(Type.Me,"me"));
-        Ids.Add("deck",new Token(Type.deck,"deck"));
-        Ids.Add("hand",new Token(Type.hand,"hand"));
-        Ids.Add("ongoing",new Token(Type.ongoing,"ongoing"));
-        Ids.Add("discardpile",new Token(Type.discardpile,"discardpile"));
-        Ids.Add("save",new Token(Type.save,"save"));
-        Ids.Add("bankcards",new Token(Type.bankcards,"bankcards"));
-        Ids.Add("gempile",new Token(Type.gempile,"gempile"));
-        Ids.Add("gem1",new Token(Type.gem1,"gem1"));
-        Ids.Add("gem2",new Token(Type.gem2,"gem2"));
-        Ids.Add("gem3",new Token(Type.gem3,"gem3"));
-        Ids.Add("gem4",new Token(Type.gem4,"gem4"));
-        Ids.Add("cup",new Token(Type.cup,"cup"));
-        Ids.Add("crashgem",new Token(Type.crashgem,"crashgem"));
-        Ids.Add("doblecrashgem",new Token(Type.doblecrashgem,"doblecrashgem"));
-        Ids.Add("combine",new Token(Type.combine,"combine"));
-        Ids.Add("selectplayer",new Token(Type.selectplayer,"selecplayer"));
-        Ids.Add("selectcardongoing",new Token(Type.selectcardongoing,"selectcardongoing"));
-        Ids.Add("selectcardhand",new Token(Type.selectcardhand,"selectcardhand"));
-        Ids.Add("selectcarddeck",new Token(Type.selectcarddeck,"selectcarddeck"));
-        Ids.Add("selectcarddiscardpile",new Token(Type.selectcarddiscardpile,"selectcarddiscardpile"));
-        Ids.Add("selectcardbank",new Token(Type.selectcardbank,"selectcardbank"));
-        Ids.Add("selectgem",new Token(Type.selectgem,"selectgem"));
-        Ids.Add("round",new Token(Type.round,"round"));
-        Ids.Add("cantgem",new Token(Type.cantgem,"cantgem"));
-        Ids.Add("selectcard",new Token(Type.selectcard,"selectcard"));
-        Ids.Add("move",new Token(Type.move,"move"));
-        Ids.Add("giveactions",new Token(Type.giveactions,"giveactions"));
-        Ids.Add("givemoney",new Token(Type.givemoney,"givemoney"));
-        Ids.Add("draw",new Token(Type.draw,"draw"));
-        Ids.Add("savecards",new Token(Type.savecards,"savecards"));
-        Ids.Add("trash",new Token(Type.trash,"trash"));
-        Ids.Add("attack",new Token(Type.attack,"attack"));
-        Ids.Add("gaincard",new Token(Type.gaincard,"gaincard"));
-        Ids.Add("sacrifice",new Token(Type.sacrifice,"sacrifice"));
-        Ids.Add("revive",new Token(Type.revive,"revive"));
-        Ids.Add("overtaking",new Token(Type.overtaking,"overtaking"));
+        Ids.Add("DeckList",new Token(Type.deck,"DeckList"));
+        Ids.Add("HandList",new Token(Type.hand,"HandList"));
+        Ids.Add("OnGoingList",new Token(Type.ongoing,"OnGoingList"));
+        Ids.Add("DiscardPileList",new Token(Type.discardpile,"DiscardPileList"));
+        Ids.Add("SaveList",new Token(Type.save,"SaveList"));
+        Ids.Add("GemPileList",new Token(Type.gempile,"GemPileList"));
+        Ids.Add("Gem1",new Token(Type.gem1,"Gem1"));
+        Ids.Add("Gem2",new Token(Type.gem2,"Gem2"));
+        Ids.Add("Gem3",new Token(Type.gem3,"Gem3"));
+        Ids.Add("Gem4",new Token(Type.gem4,"Gem4"));
+        Ids.Add("Cup",new Token(Type.cup,"Cup"));
+        Ids.Add("CrashGem",new Token(Type.crashgem,"CrashGem"));
+        Ids.Add("DobleCrashGem",new Token(Type.doblecrashgem,"DobleCrashGem"));
+        Ids.Add("Combine",new Token(Type.combine,"Combine"));
+        Ids.Add("SelectPlayer",new Token(Type.selectplayer,"SelectPlayer"));
+        Ids.Add("SelectCardOnGoing",new Token(Type.selectcardongoing,"SelectCardOnGoing"));
+        Ids.Add("SelectCardHand",new Token(Type.selectcardhand,"SelectCardHand"));
+        Ids.Add("SelectCardDeck",new Token(Type.selectcarddeck,"SelectCardDeck"));
+        Ids.Add("SelectCardDiscardPile",new Token(Type.selectcarddiscardpile,"SelectCardDiscardPile"));
+        Ids.Add("SelectCardBank",new Token(Type.selectcardbank,"SelectCardBank"));
+        Ids.Add("SelectGem",new Token(Type.selectgem,"SelectGem"));
+        Ids.Add("Round",new Token(Type.round,"Round"));
+        Ids.Add("CantGem",new Token(Type.cantgem,"CantGem"));
+        Ids.Add("SelectCard",new Token(Type.selectcard,"SelectCard"));
+        Ids.Add("SelectBCard",new Token(Type.selectbcard,"SelectBCard"));
+        Ids.Add("Move",new Token(Type.move,"move"));
+        Ids.Add("GiveActions",new Token(Type.giveactions,"GiveActions"));
+        Ids.Add("GiveMoney",new Token(Type.givemoney,"GiveMoney"));
+        Ids.Add("Draw",new Token(Type.draw,"Draw"));
+        Ids.Add("SaveCards",new Token(Type.savecards,"SaveCards"));
+        Ids.Add("Trash",new Token(Type.trash,"Trash"));
+        Ids.Add("Attack",new Token(Type.attack,"Attack"));
+        Ids.Add("GainCard",new Token(Type.gaincard,"GainCard"));
+        Ids.Add("Sacrifice",new Token(Type.sacrifice,"Sacrifice"));
+        Ids.Add("Revive",new Token(Type.revive,"Revive"));
+        Ids.Add("OverTaking",new Token(Type.overtaking,"OverTaking"));
     }
     private bool IsInt()
     {
@@ -241,7 +243,7 @@ public class Lexer
             }
             if(Current == ',')
             {
-                return new Token(Type.Colon,",");
+                return new Token(Type.Comma,",");
             }
             if(Current == '.')
             {
