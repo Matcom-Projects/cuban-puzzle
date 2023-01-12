@@ -129,6 +129,6 @@ public class ManualPlayer : IPlayer
 
     public BankCard SelectCardBank()
     {
-        return GamePrint.SelectCard(GameEngine.bank.keys);
+        return GameEngine.bank.keys[GamePrint.SelectCard(GameEngine.bank.keys)];
     }
 }
