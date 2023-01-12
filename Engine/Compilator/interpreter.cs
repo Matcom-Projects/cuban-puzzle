@@ -166,7 +166,7 @@ public class Interpreter
             }
             if(function.Function == Type.selectcarddeck)
             {
-                return GameEngine.Turns.Current.SelcetCardDeck();
+                return GameEngine.Turns.Current.SelectCardDeck();
             }
             if(function.Function == Type.selectcarddiscardpile)
             {

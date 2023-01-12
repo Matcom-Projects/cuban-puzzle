@@ -28,7 +28,7 @@ public class GamePrint
             }
         }
 
-        static void PrintGemPile( List <BankCard> GemPile )
+        static void PrintGemPile( List <Card> GemPile )
         {
             System.Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.White;

@@ -14,18 +14,10 @@ public class ManualPlayer : IPlayer
 
     public bool Exit()
     {
-        ConsoleKey key;
-        do{
-            Console.Clear();
-            GamePrint.PrintTable(GameEngine.Turns.Players);
-            Console.WriteLine("[J].Jugar fase de accion");
-            Console.WriteLine("[E].Continuar");
-            Console.WriteLine("[I].Informacion de la carta");
+        Console.WriteLine("[J].Jugar fase de accion");
+        Console.WriteLine("[E].Continuar");
 
-            key = GamePrint.Read();
-            if(key==ConsoleKey.E) return true;
-            if(key==ConsoleKey.I) GameUtils.InformationCard();
-        }while(key!=ConsoleKey.J);
+        if(GamePrint.Read()==ConsoleKey.E) return true;
 
         return false;
     }
@@ -130,5 +122,20 @@ public class ManualPlayer : IPlayer
     public BankCard SelectCardBank()
     {
         return GameEngine.bank.keys[GamePrint.SelectCard(GameEngine.bank.keys)];
+    }
+
+    public int[] SelectGem(int cantgem)
+    {
+        throw new NotImplementedException();
+    }
+
+    public int SelectCard(List<Card> list)
+    {
+        throw new NotImplementedException();
+    }
+
+    public int SelectBCard(List<Card> cardslist)
+    {
+        throw new NotImplementedException();
     }
 }

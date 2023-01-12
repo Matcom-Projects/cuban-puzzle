@@ -6,7 +6,7 @@ public class TablePlayer
     public List<Card> DiscardPile ;
     public  List<Card> OnGoing { get; private set; }
     public List<Card> HandCards { get; private set; }
-    public List<BankCard> GemPile ;
+    public List<Card> GemPile ;
     private List<Card> SaveCards;
 
     public TablePlayer( )
@@ -14,7 +14,7 @@ public class TablePlayer
         this.DiscardPile = new List<Card>();
         this.OnGoing = new List<Card>();
         this.HandCards = new List<Card>();
-        this.GemPile = new List<BankCard>();
+        this.GemPile = new List<Card>();
         this.SaveCards = new List<Card>();
     }
 
@@ -95,9 +95,9 @@ public class TablePlayer
     {
         GemPile.AddRange(gem);
     }
-    public List<BankCard> GetGemPile(params int[] index)
+    public List<Card> GetGemPile(params int[] index)
     {
-        List<BankCard> result = new List<BankCard>();
+        List<Card> result = new List<Card>();
 
         foreach(int i in index)
         {

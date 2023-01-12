@@ -25,7 +25,6 @@ public class Lexer
         Ids.Add("HandList",new Token(Type.hand,"HandList"));
         Ids.Add("OnGoingList",new Token(Type.ongoing,"OnGoingList"));
         Ids.Add("DiscardPileList",new Token(Type.discardpile,"DiscardPileList"));
-        Ids.Add("SaveList",new Token(Type.save,"SaveList"));
         Ids.Add("GemPileList",new Token(Type.gempile,"GemPileList"));
         Ids.Add("Gem1",new Token(Type.gem1,"Gem1"));
         Ids.Add("Gem2",new Token(Type.gem2,"Gem2"));
