@@ -2,7 +2,7 @@ namespace engine_cuban_puzzle;
 
 public class Gem1 : BankCard 
 {
-    public Gem1() : base ("Gem 1","Green",1,1)
+    public Gem1() : base ("Gem 1","Green",1,1,"Aqui tienes 1 MLC.")
     {
 
     }
@@ -15,7 +15,7 @@ public class Gem1 : BankCard
 
 public class Gem2 : BankCard 
 {
-    public Gem2() : base ("Gem 2","Green",2,3)
+    public Gem2() : base ("Gem 2","Green",2,3,"Aqui tienes 2 MLC.")
     {
 
     }
@@ -28,7 +28,7 @@ public class Gem2 : BankCard
 
 public class Gem3 : BankCard 
 {
-    public Gem3() : base ("Gem 3","Green",3,5)
+    public Gem3() : base ("Gem 3","Green",3,5,"Aqui tienes 3 MLC.")
     {
 
     }
@@ -41,7 +41,7 @@ public class Gem3 : BankCard
 
 public class Gem4 : BankCard 
 {
-    public Gem4() : base ("Gem 4","Green",4,7)
+    public Gem4() : base ("Gem 4","Green",4,7,"Aqui tienes 4 MLC.")
     {
 
     }
@@ -54,7 +54,7 @@ public class Gem4 : BankCard
 
 public class CrashGem : ActionBankCard
 {
-    public CrashGem() : base ("CrashGem","Purple",1,5)
+    public CrashGem() : base ("CrashGem","Purple",1,5,"Atacar a un jugador con una gema.")
     {
         
     }
@@ -78,7 +78,7 @@ public class CrashGem : ActionBankCard
 
 public class DobleCrashGem : ActionBankCard  
 {
-    public DobleCrashGem() : base ("Doble CrashGem","Purple",2,9)
+    public DobleCrashGem() : base ("Doble CrashGem","Purple",2,9,"Atacar a un jugador con dos gemas.")
     {
         
     }
@@ -102,14 +102,14 @@ public class DobleCrashGem : ActionBankCard
 
 public class Combine : ActionBankCard 
 {
-    public Combine() : base("Combine","Purple",-1,4) 
+    public Combine() : base("Combine","Purple",-1,4,"Combina dos gemas de tu GemPile.") 
     {
         
     }
     
     public override void Action()
     {
-        GameUtils.CombineFunction();
+        GameActions.CombineFunction();
         GameActions.GiveActions(1);
     }
     
@@ -122,7 +122,7 @@ public class Combine : ActionBankCard
 
 public class Cup : BankCard 
 {
-    public Cup() : base("Cup","gray",0,0)
+    public Cup() : base("Cup","gray",0,0,"Esta carta no (hace / sirve para) nada.")
     {
 
     }

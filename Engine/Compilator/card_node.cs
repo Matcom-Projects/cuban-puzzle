@@ -5,6 +5,7 @@ public class HeroCard_Node
     public string Text;
     public string Color;
     public int Money;
+    public string Information;
     private Dictionary<string,string> BasicPropieties{ get; set;}
     public Interpreter Action {get;private set;}
 
@@ -14,6 +15,7 @@ public class HeroCard_Node
         BasicPropieties = new Dictionary<string, string>();
         ReadPropieties();
         this.Color = BasicPropieties["color"];
+        this.Information = BasicPropieties["information"];
         try
         {
             this.Money = int.Parse(BasicPropieties["money"]);
@@ -36,6 +38,10 @@ public class HeroCard_Node
         int money = Text.IndexOf("Money");
         if(money == -1) throw new Exception("No esta definida la propiedad money.");
         BasicPropieties.Add("money",ReadAssing(money+5));
+
+        int information = Text.IndexOf("Information");
+        if(information == -1) throw new Exception("No esta definida la informacion de la carta.");
+        BasicPropieties.Add("information",ReadAssing(information+11));
 
         int action = Text.IndexOf("Action");
         if(action == -1) throw new Exception("No esta definida la accion");
@@ -106,6 +112,7 @@ public class ActionCard_Node
     public string Text;
     public int Cost;
     public string Color;
+    public string Information;
     public int Money;
     private Dictionary<string,string> BasicPropieties{ get; set;}
     public Interpreter Action { get; private set; }
@@ -115,6 +122,8 @@ public class ActionCard_Node
         this.Text = text;
         BasicPropieties = new Dictionary<string, string>();
         ReadPropieties();
+        this.Color = BasicPropieties["color"];
+        this.Information = BasicPropieties["information"];
         try
         {
             this.Money = int.Parse(BasicPropieties["money"]);
@@ -150,8 +159,12 @@ public class ActionCard_Node
         if(money == -1) throw new Exception("No esta definida la propiedad money.");
         BasicPropieties.Add("money",ReadAssing(money+5));
 
+        int information = Text.IndexOf("Information");
+        if(information == -1) throw new Exception("No esta definida la informacion de la carta.");
+        BasicPropieties.Add("information",ReadAssing(information+11));
+
         int action = Text.IndexOf("Action");
-        if(action == -1) throw new Exception("No esta definida la accion");
+        if(action == -1) throw new Exception("No esta definida la accion.");
         Text = Text[(action + 6) .. (CountBracket(action+6))];
     }
 

@@ -8,19 +8,20 @@ public abstract class Card
     public string Color { get; private set; }
     public int Money { get; set; }
     public string Information {get; private set;}
-    public Card ( string name,string color,int money )
+    public Card ( string name,string color,int money,string information)
     {
         this.Id = GameUtils.CreateId();
         this.Name = name;
         this.Color = color;
         this.Money = money;
+        this.Information =information;
     }
 }
 public abstract class BankCard : Card
 {
     public int Cost{ get; private set; }
     
-    public BankCard ( string name,string color,int money ,int cost): base (name,color,money)
+    public BankCard ( string name,string color,int money ,int cost,string information): base (name,color,money,information)
     {
         this.Cost = cost;
     }
@@ -28,25 +29,25 @@ public abstract class BankCard : Card
 
 public abstract class ActionCard : Card,IActionable
 {
-    public ActionCard(string name, string color, int money): base( name , color , money ){}
+    public ActionCard(string name, string color, int money,string information): base( name , color , money ,information){}
     public abstract void Action();
 }
 
 public abstract class ActionBankCard : BankCard,IActionable
 {
-    public ActionBankCard(string name, string color, int money,int cost) : base( name , color , money , cost ){}
+    public ActionBankCard(string name, string color, int money,int cost,string information) : base( name , color , money , cost ,information){}
 
     public abstract void Action();
 }
 public class CreateCards
 {
-    public static List<ActionBankCard>? AllActionsCards;
-    public static List<ActionCard>? AllHeroCards;
+    public static List<Card>? AllActionsCards;
+    public static List<Card>? AllHeroCards;
 
     public static void ReadCards()
     {
-        AllActionsCards = new List<ActionBankCard>();
-        AllHeroCards = new List<ActionCard>();
+        AllActionsCards = new List<Card>();
+        AllHeroCards = new List<Card>();
 
         string[] DirectionsActionsCards = Directory.GetFiles(@"../../ActionCards","*.txt");
         string[] DirectionsHeroCards = Directory.GetFiles(@"../../HeroCards","*.txt");
@@ -70,7 +71,7 @@ public class CreateCards
 public class HeroCardByUser : ActionCard
 {
     public HeroCard_Node Node;
-    public HeroCardByUser(string name,HeroCard_Node node) : base(name,node.Color,node.Money)
+    public HeroCardByUser(string name,HeroCard_Node node) : base(name,node.Color,node.Money,node.Information)
     {
         this.Node = node;
     }
@@ -83,7 +84,7 @@ public class HeroCardByUser : ActionCard
 public class ActionCardByUser : ActionBankCard
 {
     public ActionCard_Node Node;
-    public ActionCardByUser(string name,ActionCard_Node node) : base(name,node.Color,node.Money,node.Cost)
+    public ActionCardByUser(string name,ActionCard_Node node) : base(name,node.Color,node.Money,node.Cost,node.Information)
     {
         this.Node = node;
     }

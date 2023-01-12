@@ -87,36 +87,4 @@ public class GameUtils
         }while(key!=ConsoleKey.B && key!=ConsoleKey.H);
 
     }
-
-    public static void CombineFunction(int gems)
-    {
-        IPlayer a = GameEngine.Turns.Current;
-        int money = 0;
-        List<int> indexs = new List<int>();
-        do{
-            money = 0;
-            indexs.Clear();
-            for(int i=0; i<gems; i++)
-            {
-                Card x;
-                do{
-                    x = a.Table.GemPile[a.SelectGem()];
-                }while(x is Gem4);
-                money += x.Money;
-                indexs.Add(a.Table.GemPile.IndexOf(x));
-            }
-            System.Console.WriteLine();
-        }while(money>4);
-
-        if(money == 2) a.Table.GemPile.Add(GameEngine.bank.Get(GameEngine.bank.keys[1]));
-        if(money == 3) a.Table.GemPile.Add(GameEngine.bank.Get(GameEngine.bank.keys[2]));
-        if(money == 4) a.Table.GemPile.Add(GameEngine.bank.Get(GameEngine.bank.keys[3]));
-
-        indexs.Sort();
-        for(int j = indexs.Count-1; j >= 0; j--)
-        {
-            GameEngine.bank.Add((BankCard)a.Table.GemPile[j]);
-            a.Table.GemPile.RemoveAt(j);
-        }
-    }
 }
