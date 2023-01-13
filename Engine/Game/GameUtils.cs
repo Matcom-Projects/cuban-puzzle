@@ -27,19 +27,6 @@ public class GameUtils
         Random e = new Random();
         return e.Next(min,max);
     }
-    public static string CreateId ()//para cuando se haga la ast
-    {
-        string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        string result = "";
-        Random e = new Random();
-
-        for( int i = 0 ; i < 8 ; i++ )
-        {
-            result += letters [ e.Next(0,letters.Length) ];
-        }
-
-        return result;
-    }
     
     public static void InformationCard()
     {
