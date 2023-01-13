@@ -191,7 +191,7 @@ public class VirtualPlayer : IPlayer
 
     public BankCard SelectCardBank()
     {
-        return GameEngine.bank.keys[4];
+        return GameEngine.bank.keys[GameUtils.GetRandom(0,GameEngine.bank.keys.Count)];
     }
 
     public int[] SelectGem(int cantgem)
@@ -217,7 +217,8 @@ public class VirtualPlayer : IPlayer
     }
     public int SelectCard(List<Card>list)
     {
-        return GamePrint.SelectCard(list);
+        if(list.Count==0) return -1;
+        return GameUtils.GetRandom(0,list.Count);
     }
 
     public int SelectBCard(List<Card> cardslist)

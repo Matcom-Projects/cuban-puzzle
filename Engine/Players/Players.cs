@@ -35,12 +35,8 @@ public class ManualPlayer : IPlayer
     public int SelectCardHand()//commit
     { 
         Console.WriteLine("De HandCards:");
-        int i = 0;
-        do{
-            i = GamePrint.SelectCard(Table.HandCards);
-        }while(Table.HandCards[i] is Gem1 || Table.HandCards[i] is Gem2 || Table.HandCards[i] is Gem3 || Table.HandCards[i] is Gem4);
 
-        return i;
+        return GamePrint.SelectCard(Table.HandCards);;
     }
 
     public int SelectCardOnGoing()
