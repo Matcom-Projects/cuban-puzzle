@@ -223,7 +223,11 @@ public class VirtualPlayer : IPlayer
 
     public int SelectBCard(List<Card> cardslist)
     {
-        return GamePrint.SelectBCard(cardslist);
+        for(int i =0;i<cardslist.Count;i++)
+        {
+            if (cardslist[i] is BankCard) return i;
+        }
+        return -1;
     }
 }
 
