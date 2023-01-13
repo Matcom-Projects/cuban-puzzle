@@ -40,7 +40,7 @@ Aquí se ejecuta el código necesario para que se observe en la Consola lo que e
 
 Aquí se encuentra nuestro Menú Principal, donde puede dar comienzo a su partida o simplemente salir del juego. 
 
-### AddPlayers()
+### **_AddPlayers()_**
 
 Este método devuelve una lista con todos los jugadores que se enfrentarán en la partida. Aquí puede elegir jugar con un jugador virtual que como se mencionó anteriormente, no es tan fácil de vencerle.  
 
