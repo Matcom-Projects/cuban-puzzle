@@ -11,6 +11,7 @@ public class TablePlayer
 
     public TablePlayer( )
     {
+        this.Deck = new List<Card>();
         this.DiscardPile = new List<Card>();
         this.OnGoing = new List<Card>();
         this.HandCards = new List<Card>();
@@ -20,7 +21,7 @@ public class TablePlayer
 
     public void CreateDeck(List<Card> initialdeck)
     {
-        this.Deck = initialdeck;
+        Deck.AddRange(initialdeck);
     }
 
     public void DrawDeck(int n)

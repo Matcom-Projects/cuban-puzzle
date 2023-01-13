@@ -39,12 +39,12 @@ public class VirtualPlayer : IPlayer
 
         return 0;
     }
-    public Card? SelectCardOnGoing()
+    public int SelectCardOnGoing()
     {
         Console.ReadLine();
         
-        if(Table.OnGoing.Count == 0) return null;
-        return Table.OnGoing[Table.OnGoing.Count-1];
+        if(Table.OnGoing.Count == 0) return -1;
+        return GameUtils.GetRandom(0,Table.OnGoing.Count);
     }
     public void ExecuteAction(IActionable card)
     {
@@ -188,11 +188,6 @@ public class VirtualPlayer : IPlayer
             if(Table.DiscardPile.Contains(GameEngine.bank.keys[4])) return Table.HandCards.IndexOf(GameEngine.bank.keys[4]);
             return 0;
         }
-
-    int IPlayer.SelectCardOnGoing()
-    {
-        throw new NotImplementedException();
-    }
 
     public BankCard SelectCardBank()
     {
