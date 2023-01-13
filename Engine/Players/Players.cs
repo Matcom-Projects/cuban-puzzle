@@ -112,6 +112,7 @@ public class ManualPlayer : IPlayer
     public int SelectCardDeck()
     {
         Console.WriteLine("De Deck");
+        GamePrint.PrintList(Table.Deck);
 
         return GamePrint.SelectCard(Table.Deck);
     }
@@ -119,6 +120,8 @@ public class ManualPlayer : IPlayer
     public int SelectCardDiscardPile()
     {
         Console.WriteLine("De DiscardPile");
+        GamePrint.PrintList(Table.DiscardPile);
+        System.Console.WriteLine();
 
         return GamePrint.SelectCard(Table.DiscardPile);
     }

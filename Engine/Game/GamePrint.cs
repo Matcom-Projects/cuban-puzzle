@@ -164,6 +164,7 @@ public class GamePrint
                 cantbcards++;
             }
         }
+        System.Console.WriteLine();
         if (list.Count() == 0 || cantbcards == 0) return -1;
         
         int index = int.MaxValue;

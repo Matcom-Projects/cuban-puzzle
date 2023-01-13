@@ -1,8 +1,9 @@
-Money = 2;
+Money = 0;
 Color = blue;
 Information = Este hombre que le acabas de comprar un mani te va a dar como regalo un Combine, revivir una carta y una accion mas. ;
 Action
 {
+    GiveMoney]-2[;
     GainCard ]Me, Combine[;
     Revive ] Me, SelectCardDiscardPile][ [;
     GiveActions]1[;

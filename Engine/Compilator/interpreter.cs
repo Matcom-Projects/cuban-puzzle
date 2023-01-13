@@ -347,11 +347,6 @@ public class Interpreter
         if(node.Expression is Player_Node) return ((Player_Node)node.Expression).Player;
         else if (node.Expression is Var_Node)
         {
-            foreach (string a in Global_Scope.Keys)
-            {
-                System.Console.WriteLine(a);
-            }
-            System.Console.WriteLine(((Var_Node)node.Expression).Value);
             return Visit_IPlayerExpression(Global_Scope[((Var_Node)node.Expression).Value]);
         }
         else if (node.Expression is Function_Node)
