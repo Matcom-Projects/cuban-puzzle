@@ -211,9 +211,15 @@ El jugador en cuestión obtiene una carta de banco, y es enviada a su `DiscardPi
 
 ### **_Sacrifice()_**
 
+Selecciona una carta de su mano y la manda para `DiscardPile`.
+
 ### **_OverTaking()_**
 
+Este acción es llamada Adelantar. Selecciona una carta del deck y la envía para la mano.
+
 ### **_Revive()_**
+
+Envía una carta de `DiscardPile` hacia la mano.
 
 ### **_CombineFunction()_**
 
