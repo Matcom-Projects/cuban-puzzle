@@ -12,7 +12,7 @@ public class VirtualPlayer : IPlayer
     
     public bool Exit()
     {
-        return false;
+        return !ExistIActionable();
     }
     public bool ExistIActionable()
     {

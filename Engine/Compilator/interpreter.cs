@@ -35,23 +35,35 @@ public class Interpreter
     {
         if(node.Variable.Type == Type.Int)
         {
-            Global_Scope.Add(node.Variable.Value,new Expression_Node(Type.Int,new Num_Node(Visit_NumericExpression(node.Value))));
+            if(Global_Scope.ContainsKey(node.Variable.Value))
+            {
+                Global_Scope[node.Variable.Value]=new Expression_Node(Type.Int,new Num_Node(Visit_NumericExpression(node.Value)));
+            }
+            else Global_Scope.Add(node.Variable.Value,new Expression_Node(Type.Int,new Num_Node(Visit_NumericExpression(node.Value))));
         }
         else if (node.Variable.Type == Type.Boolean)
         {
-            Global_Scope.Add(node.Variable.Value,new Expression_Node(Type.Boolean,new Bool_Node(Visit_BooleanExpression(node.Value))));
+            if(Global_Scope.ContainsKey(node.Variable.Value))
+            {
+                Global_Scope[node.Variable.Value]=new Expression_Node(Type.Boolean,new Bool_Node(Visit_BooleanExpression(node.Value)));
+            }
+            else Global_Scope.Add(node.Variable.Value,new Expression_Node(Type.Boolean,new Bool_Node(Visit_BooleanExpression(node.Value))));
         }
         else if (node.Variable.Type == Type.iPlayer)
         {
-            Global_Scope.Add(node.Variable.Value,new Expression_Node(Type.iPlayer,new Player_Node(Visit_IPlayerExpression(node.Value))));
+            if(Global_Scope.ContainsKey(node.Variable.Value))
+            {
+                Global_Scope[node.Variable.Value]=new Expression_Node(Type.iPlayer,new Player_Node(Visit_IPlayerExpression(node.Value)));
+            }
+            else Global_Scope.Add(node.Variable.Value,new Expression_Node(Type.iPlayer,new Player_Node(Visit_IPlayerExpression(node.Value))));
         }
         else if (node.Variable.Type == Type.BCard)
         {
-            Global_Scope.Add(node.Variable.Value,new Expression_Node(Type.BCard,new BankCard_Node(Visit_BankCardExpression(node.Value))));
-        }
-        else if (node.Variable.Type == Type.list)
-        {
-            Global_Scope.Add(node.Variable.Value,node.Value);
+            if(Global_Scope.ContainsKey(node.Variable.Value))
+            {
+                Global_Scope[node.Variable.Value]=new Expression_Node(Type.BCard,new BankCard_Node(Visit_BankCardExpression(node.Value)));
+            }
+            else Global_Scope.Add(node.Variable.Value,new Expression_Node(Type.BCard,new BankCard_Node(Visit_BankCardExpression(node.Value))));
         }
         else throw new Exception("asignaste algo q no es valido");
     }
