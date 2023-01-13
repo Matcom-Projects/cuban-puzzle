@@ -2,11 +2,6 @@ namespace engine_cuban_puzzle;
 
 public class GameUtils
 {
-    public static void Move ( List<Card> a , List<Card> b , int index )
-    {
-        b.Add(a[index]);
-        a.RemoveAt(index);
-    }
     public static List<IPlayer> MixPlayers(List<IPlayer> a)
     {
         List<IPlayer> result = new List<IPlayer>();    
