@@ -1,7 +1,9 @@
 # Cuban-Puzzle
 
-> Proyecto de Programación. Facultad de Matemática y Computación. Universidad de La Habana. 
+> Proyecto de Programación. Facultad de Matemática y Computación. Universidad de La Habana.
+>  
 > Dario Rodríguez Llosa, C112. 
+> 
 > Ricardo Antonio Cápiro Colomar, C112.
 
 ## Introducción
