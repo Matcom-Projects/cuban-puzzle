@@ -87,4 +87,16 @@ public class GameUtils
         }while(key!=ConsoleKey.B && key!=ConsoleKey.H);
 
     }
+
+    public static bool ExistCombination(List<Card> gempilelist)
+    {
+        for(int i = 0 ; i < gempilelist.Count-1 ; i++)
+        {
+            for(int j = i + 1 ; j < gempilelist.Count ; j++ )
+            {
+                if( gempilelist[i].Money + gempilelist[j].Money <= 4 ) return true;
+            }
+        }
+        return false;
+    }
 }

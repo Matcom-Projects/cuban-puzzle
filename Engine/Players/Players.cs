@@ -126,7 +126,15 @@ public class ManualPlayer : IPlayer
 
     public int[] SelectGem(int cantgem)
     {
-        throw new NotImplementedException();
+        int x = SelectGem();
+        int y = SelectGem();
+        while( x == y || Table.GemPile[x].Money+Table.GemPile[y].Money > 4)
+        {
+            System.Console.WriteLine("La combinacion entre estas dos gemas no existe.");
+            x = SelectGem();
+            y = SelectGem();
+        }
+        return new int[]{x,y};
     }
 
     public int SelectCard(List<Card> list)

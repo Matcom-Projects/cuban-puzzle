@@ -95,6 +95,7 @@ public class GamePrint
 
     public static int SelectCard(List<Card> list)//cambios Kpiro
     {
+        if(list.Count == 0) return -1;
         int index = int.MaxValue;
         while(index >= list.Count || index<0)
         {
@@ -115,6 +116,8 @@ public class GamePrint
 
     public static int SelectCard(List<BankCard> list)//cambios Kpiro
     {
+        if(list.Count == 0) return -1;
+
         int index = int.MaxValue;
         while(index >= list.Count || index < 0)
         {
@@ -155,20 +158,20 @@ public class GamePrint
 
     public static int SelectBCard(List<Card> list)//cambios Kpiro
     {
-        int index = 0;
+        int cantbcards = 0;
         bool[] select = new bool[list.Count];
-        foreach(Card card in list)
+        for(int i =0;i<list.Count;i++)
         {
-            if(card is BankCard)
+            if(list[i] is BankCard)
             {
-                System.Console.Write($"[{index}].{card.Name}  ");
-                select[index] = true;
+                System.Console.Write($"[{i}].{list[i].Name}  ");
+                select[i] = true;
+                cantbcards++;
             }
-            index ++;
         }
-        if (list.Count() == 0) return -1;
+        if (list.Count() == 0 || cantbcards == 0) return -1;
         
-        index = int.MaxValue;
+        int index = int.MaxValue;
 
         while(true)
         {

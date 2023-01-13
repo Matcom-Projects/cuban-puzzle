@@ -4,6 +4,7 @@ public class GameActions
 {
     public static void Move ( List<Card> a , List<Card> b , int index )
     {
+        if(index==-1) return;
         b.Add(a[index]);
         a.RemoveAt(index);
     }
@@ -25,10 +26,12 @@ public class GameActions
 
     public static void SaveCards(int index)
     {
+        if(index == -1) return;
         GameEngine.Turns.Current.Table.HandToSaveCards(index);
     }
     public static void Trash(int index, List<Card> list)
     {
+        if(index == -1) return;
         GameEngine.bank.Add( (BankCard)list[index]);
         list.RemoveAt(index);
     }
@@ -54,16 +57,19 @@ public class GameActions
 
     public static void Sacrifice (IPlayer Player, int index)
     {
+        if(index == -1) return;
         Player.Table.HandToDiscardPile(index);
     }
 
     public static void OverTaking(IPlayer Player, int index)
     {
+        if(index == -1) return;
         Player.Table.DeckToHand(index);
     }
 
     public static void Revive(IPlayer Player, int index)
     {
+        if(index == -1) return;
         Player.Table.DiscardPileToHand(index);
     }
 
