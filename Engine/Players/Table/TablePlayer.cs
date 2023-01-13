@@ -34,6 +34,7 @@ public class TablePlayer
                 DiscardPile.Clear();
                 MixDeck();
             }
+            if(Deck.Count ==0) break;
             GameActions.Move(Deck,HandCards,0);
         }
     }

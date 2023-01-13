@@ -117,9 +117,9 @@ namespace console_cuban_puzzle;
                         DeckPLayer.Add ( HeroCards[index] );
                         selechero[index]=true;
                     }
-                    DeckPLayer.AddRange(initialdeck);
                 }
-
+                
+                DeckPLayer.AddRange(initialdeck);
                 a.Table.CreateDeck(DeckPLayer);
                 a.Table.MixDeck();
                 a.Table.DrawDeck(5);
