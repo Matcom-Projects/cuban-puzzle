@@ -18,7 +18,7 @@ public enum Type
 
     For, //ciclo
 
-    If,Else,And,Or, //condicionales
+    If,Else,//condicionales
 
     Me, //player de turno
 

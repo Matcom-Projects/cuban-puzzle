@@ -184,17 +184,6 @@ public class Parse
                 result = new Expression_Node(Type.Int,new BinaryOperation_Node(result,token.Type,right,Type.Int));
             }
         }
-        else if (Current_Token.Type == Type.And || Current_Token.Type == Type.Or)
-        {
-            Token token = Current_Token;
-            Eat(token.Type);
-
-            Expression_Node right = Term();
-
-            if(result.TypeReturn != Type.Boolean || right.TypeReturn != Type.Boolean) throw new Exception("no puedes evaluar una manzana con una pera.");
-
-            return new Expression_Node(Type.Boolean,new BinaryOperation_Node(result,token.Type,right,Type.Boolean));
-        }
         else if ( Current_Token.Type == Type.MinorEqual || Current_Token.Type == Type.GreaterEqual 
         || Current_Token.Type == Type.Greater  ||  Current_Token.Type == Type.Minor )
         {

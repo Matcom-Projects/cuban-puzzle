@@ -266,14 +266,6 @@ public class Interpreter
         {
             BinaryOperation_Node auxnode = (BinaryOperation_Node)node.Expression;
 
-            if(auxnode.Operation == Type.And)
-            {
-                return ( Visit_BooleanExpression(auxnode.Left) && Visit_BooleanExpression(auxnode.Right) );
-            }
-            if(auxnode.Operation == Type.Or)
-            {
-                return ( Visit_BooleanExpression(auxnode.Left) || Visit_BooleanExpression(auxnode.Right) );
-            }
             if(auxnode.Operation == Type.GreaterEqual)
             {
                 return ( Visit_NumericExpression(auxnode.Left) >= Visit_NumericExpression(auxnode.Right) );

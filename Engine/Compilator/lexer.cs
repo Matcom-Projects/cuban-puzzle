@@ -17,8 +17,6 @@ public class Lexer
         Ids.Add("false",new Token(Type.False,"false"));
         Ids.Add("for",new Token(Type.For,"for"));
         Ids.Add("if",new Token(Type.If,"if"));
-        Ids.Add("and",new Token(Type.And,"and"));
-        Ids.Add("or",new Token(Type.Or,"or"));
         Ids.Add("else",new Token(Type.Else,"else"));
         Ids.Add("Me",new Token(Type.Me,"me"));
         Ids.Add("DeckList",new Token(Type.deck,"DeckList"));
