@@ -15,6 +15,11 @@ public class GamePrint
             Console.ForegroundColor = ConsoleColor.Yellow;
             System.Console.WriteLine(player.Name);
             System.Console.WriteLine();
+            Console.ForegroundColor= ConsoleColor.White;
+            Console.Write("Cantidad de acciones: ");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            System.Console.WriteLine(GameEngine.CantActionsPerTurn);
+            System.Console.WriteLine();
 
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("----------------------------------------------------------------------------------------------------------------------------");
@@ -22,6 +27,10 @@ public class GamePrint
             PrintOnGoing(player.Table.OnGoing);
             if(player==GameEngine.Turns.Current)    
                 PrintHand(player.Table.HandCards);
+            Console.Write("Deck: ");
+            Console.WriteLine("["+player.Table.Deck.Count+"] "+"Cartas");
+            Console.Write("DiscardPile: ");
+            Console.WriteLine("["+player.Table.DiscardPile.Count+"] "+"Cartas");
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("----------------------------------------------------------------------------------------------------------------------------");
             System.Console.WriteLine();
@@ -72,20 +81,7 @@ public class GamePrint
         return key;
     }
 
-    public static int ChooseIndex(int min,int max)
-    {
-        return 0;
-    }
-
     public static void PrintList(List<Card> list)//cambios Kpiro
-    {
-        for(int i=0; i<list.Count; i++)
-        {
-            System.Console.Write($"[{i}].{list[i].Name}  ");
-        }
-    }
-
-    public static void PrintList(List<BankCard> list)//cambios Kpiro
     {
         for(int i=0; i<list.Count; i++)
         {
