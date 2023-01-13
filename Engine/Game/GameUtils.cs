@@ -25,14 +25,14 @@ public class GameUtils
     
     public static void InformationCard()
     {
-        Console.WriteLine("Informacion de las cartas");
-        ConsoleKey key = GamePrint.Read();
+        ConsoleKey key;
         do{
             Console.Clear();
+            Console.WriteLine("Informacion de las cartas");
             Console.WriteLine("[B].BankCards");
             Console.WriteLine("[H].HeroCards");
 
-            switch(key)
+            switch(key = GamePrint.Read())
             {
                 case ConsoleKey.B: 
                 {
@@ -47,6 +47,7 @@ public class GameUtils
                     Console.Clear();
                     System.Console.WriteLine($"{GameEngine.bank.keys[index].Name}:");
                     System.Console.WriteLine($"{GameEngine.bank.keys[index].Information}:");
+                    Console.ReadLine();
                     return;
                 }
                 case ConsoleKey.H:
@@ -62,6 +63,7 @@ public class GameUtils
                     Console.Clear();
                     System.Console.WriteLine($"{CreateCards.AllHeroCards[pos].Name}:");
                     System.Console.WriteLine($"{CreateCards.AllHeroCards[pos].Information}:");
+                    Console.ReadLine();
                     return;
                 } 
             }
