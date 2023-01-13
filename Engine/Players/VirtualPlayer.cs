@@ -173,15 +173,21 @@ public class VirtualPlayer : IPlayer
         return false;
     }
 
-    public int SelectCardDeck()
-    {
-        throw new NotImplementedException();
-    }
+   public int SelectCardDeck()
+        {
+            if(Table.Deck.Contains(GameEngine.bank.keys[6])) return Table.HandCards.IndexOf(GameEngine.bank.keys[6]);
+            if(Table.Deck.Contains(GameEngine.bank.keys[5])) return Table.HandCards.IndexOf(GameEngine.bank.keys[5]);
+            if(Table.Deck.Contains(GameEngine.bank.keys[4])) return Table.HandCards.IndexOf(GameEngine.bank.keys[4]);
+            return 0;
+        }
 
-    public int SelectCardDiscardPile()
-    {
-        throw new NotImplementedException();
-    }
+        public int SelectCardDiscardPile()
+        {
+            if(Table.DiscardPile.Contains(GameEngine.bank.keys[6])) return Table.HandCards.IndexOf(GameEngine.bank.keys[6]);
+            if(Table.DiscardPile.Contains(GameEngine.bank.keys[5])) return Table.HandCards.IndexOf(GameEngine.bank.keys[5]);
+            if(Table.DiscardPile.Contains(GameEngine.bank.keys[4])) return Table.HandCards.IndexOf(GameEngine.bank.keys[4]);
+            return 0;
+        }
 
     int IPlayer.SelectCardOnGoing()
     {
@@ -190,22 +196,46 @@ public class VirtualPlayer : IPlayer
 
     public BankCard SelectCardBank()
     {
-        throw new NotImplementedException();
+        return GameEngine.bank.keys[4];
     }
 
     public int[] SelectGem(int cantgem)
-    {
-        throw new NotImplementedException();
-    }
+        {
+            int[] indexs = new int[10];
+            int count = 0;
+            int money = 0;
+            foreach(var l in Table.GemPile)
+            {
+                if(l is Gem4) l.Money = 0;
+                else{ count++;}
+            }
+            if(count<2) return new int[] {-1,-1};
 
-    public int SelectCard(List<Card>lis)
+            do{
+                money = 0;
+                for(int i=0; i<cantgem; i++)
+                {
+                    Card x = Table.GemPile[indexs[i] = SelectGem()];
+                    money += x.Money;
+                    x.Money = 0;
+                }
+            }while(money>4);
+
+            foreach(var l in Table.GemPile)
+            {
+                if(l is Gem4) l.Money = 4;
+            }
+
+            return indexs;
+        }
+    public int SelectCard(List<Card>list)
     {
-        throw new NotImplementedException();
+        return GamePrint.SelectCard(list);
     }
 
     public int SelectBCard(List<Card> cardslist)
     {
-        throw new NotImplementedException();
+        return GamePrint.SelectBCard(cardslist);
     }
 }
 
