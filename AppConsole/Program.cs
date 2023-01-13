@@ -92,8 +92,7 @@ namespace console_cuban_puzzle;
         static List<IPlayer> ChooseHeroCards(List<IPlayer> players,List<Card> initialdeck,List<Card>HeroCards)
         {
             bool[] selechero = new bool[HeroCards.Count];
-            selechero[selechero.Length-1] = true;
-            int index= selechero.Length-1;
+            int index= -1;
 
             foreach(IPlayer a in players)
             {
@@ -104,19 +103,20 @@ namespace console_cuban_puzzle;
                     System.Console.WriteLine("\tSeleccione su Heroe: ");
                     for(int i=0; i<HeroCards.Count; i++)
                     {
-                        System.Console.WriteLine($"[{i/3}][{HeroCards[i].Name}]");
+                        System.Console.WriteLine($"[{i}][{HeroCards[i].Name}]");
                     }
                     System.Console.WriteLine($"-{a.Name}-");
                     
-                    while(selechero[index])
+                    for(int i = 0 ; i < 3 ; i++)
                     {
                         index = GamePrint.SelectCard(HeroCards);
+                        while(selechero[index])
+                        {
+                            index = GamePrint.SelectCard(HeroCards);
+                        }
+                        DeckPLayer.Add ( HeroCards[index] );
+                        selechero[index]=true;
                     }
-                    index = index*3;
-
-                    DeckPLayer.Add ( HeroCards[index] );
-                    DeckPLayer.Add ( HeroCards[index+1]);
-                    DeckPLayer.Add ( HeroCards[index+2]);
                     DeckPLayer.AddRange(initialdeck);
                 }
 

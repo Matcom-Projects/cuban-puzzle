@@ -4,13 +4,13 @@ public class Interpreter
 {
     public Parse Parser;
     public Compound_Node PrincipalNode;
-    public Dictionary<Var_Node,Expression_Node> Global_Scope;
+    public Dictionary<string,Expression_Node> Global_Scope;
 
     public Interpreter(Parse parser)
     {
         this.Parser = parser;
         this.PrincipalNode = Parser.Parsing();
-        this.Global_Scope = new Dictionary<Var_Node,Expression_Node>();
+        this.Global_Scope = new Dictionary<string,Expression_Node>();
     }
 
     public void Interpret()
@@ -35,23 +35,23 @@ public class Interpreter
     {
         if(node.Variable.Type == Type.Int)
         {
-            Global_Scope.Add(node.Variable,new Expression_Node(Type.Int,new Num_Node(Visit_NumericExpression(node.Value))));
+            Global_Scope.Add(node.Variable.Value,new Expression_Node(Type.Int,new Num_Node(Visit_NumericExpression(node.Value))));
         }
         else if (node.Variable.Type == Type.Boolean)
         {
-            Global_Scope.Add(node.Variable,new Expression_Node(Type.Boolean,new Bool_Node(Visit_BooleanExpression(node.Value))));
+            Global_Scope.Add(node.Variable.Value,new Expression_Node(Type.Boolean,new Bool_Node(Visit_BooleanExpression(node.Value))));
         }
         else if (node.Variable.Type == Type.iPlayer)
         {
-            Global_Scope.Add(node.Variable,new Expression_Node(Type.iPlayer,new Player_Node(Visit_IPlayerExpression(node.Value))));
+            Global_Scope.Add(node.Variable.Value,new Expression_Node(Type.iPlayer,new Player_Node(Visit_IPlayerExpression(node.Value))));
         }
         else if (node.Variable.Type == Type.BCard)
         {
-            Global_Scope.Add(node.Variable,new Expression_Node(Type.BCard,new BankCard_Node(Visit_BankCardExpression(node.Value))));
+            Global_Scope.Add(node.Variable.Value,new Expression_Node(Type.BCard,new BankCard_Node(Visit_BankCardExpression(node.Value))));
         }
         else if (node.Variable.Type == Type.list)
         {
-            Global_Scope.Add(node.Variable,node.Value);
+            Global_Scope.Add(node.Variable.Value,node.Value);
         }
         else throw new Exception("asignaste algo q no es valido");
     }
@@ -204,7 +204,7 @@ public class Interpreter
         }
         else if (node.Expression is Var_Node)
         {
-            return Visit_NumericExpression(Global_Scope[(Var_Node)node.Expression]);
+            return Visit_NumericExpression(Global_Scope[((Var_Node)node.Expression).Value]);
         }
         else if (node.Expression is BinaryOperation_Node)
         {
@@ -248,7 +248,7 @@ public class Interpreter
         if(node.Expression is Bool_Node) return ((Bool_Node)node.Expression).Value;
         else if (node.Expression is Var_Node)
         {
-            return Visit_BooleanExpression(Global_Scope[(Var_Node)node.Expression]);
+            return Visit_BooleanExpression(Global_Scope[((Var_Node)node.Expression).Value]);
         }
         else if(node.Expression is BinaryOperation_Node)
         {
@@ -335,7 +335,12 @@ public class Interpreter
         if(node.Expression is Player_Node) return ((Player_Node)node.Expression).Player;
         else if (node.Expression is Var_Node)
         {
-            return Visit_IPlayerExpression(Global_Scope[(Var_Node)node.Expression]);
+            foreach (string a in Global_Scope.Keys)
+            {
+                System.Console.WriteLine(a);
+            }
+            System.Console.WriteLine(((Var_Node)node.Expression).Value);
+            return Visit_IPlayerExpression(Global_Scope[((Var_Node)node.Expression).Value]);
         }
         else if (node.Expression is Function_Node)
         {
@@ -356,7 +361,7 @@ public class Interpreter
         if(node.Expression is BankCard_Node) return ((BankCard_Node)node.Expression).Card;
         else if (node.Expression is Var_Node)
         {
-            return Visit_BankCardExpression(Global_Scope[(Var_Node)node.Expression]);
+            return Visit_BankCardExpression(Global_Scope[((Var_Node)node.Expression).Value]);
         }
         else if (node.Expression is Function_Node)
         {

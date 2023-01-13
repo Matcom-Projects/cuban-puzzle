@@ -63,7 +63,7 @@ public static class GameEngine
                 if(a.ExistIActionable())//commit
                 {
                     int index =a.SelectCardHand();
-                    if(a.Table.HandCards[index] is Gem1 || a.Table.HandCards[index] is Gem2 || a.Table.HandCards[index] is Gem3 || a.Table.HandCards[index] is Gem4)
+                    if(!(a.Table.HandCards[index] is Gem1 || a.Table.HandCards[index] is Gem2 || a.Table.HandCards[index] is Gem3 || a.Table.HandCards[index] is Gem4))
                     {
                         a.Table.HandToOnGoing(index);//moverla hacia el ongoing     
                         GamePrint.PrintTable(Players);

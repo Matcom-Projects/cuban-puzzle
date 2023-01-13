@@ -24,9 +24,8 @@ public class GamePrint
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("----------------------------------------------------------------------------------------------------------------------------");
             PrintGemPile(player.Table.GemPile);
-            PrintOnGoing(player.Table.OnGoing);
-            if(player==GameEngine.Turns.Current)    
-                PrintHand(player.Table.HandCards);
+            PrintOnGoing(player.Table.OnGoing);  
+            PrintHand(player.Table.HandCards);
             Console.Write("Deck: ");
             Console.WriteLine("["+player.Table.Deck.Count+"] "+"Cartas");
             Console.Write("DiscardPile: ");
