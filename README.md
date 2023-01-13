@@ -72,6 +72,6 @@ Ambos métodos brindan de `Bank` una carta del tipo que se indica. El primero ha
 
 Estos métodos tienen la misma funcionalidad que los dos anteriores con el único cambio que estos brindan más de una carta de ese tipo.
 
-### **_Add(BankCard a) y AddCant(List<BankCard> a)_**
+### **_Add() y AddCant()_**
 
 Estos métodos adicionan cartas al banco. El primero agrega una carta de ese tipo al banco, mientras que el segundo agrega más de una carta de ese tipo al banco.
