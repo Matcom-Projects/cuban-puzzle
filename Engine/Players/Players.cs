@@ -151,10 +151,6 @@ public class ManualPlayer : IPlayer
 
     public int SelectBCard(List<Card> cardslist)
     {
-        for(int i = 0;i<cardslist.Count;i++)
-        {
-            if(cardslist[i] is BankCard) return i;
-        }
-        return -1;
+        return GamePrint.SelectBCard(cardslist);
     }
 }
