@@ -195,34 +195,26 @@ public class VirtualPlayer : IPlayer
     }
 
     public int[] SelectGem(int cantgem)
+    {
+        if(!GameUtils.ExistCombination(Table.GemPile)) return new int[]{-1,-1};
+        int HighCombination=0;
+        int indexi=-1;
+        int indexj=-1;
+
+        for(int i =0;i<Table.GemPile.Count-1;i++)
         {
-            int[] indexs = new int[10];
-            int count = 0;
-            int money = 0;
-            foreach(var l in Table.GemPile)
+            for(int j = i+1;j<Table.GemPile.Count;j++)
             {
-                if(l is Gem4) l.Money = 0;
-                else{ count++;}
-            }
-            if(count<2) return new int[] {-1,-1};
-
-            do{
-                money = 0;
-                for(int i=0; i<cantgem; i++)
+                if(Table.GemPile[i].Money+Table.GemPile[j].Money<=4 && Table.GemPile[i].Money+Table.GemPile[j].Money>HighCombination)
                 {
-                    Card x = Table.GemPile[indexs[i] = SelectGem()];
-                    money += x.Money;
-                    x.Money = 0;
+                    indexi = i;
+                    indexj = j;
+                    HighCombination = Table.GemPile[i].Money+Table.GemPile[j].Money;
                 }
-            }while(money>4);
-
-            foreach(var l in Table.GemPile)
-            {
-                if(l is Gem4) l.Money = 4;
             }
-
-            return indexs;
         }
+        return new int[]{indexi,indexj};
+    }
     public int SelectCard(List<Card>list)
     {
         return GamePrint.SelectCard(list);
