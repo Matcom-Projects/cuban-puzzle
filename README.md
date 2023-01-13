@@ -187,35 +187,35 @@ Este método recibe dos listas de `Card` y un `index` y ejecuta la abstracción 
 
 Brinda más acciones para la Fase de Acción, según la cantidad que recibe `cant` es la cantidad de acciones de más que da.
 
-### **_GiveMoney_()_**
+### **_GiveMoney()_**
 
 Brinda más dinero para la Fase de Compra, según la cantidad que recibe `cant` es la cantidad de dinero que tiene de más para comprar.
 
-### **_Draw_()_**
+### **_Draw()_**
 
 Roba una cantidad `n` de cartas del deck para la mano.
 
-### **_SaveCards_()_**
+### **_SaveCards()_**
 
 Guarda una carta de la mano para el próximo turno.
 
-### **_Trash_()_**
+### **_Trash()_**
 
 Trashear es un término propio del juego, y significa enviar una carta desde cualquier lugar hacia el banco.
 
-### **_Attack_()_**
+### **_Attack()_**
 
 Este método recibe el jugador el cual va a ser atacado, `Victim`, y envía a su `GemPile` la cantidad de gemas digitadas, `cantgem`.
 
-### **_GainCard_()_**
+### **_GainCard()_**
 
 El jugador en cuestión obtiene una carta de banco, y es enviada a su `DiscardPile`.
 
-### **_Sacrifice_()_**
+### **_Sacrifice()_**
 
-### **_OverTaking_()_**
+### **_OverTaking()_**
 
-### **_Revive_()_**
+### **_Revive()_**
 
 ### **_CombineFunction()_**
 
