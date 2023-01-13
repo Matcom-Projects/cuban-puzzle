@@ -149,6 +149,8 @@ public class ManualPlayer : IPlayer
 
     public int SelectCard(List<Card> list)
     {
+        GamePrint.PrintList(list);
+        System.Console.WriteLine();
         return GamePrint.SelectCard(list);
     }
 
