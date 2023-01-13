@@ -343,6 +343,10 @@ public class Interpreter
             {
                 return GameEngine.Turns.Current.SelectPlayer();
             }
+            if(((Function_Node)node.Expression).Function == Type.Me)
+            {
+                return GameEngine.Turns.Current;
+            }
         }
         throw new Exception("aqui deberia haber una expresion IPlayer");
     }
@@ -359,6 +363,38 @@ public class Interpreter
             if(((Function_Node)node.Expression).Function == Type.selectcardbank)
             {
                 return GameEngine.Turns.Current.SelectCardBank();
+            }
+            if(((Function_Node)node.Expression).Function == Type.gem1)
+            {
+                return GameEngine.bank.keys[0];
+            }
+            if(((Function_Node)node.Expression).Function == Type.gem2)
+            {
+                return GameEngine.bank.keys[1];
+            }
+            if(((Function_Node)node.Expression).Function == Type.gem3)
+            {
+                return GameEngine.bank.keys[2];
+            }
+            if(((Function_Node)node.Expression).Function == Type.gem4)
+            {
+                return GameEngine.bank.keys[3];
+            }
+            if(((Function_Node)node.Expression).Function == Type.crashgem)
+            {
+                return GameEngine.bank.keys[4];
+            }
+            if(((Function_Node)node.Expression).Function == Type.doblecrashgem)
+            {
+                return GameEngine.bank.keys[5];
+            }
+            if(((Function_Node)node.Expression).Function == Type.combine)
+            {
+                return GameEngine.bank.keys[6];
+            }
+            if(((Function_Node)node.Expression).Function == Type.cup)
+            {
+                return GameEngine.bank.keys[7];
             }
         }
         throw new Exception("aqui deberia haber una expresion BankCard");

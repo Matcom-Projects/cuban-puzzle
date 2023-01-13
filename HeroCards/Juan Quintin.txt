@@ -1,0 +1,17 @@
+Money = 0;
+Color = yellow;
+Information = Si estas en la ronda 1 ideal para ganar dinero y si no ideal para llenar a tus enemigos de Cup;
+Action
+{
+    for ]2[
+    {
+        if ] Round][ == 1[
+        {
+            GainCard ] Me, Gem1 [ ;
+        }
+        else
+        {
+            GainCard ]SelectPlayer][ , Cup[;
+        }    
+    }
+}

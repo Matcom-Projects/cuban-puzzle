@@ -4,7 +4,7 @@ public class Bank
 {
     public Dictionary <BankCard,int> GameBank { get; private set; } 
     public List<BankCard> keys { get; private set; }
-    public Bank ( List<BankCard> choosingcards )
+    public Bank (List<BankCard> ChoosingCards)
     {
         this.GameBank = new Dictionary<BankCard, int>();
         this.keys = new List<BankCard>();
@@ -22,13 +22,13 @@ public class Bank
             GameBank.Add(a,int.MaxValue);
         }
 
-        foreach(BankCard a in choosingcards)
+        foreach(BankCard a in ChoosingCards)
         {
             keys.Add(a);
             GameBank.Add(a,5);
         }
     }
-
+    
     public BankCard Get(int index)
     {
         if( GameBank[keys[index]] != 0 )

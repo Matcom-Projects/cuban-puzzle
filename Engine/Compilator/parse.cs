@@ -13,8 +13,11 @@ public class Parse
     }
     public void Eat(Type token_type)
     {
-        if(Current_Token.Type == token_type) Current_Token = Lexer.Get_Next_Token();
-        else throw new Exception("Se esperaba un " + token_type);
+        if(Current_Token.Type == token_type) 
+        {
+            Current_Token = Lexer.Get_Next_Token();
+        }
+        else {Console.WriteLine(Current_Token.Type) ;throw new Exception("Se esperaba un " + token_type);}
     }
 
     public Expression_Node Factor()
@@ -33,7 +36,7 @@ public class Parse
         else if (token.Type == Type.Me)
         {
             Eat(Type.Me);
-            return new Expression_Node(Type.iPlayer,new Player_Node(GameEngine.Turns.Current));
+            return new Expression_Node(Type.iPlayer,new Function_Node(Type.Me,Type.iPlayer,new List<Expression_Node>()));
         }
         else if (token.Type == Type.LParen)
         {
@@ -80,53 +83,18 @@ public class Parse
             Function_Node result = Function_statement(token.Type,new Type[]{Type.list},Type.Int);
             return new Expression_Node(Type.Int,result);
         }
-        else if (token.Type == Type.gem1)
+        else if (token.Type == Type.gem1 || token.Type == Type.gem2||token.Type == Type.gem3||token.Type == Type.gem4
+        ||token.Type == Type.cup||token.Type == Type.crashgem||token.Type == Type.doblecrashgem||token.Type == Type.combine)
         {
-            Eat(Type.gem1);
-            return new Expression_Node(Type.BCard,new BankCard_Node(GameEngine.bank.keys[0]));
-        }
-        else if (token.Type == Type.gem2)
-        {
-            Eat(Type.gem2);
-            return new Expression_Node(Type.BCard,new BankCard_Node(GameEngine.bank.keys[1]));
-        }
-        else if (token.Type == Type.gem3)
-        {
-            Eat(Type.gem3);
-            return new Expression_Node(Type.BCard,new BankCard_Node(GameEngine.bank.keys[2]));
-        }
-        else if (token.Type == Type.gem4)
-        {
-            Eat(Type.gem4);
-            return new Expression_Node(Type.BCard,new BankCard_Node(GameEngine.bank.keys[3]));
-        }
-        else if (token.Type == Type.cup)
-        {
-            Eat(Type.cup);
-            return new Expression_Node(Type.BCard,new BankCard_Node(GameEngine.bank.keys[7]));
-        }
-        else if (token.Type == Type.crashgem)
-        {
-            Eat(Type.crashgem);
-            return new Expression_Node(Type.BCard,new BankCard_Node(GameEngine.bank.keys[4]));
-        }
-        else if (token.Type == Type.doblecrashgem)
-        {
-            Eat(Type.doblecrashgem);
-            return new Expression_Node(Type.BCard,new BankCard_Node(GameEngine.bank.keys[5]));
-        }
-        else if (token.Type == Type.combine)
-        {
-            Eat(Type.combine);
-            return new Expression_Node(Type.BCard,new BankCard_Node(GameEngine.bank.keys[6]));
+            Eat(token.Type);
+            return new Expression_Node(Type.BCard,new Function_Node(token.Type,Type.BCard,new List<Expression_Node>()));
         }
         else if (token.Type == Type.ID)
         {
             Eat(Type.ID);
-            if(!PrivateScope.ContainsKey(token.Value)) throw new Exception("esta instancia no existe");
+            if(!PrivateScope.ContainsKey(token.Value)){Console.WriteLine(token.Value); throw new Exception("esta instancia no existe");}
             return new Expression_Node(PrivateScope[token.Value],new Var_Node(token,PrivateScope[token.Value]));
         }
-
 
         throw new Exception("Sintaxis error");
     }
@@ -227,6 +195,23 @@ public class Parse
 
             return new Expression_Node(Type.Boolean,new BinaryOperation_Node(result,token.Type,right,Type.Boolean));
         }
+        else if ( Current_Token.Type == Type.MinorEqual || Current_Token.Type == Type.GreaterEqual 
+        || Current_Token.Type == Type.Greater  ||  Current_Token.Type == Type.Minor )
+        {
+            Token token = Current_Token;
+            Eat(token.Type);
+            Expression_Node right = Term();
+            if(result.TypeReturn != Type.Int || right.TypeReturn != Type.Int) throw new Exception("no se puede comparar 2 cosas q no sean numeros");
+            return new Expression_Node(Type.Boolean,new BinaryOperation_Node(result,token.Type,right,Type.Boolean));
+        }
+        else if (Current_Token.Type == Type.EqualEqual || Current_Token.Type == Type.Different)
+        {
+            Token token = Current_Token;
+            Eat(token.Type);
+            Expression_Node right = Term();
+            if(result.TypeReturn != right.TypeReturn) throw new Exception("no se puede comparar 2 types distintos");
+            return new Expression_Node(Type.Boolean,new BinaryOperation_Node(result,token.Type,right,Type.Boolean));
+        }
 
         return result;
     }
@@ -270,11 +255,7 @@ public class Parse
 
     public AST_Node Statement()
     {
-        if(Current_Token.Type == Type.LBrace)
-        {
-            return Compound_statement();
-        }
-        else if (Current_Token.Type == Type.ID)
+        if (Current_Token.Type == Type.ID)
         {
             return Assignment_statement();
         }
@@ -340,7 +321,7 @@ public class Parse
         Expression_Node condition = Exp();
         Eat(Type.LBracket);
         Compound_Node whentrue = Compound_statement();
-        if(Current_Token.Type == Type.Else) return new Conditional_Node(condition,whentrue,Compound_statement());
+        if(Current_Token.Type == Type.Else) {Eat(Type.Else);return new Conditional_Node(condition,whentrue,Compound_statement());}
         return new Conditional_Node(condition,whentrue,new Compound_Node());
     }
 
@@ -421,12 +402,8 @@ public class Parse
 
     public Var_Node Variable()
     {
+        Token token = Current_Token;
         Eat(Type.ID);
-        return new Var_Node(Current_Token,Type.Var);
+        return new Var_Node(token,Type.Var);
     }
 }
-// tengo dudas si pincha correctamente la deteccion de errores a la hora de crear variables...
-//IMPORTANTE!!!
-//IMPORTANTE!!!
-//IMPORTANTE!!!
-//IMPORTANTE!!!

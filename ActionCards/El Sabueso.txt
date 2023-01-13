@@ -1,8 +1,9 @@
-cost = 4;
-color = yellow;
-money = 1;
-action
+Cost = 1;
+Color = yellow;
+Money = 1;
+Information = Selecciona una gema de tu Gempile y la trashea;
+Action
 {
-    revive<1>;
-    CantAction+=1;
+    index = SelectBCard]Me.GemPileList[;
+    Trash ] index , Me.GemPileList [;
 }

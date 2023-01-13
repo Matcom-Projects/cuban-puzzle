@@ -20,7 +20,7 @@ public class Lexer
         Ids.Add("and",new Token(Type.And,"and"));
         Ids.Add("or",new Token(Type.Or,"or"));
         Ids.Add("else",new Token(Type.Else,"else"));
-        Ids.Add("me",new Token(Type.Me,"me"));
+        Ids.Add("Me",new Token(Type.Me,"me"));
         Ids.Add("DeckList",new Token(Type.deck,"DeckList"));
         Ids.Add("HandList",new Token(Type.hand,"HandList"));
         Ids.Add("OnGoingList",new Token(Type.ongoing,"OnGoingList"));
@@ -63,7 +63,7 @@ public class Lexer
     }
     private bool IsLetter()
     {
-        return (Current >= 97 && Current <= 122);
+        return ( ( Current >= 97 && Current <= 122 ) || ( Current >= 65 && Current <= 90 ) );
     }
 
     private bool IsAlfaNumeric()
@@ -72,7 +72,7 @@ public class Lexer
     }
     private bool IsSpace()
     {
-        return Current == ' ';
+        return Current == ' '||Current == '\n';
     }
 
     public void Advance()
@@ -242,6 +242,7 @@ public class Lexer
             }
             if(Current == ',')
             {
+                Advance();
                 return new Token(Type.Comma,",");
             }
             if(Current == '.')
@@ -251,7 +252,6 @@ public class Lexer
             }
             throw new Exception("Elemento no valido");
         }
-
         return new Token(Type.EOF,"#");
     }
 }

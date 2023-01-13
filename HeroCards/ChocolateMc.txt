@@ -1,0 +1,10 @@
+Money = 0;
+Color = Orange;
+Information = El Rey de to el reparto viene a repartir violencia popopopo;
+Action
+{
+    player = SelectPlayer][;
+
+    Sacrifice]player,SelectCard]player.HandList[[;
+    Attack ] player , SelectGem ][ [;
+}

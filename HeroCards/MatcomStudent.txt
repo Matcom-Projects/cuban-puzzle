@@ -1,0 +1,22 @@
+Money = 0;
+Color = Blue;
+Information = Debido al alto estres que recibe esta carta si tiene mas de 5 gemas adelanta 2 cartas y le da 2 acciones y en caso de
+lo contrario;
+Action
+{
+    if ] Me.CantGem][ > 5 [
+    {
+        for]2[
+        {
+            OverTaking]Me,SelectCardDeck][[;
+            GiveActions ]1[;
+        }
+    }
+    else
+    {
+        if ]true[
+        {
+            SaveCards]SelectCardHand][[;
+        }
+    }
+}

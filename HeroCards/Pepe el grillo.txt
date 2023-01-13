@@ -1,8 +1,9 @@
-money = 0;
-color = red;
-action
+Money = 0;
+Color = red;
+Information = Pepe es muy tranquilo po eso te deja robar cartas del deck y te da dinero y acciones, disfrutalas!! ;
+Action
 {
-    draw <2>;
-    CantActions += 2;
-    CantMoney -= 2;
+    Draw ]2[;
+    GiveActions ]2[;
+    GiveMoney ]2[;
 }

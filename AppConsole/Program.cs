@@ -89,27 +89,36 @@ namespace console_cuban_puzzle;
             return result;
         }
 
-        static List<IPlayer> ChooseHeroCards(List<IPlayer> players,List<Card> initialdeck)
+        static List<IPlayer> ChooseHeroCards(List<IPlayer> players,List<Card> initialdeck,List<Card>HeroCards)
         {
-            int index;
+            bool[] selechero = new bool[HeroCards.Count];
+            selechero[selechero.Length-1] = true;
+            int index= selechero.Length-1;
 
             foreach(IPlayer a in players)
             {
                 Console.Clear();
-                System.Console.WriteLine("\tSeleccione su Heroe: ");
-                for(int i=0; i<CreateCards.AllHeroCards.Count; i++)
-                {
-                    System.Console.WriteLine($"[{i/3}][{CreateCards.AllHeroCards[i].Name}]");
-                }
-                System.Console.WriteLine($"-{a.Name}-");
-                index = GamePrint.SelectCard(CreateCards.AllHeroCards);//implementar bien este metodo
-                index = index*3;
-
                 List<Card> DeckPLayer = new List<Card>();
-                DeckPLayer.Add( CreateCards.AllHeroCards[index] );
-                DeckPLayer.Add(CreateCards.AllHeroCards[index+1]);
-                DeckPLayer.Add(CreateCards.AllHeroCards[index+2]);
-                DeckPLayer.AddRange(initialdeck);
+                if(HeroCards.Count/3 >= players.Count)
+                {
+                    System.Console.WriteLine("\tSeleccione su Heroe: ");
+                    for(int i=0; i<HeroCards.Count; i++)
+                    {
+                        System.Console.WriteLine($"[{i/3}][{HeroCards[i].Name}]");
+                    }
+                    System.Console.WriteLine($"-{a.Name}-");
+                    
+                    while(selechero[index])
+                    {
+                        index = GamePrint.SelectCard(HeroCards);
+                    }
+                    index = index*3;
+
+                    DeckPLayer.Add ( HeroCards[index] );
+                    DeckPLayer.Add ( HeroCards[index+1]);
+                    DeckPLayer.Add ( HeroCards[index+2]);
+                    DeckPLayer.AddRange(initialdeck);
+                }
 
                 a.Table.CreateDeck(DeckPLayer);
                 a.Table.MixDeck();
@@ -121,22 +130,18 @@ namespace console_cuban_puzzle;
 
         static void NewGame()
         {
+            CreateCards.ReadCards();
             List<IPlayer> players = AddPlayers();
             players = GameUtils.MixPlayers(players);
 
-            List<BankCard> ChoosingCards = ChooseCards(players,CreateCards.AllActionsCard);
-            Bank bank = new Bank(ChoosingCards);
-            foreach(var l in CreateCards.ListBankCardByUser)
-            {
-                bank.keys.Add(l);
-                bank.GameBank.Add(l,int.MaxValue);
-            }
+            List<BankCard> ChoosingCards = ChooseCards(players,CreateCards.AllActionsCards);
+            Bank bank= new Bank(ChoosingCards);
 
             List<Card> initialdeck = new List<Card>();
             initialdeck.AddRange(bank.GetCant(0,6));
             initialdeck.Add((Card)bank.Get(4));
 
-            players = ChooseHeroCards(players,initialdeck);
+            players = ChooseHeroCards(players,initialdeck,CreateCards.AllHeroCards);
 
             IPlayer WinPlayer = GameEngine.PlayGame(players,bank);
             Console.Clear();
@@ -145,28 +150,6 @@ namespace console_cuban_puzzle;
         }
         static void Main()
         {
-//             Interperter.Execute();
-            CreateCards.AllActionsCard = new List<BankCard>();
-            CreateCards.AllActionsCard.Add(new CombosAreHard());
-            CreateCards.AllActionsCard.Add(new DrawThree());
-            CreateCards.AllActionsCard.Add(new GemEssence());
-            CreateCards.AllActionsCard.Add(new Knockdown());
-            CreateCards.AllActionsCard.Add(new OneTwoPunch());
-            CreateCards.AllActionsCard.Add(new OneOfEach());
-            CreateCards.AllActionsCard.Add(new SalesPrice());
-            CreateCards.AllActionsCard.Add(new RiskyMove());
-            CreateCards.AllActionsCard.Add(new SelfImprovement());
-            CreateCards.AllActionsCard.Add(new SneackAttack());
-            CreateCards.AllActionsCard.AddRange(CreateCards.ListActionCardByUser);
-            CreateCards.AllHeroCards = new List<Card>();
-            CreateCards.AllHeroCards.Add(new MartialMastery());
-            CreateCards.AllHeroCards.Add(new Reversal());
-            CreateCards.AllHeroCards.Add(new VersatileStyle());
-            CreateCards.AllHeroCards.Add(new BurningVigor());
-            CreateCards.AllHeroCards.Add(new PlayingWithFire());
-            CreateCards.AllHeroCards.Add(new UnstablePower());
-            CreateCards.AllHeroCards.AddRange(CreateCards.ListHeroeByUser);
-
             while(true)
             {
                 Console.Clear();

@@ -126,8 +126,11 @@ public class ManualPlayer : IPlayer
 
     public int[] SelectGem(int cantgem)
     {
+        if(!GameUtils.ExistCombination(Table.GemPile)) return new int[]{-1,-1};
+
         int x = SelectGem();
         int y = SelectGem();
+        
         while( x == y || Table.GemPile[x].Money+Table.GemPile[y].Money > 4)
         {
             System.Console.WriteLine("La combinacion entre estas dos gemas no existe.");
