@@ -1,9 +1,9 @@
 # Cuban-Puzzle
 
 > Proyecto de Programación. Facultad de Matemática y Computación. Universidad de La Habana.
->  
-> Dario Rodríguez Llosa, C112. 
-> 
+>
+> Dario Rodríguez Llosa, C112.
+>
 > Ricardo Antonio Cápiro Colomar, C112.
 
 ## Introducción
@@ -38,7 +38,7 @@ A continuación se explica con detalle cada uno de ellos.
 
 Aquí se ejecuta el código necesario para que se observe en la Consola lo que está ocurriendo en nuestro juego. La Consola es nuestra interfaz gráfica, se puede decir que sencilla, pero creemos que eficiente.
 
-### Main() 
+### **_Main()_** 
 
 Aquí se encuentra nuestro Menú Principal, donde puede dar comienzo a su partida o simplemente salir del juego. 
 
@@ -46,15 +46,15 @@ Aquí se encuentra nuestro Menú Principal, donde puede dar comienzo a su partid
 
 Este método devuelve una lista con todos los jugadores que se enfrentarán en la partida. Aquí puede elegir jugar con un jugador virtual que como se mencionó anteriormente, no es tan fácil de vencerle.  
 
-### ChooseCards()
+### **_ChooseCards()_**
 
 Este método devuelve una lista de `BankCard` con las cartas de acciones escogidas por los jugadores. Aquí se eligen 10 cartas que serán guardadas en el banco y usted podrá comprarlas en su turno. 
 
-### ChooseHeroCards()
+### **_ChooseHeroCards()_**
 
 Este método devuelve una lista con todos los jugadores que se enfrentarán en la partida, con la especificidad que a cada uno, dentro de este método, se le crea su deck inicial.
 
-### NewGame()
+### **_NewGame()_**
 
 En este método se prepara el escenario necesario para iniciar su partida. Aquí se llaman a los métodos explicados anteriormente: `AddPlayers()`, `ChooseCards()` y `ChooseHeroCards`. Después de ejecutados estos métodos, se ejecuta el método `PlayGame()` de la clase `GameEngine`, que será explicado posteriormente. 
 
@@ -64,14 +64,14 @@ En este método se prepara el escenario necesario para iniciar su partida. Aquí
 
 Esta clase contiene en su constructor un `Dictionary<BankCard,int>` `GameBank` donde están guardadas todas las `BankCard` del juego y el parámetro `int` indica la cantidad de cada una de esas cartas en el banco. Además se encuentra `List<BankCard>` `keys` que es una lista de solamente las `BankCard` del juego. En dicho constructor también se añaden las cartas de acciones ecogidas a las instancias `GameBank` y `keys`.
 
-### Get(int index) y Get(BankCard card)
+### **_Get(int index) y Get(BankCard card)_**
 
 Ambos métodos brindan de `Bank` una carta del tipo que se indica. El primero hace referencia con el parámetro `index` a la posición de una carta de la lista `keys`, mientras que el segundo hace referencia con el parámetro `card` a una carta del diccionario `GameBank`. 
 
-### GetCant(int index,int n) y GetCant(BankCard card,int n)
+### **_GetCant(int index,int n) y GetCant(BankCard card,int n)_**
 
 Estos métodos tienen la misma funcionalidad que los dos anteriores con el único cambio que estos brindan más de una carta de ese tipo.
 
-### Add(BankCard a) y AddCant(List<BankCard> a)
+### **_Add(BankCard a) y AddCant(List<BankCard> a)_**
 
 Estos métodos adicionan cartas al banco. El primero agrega una carta de ese tipo al banco, mientras que el segundo agrega más de una carta de ese tipo al banco.
