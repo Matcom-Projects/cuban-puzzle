@@ -52,7 +52,7 @@ Este método devuelve una lista de `BankCard` con las cartas de acciones escogid
 
 ### **_ChooseHeroCards()_**
 
-Este método devuelve una lista con todos los jugadores que se enfrentarán en la partida, con la especificidad que a cada uno, dentro de este método, se le crea su deck inicial.
+En este método se escogen los héroes de cada jugador en la partida. El mismo devuelve una lista con todos los jugadores que se enfrentarán en la partida, con la especificidad que a cada uno, dentro de este método, se le crea su deck inicial.
 
 ### **_NewGame()_**
 
@@ -75,3 +75,317 @@ Estos métodos tienen la misma funcionalidad que los dos anteriores con el únic
 ### **_Add() y AddCant()_**
 
 Estos métodos adicionan cartas al banco. El primero agrega una carta de ese tipo al banco, mientras que el segundo agrega más de una carta de ese tipo al banco.
+
+## Cards
+
+En este componente se encuentran todas las cartas imprescindibles del juego encapsuladas como clases.
+`Gem1` , `Gem2`, `Gem3` y `Gem4` son los distintos tipos de gemas que funcionan de manera diferente cuando están en su mano y cuando están en su `GemPile`. Las gemas de la mano funcionan como dinero en la Fase de Compra, mientras que las gemas del `GemPile` funcionan como cartas de ataque en la Fase de Acción al activar las cartas `CrashGem` y `DobleCrashGem`.
+`CrashGem` es una carta de ataque que envía gemas de su `GemPile` hacia sus oponentes. Atacar con gemas más grande es mucho mejor, pues estas se dividen en `Gem1` y todas ellas son enviadas a la vez. Por ejemplo, si ataca con una `Gem3`, se divide en tres `Gem1` y todas ellas van a la `GemPile` del oponente elegido. Esta carta brinda $1 extra para la Fase de Compra.
+`DobleCrashGem` funciona igual que el `CrashGem`, excepto que puedes enviar dos gemas en lugar de una y gana +$2 extra en la Fase de Compra en vez de +$1.
+`Combine` combina gemas en su `GemPile` en una sola gema si el total es 4 o menos. Por ejemplo, puede combinar un `Gem1` y un `Gem2` en una `Gem3`. Esta carta disminuye $1 en su Fase de Compra y además brinda una acción más para su Fase de Acción.
+`Cup` como fue explicado anteriormente, es una carta inútil que obstruye su deck. Si no puedes comprar una carta en su Fase de Compra entonces se envían tantos `Cup` hasta que su saldo esté en positivo.
+
+## ClassCard
+
+En este componente se encuentra la jerarquía de clases y la estructura de cada una de las cartas.
+`Card` es la clase padre de nuestra estructura jerárquica; está implementada de la siguiente manera:
+
+```cs
+public abstract class Card
+{
+    public string Id { get; private set; }
+    public string Name { get; private set; }
+    public string Color { get; private set; }
+    public int Money { get; set; }
+    public string Information {get; private set;}
+    public Card ( string name,string color,int money,string information)
+    {
+        this.Id = GameUtils.CreateId();
+        this.Name = name;
+        this.Color = color;
+        this.Money = money;
+        this.Information = information;
+    }
+}
+```
+
+En el árbol jerárquico le sigue `BankCard`, clase que hereda de `Card`, que identifica a todas las cartas de banco:
+
+```cs
+public abstract class BankCard : Card
+{
+    public int Cost{ get; private set; }
+    
+    public BankCard ( string name,string color,int money ,int cost,string information): base (name,color,money,information)
+    {
+        this.Cost = cost;
+    }
+}
+```
+
+
+Además se encuentran otras clases que engloban conceptos importantes como héroe o cartas de acción, estas son `ActionCard` y `ActionBankCard`:
+
+```cs
+public abstract class ActionCard : Card,IActionable
+{
+    public ActionCard(string name, string color, int money,string information): base( name , color , money ,information){}
+    public abstract void Action();
+}
+
+public abstract class ActionBankCard : BankCard,IActionable
+{
+    public ActionBankCard(string name, string color, int money,int cost,string information) : base( name , color , money , cost ,information){}
+
+    public abstract void Action();
+}
+```
+
+Asimismo, se encuentran otras clases que representan el mismo nivel jerárquico que las `ActionCard` y `ActionBankCard`, estas son `HeroCardByUser` y `ActionCardByUser` que heredan respectivamente de las clases anteriores. Estas clases representan plantillas para las cartas creadas por el usuario:
+
+```cs
+public class HeroCardByUser : ActionCard
+{
+    public HeroCard_Node Node;
+    public HeroCardByUser(string name,HeroCard_Node node) : base(name,node.Color,node.Money,node.Information)
+    {
+        this.Node = node;
+    }
+    public override void Action()
+    {
+        Node.Action.Interpret();
+    }
+}
+
+public class ActionCardByUser : ActionBankCard
+{
+    public ActionCard_Node Node;
+    public ActionCardByUser(string name,ActionCard_Node node) : base(name,node.Color,node.Money,node.Cost,node.Information)
+    {
+        this.Node = node;
+    }
+    public override void Action()
+    {
+        Node.Action.Interpret();
+    }
+}
+```
+
+## Game
+
+En este componente se encuentra el código relacionado a la lógica del juego. Las clases `GameActions`, `GamePrint`, `GameTurn`, `GameUtils` y `GameEngine` llevan a cabo esta tarea.
+
+## Class GameActions
+
+En esta clase están implementadas las acciones del juego en métodos, estan son:
+
+### **_Move()_**
+
+Este método recibe dos listas de `Card` y un `index` y ejecuta la abstracción más interesante del juego. Mueve una carta de una lista a otra, teniendo en cuenta el `index` de la misma, en la lista que le corresponde. Pues sí, así sin más, se pueden ejecutar casi todas las acciones de nuestro juego. 
+
+### **_GiveActions()_**
+
+Brinda más acciones para la Fase de Acción, según la cantidad que recibe `cant` es la cantidad de acciones de más que da.
+
+### **_GiveMoney_()_**
+
+Brinda más dinero para la Fase de Compra, según la cantidad que recibe `cant` es la cantidad de dinero que tiene de más para comprar.
+
+### **_Draw_()_**
+
+Roba una cantidad `n` de cartas del deck para la mano.
+
+### **_SaveCards_()_**
+
+Guarda una carta de la mano para el próximo turno.
+
+### **_Trash_()_**
+
+Trashear es un término propio del juego, y significa enviar una carta desde cualquier lugar hacia el banco.
+
+### **_Attack_()_**
+
+Este método recibe el jugador el cual va a ser atacado, `Victim`, y envía a su `GemPile` la cantidad de gemas digitadas, `cantgem`.
+
+### **_GainCard_()_**
+
+El jugador en cuestión obtiene una carta de banco, y es enviada a su `DiscardPile`.
+
+### **_Sacrifice_()_**
+
+### **_OverTaking_()_**
+
+### **_Revive_()_**
+
+### **_CombineFunction()_**
+
+Realiza la acción especial del `Combine` pues combina varias gemas en una sola en su `GemPile`.
+
+## Class GamePrint
+
+Esta clase es la encargada de imprimir en pantalla la mayor parte de los asuntos del juego.
+
+### **_PrintTable()_**
+
+Imprime el campo de cada jugador y define el jugador que está realizando su turno.
+
+### **_PrintGemPile()_**
+
+Imprime en pantalla la `GemPile`.
+
+### **_PrintOnGoing()_**
+
+Imprime en pantalla la `OnGoing`.
+
+### **_PrintHand()_**
+
+Imprime en pantalla la `HandCards`, la mano del jugador.
+
+### **_PrintMenu()_**
+
+Imprime en pantalla el menú principal.
+
+### **_Read()_**
+
+Lee una tecla del teclado para realizar una accion determinada.
+
+### **_PrintList()_**
+
+Existen dos métodos con el mismo nombre, pero que reciben diferentes parámetros. Ambos métodos imprimen la lista que reciben en pantalla.
+
+### **_SelectCard()_**
+
+El grupo de métodos con ese nombre, selecciona una carta a partir de una lista recibida.
+
+## Class GameTurns
+
+Esta clase hereda de una interfaz `IEnumerator`, por tanto implementa los métodos de dicha interfaz: `MoveNext()` y `Reset()`, además de la propiedad `Current`.
+En su constructor posee una lista de `IPlayer` que representa todos los jugadores, y una propiedad `Index` que representa el inicio del `IEnumerator`, pues al ejecutarse el método `MoveNext()` se pasa hacia el próximo jugador, donde al comenzar el juego ese `Index` se convierte en la posición 0, lo cual está correcto.
+La propiedad `Current` expresa el jugador que está realizando su turno en ese momento.
+El método `GameRound()` indica la ronda de juego por la que van.
+El método `Reset()` retorna al `Index` el valor -1.
+
+## Class GameUtils
+
+Esta clase implementa los métodos auxiliares de la lógica del juego.
+
+### **_MixPlayers()_**
+
+Este método riega el orden en que fueron introducidos los jugadores para evitar todo tipo de favoritismo a la hora de escoger las cartas y el orden de los turnos en la partida.
+
+### **_GetRandom()_**
+
+Obtiene un número random en el intervalo recibido.
+
+### **_InformationCard()_**
+
+Brinda la información de la carta seleccionada.
+
+## Class GameEngine
+
+En esta clase se ejecuta la parte más importante de la lógica del juego y está directamente e indirectamente relacionado con todas las clases del proyecto.
+`CantActionsPerTurn` es una propiedad que lleva la cantidad de acciones que se pueden jugar por turno.
+`CantMoneyPerTurn` es una propiedad que lleva la cantidad de dinero disponible que tiene el jugador para la Fase de Compra.
+`Players` es una lista con los jugadores en cuestión.
+`Turns` es una instancia de la clase `GameTurns` para poder referirse a los jugadores.
+`bank` es una instancia de la clase `Bank`, para crear el banco que va a tener lugar en la partida.
+
+### **_PlayGame()_**
+
+En este método se desarrolla el juego, se ejecuta la Fase de Acción, la Fase de Compra y la Fase de Limpieza. Devuelve un `IPlayer` con el jugador ganador.
+
+### **_ActionPhase()_**
+
+Se ejecuta la Fase de Acción.
+
+### **_BuyPhase()_**
+
+Se ejecuta la Fase de Compra.
+
+### **_CleanUpPhase()_**
+
+Se ejecuta la Fase de Limpieza.
+
+## Players
+
+En este componente se encuentra todo lo relacionado al jugador, su `Table` y los dos tipos de jugadores el `ManualPlayer` y el `VirtualPlayer`.
+
+## Class TablePlayer
+
+En esta clase están encapsulados los distintos campos del jugador en listas: `Deck`, `DiscardPile`, `OnGoing`, `HandCards`, `GemPile` y `SaveCards`.
+
+### **_CreateDeck()_**
+
+Crea su deck.
+
+### **_DrawDeck()_**
+
+Roba una cantidad de cartas determinada del deck a la mano.
+
+### **_MixDeck()_**
+
+Barajea el deck.
+
+### **_HandToOnGoing()_**
+
+Mueve una carta de la mano al OnGoing.
+
+### **_HandToSaveCards()_**
+
+Guarda una carta de su mano.
+
+### **_DeckToHand()_**
+
+Mueve una carta del deck a su mano.
+
+### **_DiscardPileToHand()_**
+
+Mueve una carta de DisCardPile a la mano.
+
+### **_HandToDiscardPile()_**
+
+Mueve una carta de la mano a DiscardPile.
+
+### **_ToOnGoing()_**
+
+Agrega una carta al OnGoing.
+
+### **_ToDiscardPile()_**
+
+Agrega una o varias cartas a DiscardPile, en dependencia de su parámetro.
+
+### **_ToGemPile()_**
+
+Agrega una o varias cartas a GemPile, en dependencia de su parámetro.
+
+### **_GetGemPile()_**
+
+Brinda una lista de gemas de la GemPile.
+
+### **_CantGem()_**
+
+Proporciona la cantidad de gemas en su GemPile.
+
+### **_CleanUp()_**
+
+Activa los métodos CleanSaveCards(), CleanOnGoing(), CleanHand(), y renueva su mano co una canidad de cartas que depende de las cantidad de gemas en su GemPile.
+
+### **_CleanSaveCards()_**
+
+Limpieza de las SaveCards.
+
+### **_CleanOnGoing()_**
+
+Limpieza del OnGoing.
+
+### **_CleanHand()_**
+
+Limpieza de la mano del jugador.
+
+### **_CantMoneyBuyPhases()_**
+
+Calcula la cantidad de dinero disponible para su Fase de Compra.
+
+## Interfaces
+
+En el juego se utilizaron dos interfaces: `IPlayer` que contiene todos los métodos de los jugadores y la interfaz `IActionable` que contiene un método `Action()` que lo ejecutarán todas las cartas de acciones.
