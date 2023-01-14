@@ -4,6 +4,6 @@ Money = 1;
 Information = Selecciona una gema de tu Gempile y la trashea;
 Action
 {
-    index = SelectBCard]Me.GemPileList[;
-    Trash ] index , Me.GemPileList [;
+    index = SelectBCard ( Me.GemPileList );
+    Trash ( index , Me.GemPileList );
 }

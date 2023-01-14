@@ -20,9 +20,3 @@ public interface IPlayer
     public int SelectCard(List<Card> cardlist);
     public int SelectBCard(List<Card> cardslist);
 }
-public interface IActionable
-{
-    public void Action();
-}
-
-public interface AST_Node{}

@@ -78,18 +78,27 @@ public class GameActions
         IPlayer a = GameEngine.Turns.Current;
         int[] GemsSelect = a.SelectGem(2);
 
-        if(GemsSelect[0]==-1 || GemsSelect[1]==-1) return;
+        if(GemsSelect[0] == -1 || GemsSelect[1] == -1) return;
 
-        BankCard x = (BankCard)a.Table.GemPile[0];
-        BankCard y = (BankCard)a.Table.GemPile[1];
+        BankCard x = (BankCard)a.Table.GemPile[GemsSelect[0]];
+        BankCard y = (BankCard)a.Table.GemPile[GemsSelect[1]];
 
         GameEngine.bank.Add(x); 
         GameEngine.bank.Add(y);
         a.Table.GemPile.RemoveAt(Math.Max(GemsSelect[0],GemsSelect[1]));
         a.Table.GemPile.RemoveAt(Math.Min(GemsSelect[0],GemsSelect[1]));
 
-        if(x is Gem1 && y is Gem1) a.Table.GemPile.Add(GameEngine.bank.Get(GameEngine.bank.keys[1]));
-        else if((x is Gem1 && y is Gem2) || (x is Gem2 && y is Gem1)) a.Table.GemPile.Add(GameEngine.bank.Get(GameEngine.bank.keys[2]));
-        else if((x is Gem1 && y is Gem3) || (x is Gem2 && y is Gem2) || (x is Gem3 && y is Gem1)) a.Table.GemPile.Add(GameEngine.bank.Get(GameEngine.bank.keys[3]));
+        if(x is Gem1 && y is Gem1)
+        {
+            a.Table.GemPile.Add(GameEngine.bank.Get(GameEngine.bank.keys[1]));
+        }
+        else if((x is Gem1 && y is Gem2) || (x is Gem2 && y is Gem1))
+        { 
+            a.Table.GemPile.Add(GameEngine.bank.Get(GameEngine.bank.keys[2]));
+        }
+        else if((x is Gem1 && y is Gem3) || (x is Gem2 && y is Gem2) || (x is Gem3 && y is Gem1)) 
+        {
+            a.Table.GemPile.Add(GameEngine.bank.Get(GameEngine.bank.keys[3]));
+        }
     }
 }

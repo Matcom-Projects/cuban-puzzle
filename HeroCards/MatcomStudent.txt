@@ -4,19 +4,19 @@ Information = Debido al alto estres que recibe esta carta si tiene mas de 5 gema
 lo contrario;
 Action
 {
-    if ] Me.CantGem][ > 5 [
+    if ( Me.CantGem > 5 )
     {
-        for]2[
+        for(2)
         {
-            OverTaking]Me,SelectCardDeck][[;
-            GiveActions ]1[;
+            OverTaking ( Me , SelectCardDeck );
+            GiveActions (1);
         }
     }
     else
     {
-        if ]true[
+        if (true)
         {
-            SaveCards]SelectCardHand][[;
+            SaveCards(SelectCardHand);
         }
     }
 }

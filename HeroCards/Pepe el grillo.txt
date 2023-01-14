@@ -3,7 +3,7 @@ Color = red;
 Information = Pepe es muy tranquilo po eso te deja robar cartas del deck y te da dinero y acciones, disfrutalas!! ;
 Action
 {
-    Draw ]2[;
-    GiveActions ]2[;
-    GiveMoney ]2[;
+    Draw (2);
+    GiveActions (2);
+    GiveMoney (2);
 }

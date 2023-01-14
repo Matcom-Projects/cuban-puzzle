@@ -6,7 +6,7 @@ public enum Type
 
     EqualEqual,MinorEqual,GreaterEqual,Greater,Minor,Different,// == | <= | >= | > | < | !=
 
-    LBrace,RBrace,LParen,RParen,LBracket,RBracket,//{}()[]
+    LBrace,RBrace,LParen,RParen,//{}()
 
     DOT,Semi,Comma,//.;,
 
@@ -27,8 +27,8 @@ public enum Type
     gem1,gem2,gem3,gem4,cup,crashgem,doblecrashgem,combine,//basic bankcard
 
     selectplayer,selectcard,selectcardongoing,selectcardhand,selectcarddeck,selectcarddiscardpile,selectcardbank,selectgem,
-    round,cantgem,move,giveactions,givemoney,draw,savecards,trash,attack,gaincard,sacrifice,revive,overtaking,getrandomplayer,
-    getrandomcard,selectbcard, // metodos
+    round,cantgem,move,giveactions,givemoney,draw,savecards,trash,attack,gaincard,sacrifice,revive,overtaking,selectbcard, 
+    // metodos
 
     EOF,//fin
 }

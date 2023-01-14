@@ -184,16 +184,6 @@ public class Lexer
                 Advance();
                 return new Token(Type.RBrace,"}");
             }
-            if(Current == '[')
-            {
-                Advance();
-                return new Token(Type.LBracket,"[");
-            }
-            if(Current == ']')
-            {
-                Advance();
-                return new Token(Type.RBracket,"]");
-            }
             if(Current == '=' && Peek() == '=')
             {
                 Advance();

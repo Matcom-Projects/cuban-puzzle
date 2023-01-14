@@ -55,17 +55,17 @@ public class Parse
             Eat(Type.False);
             return new Expression_Node(Type.Boolean,new Bool_Node(false));
         }
-        else if(token.Type == Type.selectplayer||token.Type == Type.getrandomplayer)
+        else if(token.Type == Type.selectplayer)
         {
-            Function_Node node = Function_statement(Type.selectplayer,new Type[0],Type.iPlayer);
-            return new Expression_Node(Type.iPlayer,node);
+            Eat(token.Type);
+            return new Expression_Node(Type.iPlayer,new Function_Node(token.Type,Type.iPlayer,new List<Expression_Node>()));
         }
         else if ( token.Type == Type.selectcardongoing || token.Type == Type.selectcardhand || token.Type == Type.selectcarddeck
         || token.Type == Type.selectcarddiscardpile || token.Type == Type.selectgem || token.Type == Type.round
-        || token.Type == Type.cantgem || token.Type == Type.getrandomcard )
+        || token.Type == Type.cantgem )
         {
-            Function_Node node = Function_statement(token.Type,new Type[0],Type.Int);
-            return new Expression_Node(Type.Int,node);
+            Eat(token.Type);
+            return new Expression_Node(Type.Int,new Function_Node(token.Type,Type.Int,new List<Expression_Node>()));
         }
         else if (token.Type == Type.selectcardbank)
         {
@@ -306,9 +306,9 @@ public class Parse
     public Conditional_Node Conditional_statement()
     {
         Eat(Type.If);
-        Eat(Type.RBracket);
+        Eat(Type.LParen);
         Expression_Node condition = Exp();
-        Eat(Type.LBracket);
+        Eat(Type.RParen);
         Compound_Node whentrue = Compound_statement();
         if(Current_Token.Type == Type.Else) {Eat(Type.Else);return new Conditional_Node(condition,whentrue,Compound_statement());}
         return new Conditional_Node(condition,whentrue,new Compound_Node());
@@ -317,12 +317,12 @@ public class Parse
     public Function_Node Function_statement(Type functiontype,Type[] TypeRecive,Type TypeReturn)
     {
         Eat(functiontype);
-        Eat(Type.RBracket);
+        Eat(Type.LParen);
         List<Expression_Node> pass = new List<Expression_Node>();
 
         if(TypeRecive.Length == 0)
         {
-            Eat(Type.LBracket); 
+            Eat(Type.RParen);
             return new Function_Node(functiontype,TypeReturn,new List<Expression_Node>());
         }
 
@@ -342,7 +342,7 @@ public class Parse
 
             Eat(Type.Comma);
         }
-        Eat(Type.LBracket);
+        Eat(Type.RParen);
         return new Function_Node(functiontype,TypeReturn,pass);
     }
 
@@ -383,9 +383,9 @@ public class Parse
     public For_Node For_statement()
     {
         Eat(Type.For);
-        Eat(Type.RBracket);
+        Eat(Type.LParen);
         Expression_Node times = Exp();
-        Eat(Type.LBracket);
+        Eat(Type.RParen);
         return new For_Node(times,Compound_statement());
     }
 

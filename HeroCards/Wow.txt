@@ -3,6 +3,6 @@ Color = green;
 Information = Selecciona la carta de un rival de la mano y la lleva para su mano;
 Action
 {
-    player = SelectPlayer][;
-    Move]player.HandList,Me.HandList, SelectCard ]player.HandList[ [;
+    player = SelectPlayer;
+    Move ( player.HandList , Me.HandList , SelectCard (player.HandList) );
 }
