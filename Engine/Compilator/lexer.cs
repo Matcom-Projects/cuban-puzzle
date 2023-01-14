@@ -47,7 +47,7 @@ public class Lexer
         Ids.Add("GiveActions",new Token(Type.giveactions,"GiveActions"));
         Ids.Add("GiveMoney",new Token(Type.givemoney,"GiveMoney"));
         Ids.Add("Draw",new Token(Type.draw,"Draw"));
-        Ids.Add("SaveCards",new Token(Type.savecards,"SaveCards"));
+        Ids.Add("SaveCard",new Token(Type.savecards,"SaveCards"));
         Ids.Add("Trash",new Token(Type.trash,"Trash"));
         Ids.Add("Attack",new Token(Type.attack,"Attack"));
         Ids.Add("GainCard",new Token(Type.gaincard,"GainCard"));

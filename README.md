@@ -392,4 +392,201 @@ Calcula la cantidad de dinero disponible para su Fase de Compra.
 
 ## Interfaces
 
-En el juego se utilizaron dos interfaces: `IPlayer` que contiene todos los métodos de los jugadores y la interfaz `IActionable` que contiene un método `Action()` que lo ejecutarán todas las cartas de acciones.
+En el juego se utilizaron tres interfaces: `IPlayer` que contiene todos los métodos de los jugadores , la interfaz `IActionable` que contiene un método `Action()` que lo ejecutarán todas las cartas de acciones y la interfaz `AST_Node` que la utilizamos para relacionar de una forma todos los nodos del interprete.
+
+## Lenguaje
+
+En el interprete que hemos creado te da la posibilidad de programar tus propias cartas del juego con cierta libertad y creatividad. Para crear una carta lo unico que tienes que hacer es dirigirse hacia la carpeta `HeroCards` en caso de lo que quiera crear sea una carta heroe (carta que eligen los jugadores al principio del juego para empezar en sus decks) o hacia `ActionCards` en caso de querer crear una carta de banco (carta que de ser elegida por algun jugador aparecera en el banco con opcion de comprarla), debe crear un archivo `.txt` que su nombre sera el nombre de la carta y en su interior debe contener ciertas exigencias Ej: de ser carta heroe obligatoriamente debe rellenar los campos de `Money`, `Color` , `Information` y `Action` , en caso de ser carta de banco debe rellenar los campos antes mencionados y ademas rellenar el campo `Cost` , en caso de q no tenga alguno de estos campos rellenados el juego le retornara una excepcion indicandole cual campo es el de la falla. La forma correcta de rellenar estas propiedades es la siguiente:
+```
+Money = (un numero) ;
+Cost =  (un numero) ;
+Information = (informacion sobre que hace la carta) ;
+Color= (un color)  ;
+Action
+{
+    (Codigo definido en nuestro interprete)
+}
+```
+
+Las palabras reservadas de nuestro interprete son :
+
+### **_if else_**
+Tenemos condicionales en nuestro interprete que la forma correcta de usarlas son 
+```
+if ( expresion boolean )
+{ 
+    (codigo que debe ejecutar en caso de cumplirse la condicion) 
+}
+else(no obligatoriamente debe ponerla pero siempre que la ponga tiene q venir despues de un if)
+{
+    (codigo a ejecutar en caso de que no se cumpla)
+}
+```
+
+### **_For_**
+Tenemos un ciclo for al que le debemos pasar una expresion numerica q sera la cantidad de veces que repetira este ciclo:
+```
+for (expresion numerica)
+{
+    (codigo a ejecutar en el ciclo)
+}
+```
+
+### **_true false_**
+
+Son expresiones boolean que como su nombre lo indica `true` es verdadero y `false` falso.
+
+### **_Me_**
+
+Es una expresion q retorna el jugador que esta en turno en ese momento.
+
+### **_Gem1_**
+
+Expresion que retorna la carta de banco `Gem1`
+
+### **_Gem2_**
+
+Expresion que retorna la carta de banco `Gem2`
+
+### **_Gem3_**
+
+Expresion que retorna la carta de banco `Gem3`
+
+### **_Gem4_**
+
+Expresion que retorna la carta de banco `Gem4`
+
+### **_CrashGem_**
+
+Expresion que retorna la carta de banco `CrashGem`
+
+### **_DobleCrashGem_**
+
+Expresion que retorna la carta de banco `DobleCrashGem`
+
+### **_Combine_**
+
+Expresion que retorna la carta de banco `Combine`
+
+### **_Cup_**
+
+Expresion que retorna la carta de banco `Cup`
+
+### **_SelectPlayer_**
+
+Es un metodo que retorna un `Player`, no hay q pasarle ningun parametro por eso no hace falta ponerle () despues de su invocacion
+
+### **_SelectCardOnGoing_**
+
+Es un metodo que retorna una expresion numerica que es el index de la carta seleccionada en el campo `OnGoing` del jugador de turno , no hay q pasarle ningun parametro por eso no hace falta ponerle () despues de su invocacion
+
+### **_SelectCardHand_**
+
+Es un metodo que retorna una expresion numerica que es el index de la carta seleccionada en el campo `Hand` del jugador de turno , no hay q pasarle ningun parametro por eso no hace falta ponerle () despues de su invocacion
+
+### **_SelectCardDeck_**
+
+Es un metodo que retorna una expresion numerica que es el index de la carta seleccionada en el campo `Deck` del jugador de turno , no hay q pasarle ningun parametro por eso no hace falta ponerle () despues de su invocacion
+
+### **_SelectCardDiscardPile_**
+
+Es un metodo que retorna una expresion numerica que es el index de la carta seleccionada en el campo `DiscardPile` del jugador de turno , no hay q pasarle ningun parametro por eso no hace falta ponerle () despues de su invocacion
+
+### **_SelectGem_**
+
+Es un metodo que retorna una expresion numerica que es el index de la carta seleccionada en el campo `GemPile` del jugador de turno , no hay q pasarle ningun parametro por eso no hace falta ponerle () despues de su invocacion
+
+### **_SelectCardBank_**
+
+Es un metodo que retorna una carta de banco del banco del juego , no hay q pasarle ningun parametro por eso no hace falta ponerle () despues de su invocacion
+
+### **_Round_**
+
+Es un metodo que retorna una expresion numerica que es la ronda por la que se encuentra el juego que una ronda se puede definir como un ciclo completo de turnos jugados de todos los jugadore , no hay q pasarle ningun parametro por eso no hace falta ponerle () despues de su invocacion
+
+### **__SelectCard (lista)__**
+
+Es un metodo q recibe una lista de cartas y te retorna el index de una carta seleccionada de esa lista
+
+### **__SelectBCard (lista)__**
+
+Es un metodo q recibe una lista de cartas y te retorna el index de una carta de banco seleccionada de esa lista
+
+### **__Move (lista1 , lista2 , index)__**
+
+Es un metodo q recibe dos lista de cartas y un index y te mueve el index de esa lista1 a la lista2, esta accion esta restringida ya que no puedes realizar este movimiento en la lista de los players `GemPile` por lo tanto si le introduces como lista a esta dara una excepcion
+
+### **__GiveActions (expresion numerica)__**
+
+Es un metodo q recibe una expresion numerica la cual aumentara las acciones del jugador d turno en esta
+
+### **__GiveMoney (expresion numerica)__**
+
+Es un metodo q recibe una expresion numerica la cual aumentara el dinero para la fase de compra del jugador d turno en esta
+
+### **__Draw (expresion numerica)__**
+
+Es un metodo que recibe una expresion numerica la cual hara que el jugador de turno robe de su deck esa cantidad de cartas
+
+### **__SaveCard (index)__**
+
+Es un metodo que recibe un index la cual hara que el jugador de turno salve la carta de su mano correspondiente a ese index y la guarde para el proximo turno
+
+### **__Trash (index, lista)__**
+
+Es un metodo que recibe un index y una lista la cual hace que en caso de q el index en esa lista sea una carta del banco entonces lleva esa carta de vuelta al banco, se recomienda que a la hora de programar esa accion tengan en cuenta que el index que estan llevan es realmente el de una carta de banco porque en caso de que no lo sea van a perder la accion
+
+### **__Attack (Player,Expresion numerica)__**
+
+Este metodo recibe un Player y una expresion numerica, como su nombre lo indica esta accion se basa en atacar a un jugador el cual va a ser el q le pases como Player y le vas a atacar una cantidad de gemas que es la expresion numeica que le estas pasando
+
+### **__GainCard (Player,carta de banco)__**
+
+Este metodo recibe un Player y una carta de banco el cual hace que ese player gane del banco la carta de banco que le paso al metodo 
+
+### **__Sacrifice (Player,index)__**
+
+Este metodo recibe un Player y un index el cual hace que ese player lleve la carta de su `Hand` que ocupa el lugar del index a la `DiscardPile`
+
+### **__Revive (Player,index)__**
+
+Este metodo recibe un Player y un index el cual hace que ese player lleve la carta de su `DiscardPile` que ocupa el lugar del index a la `Hand`
+
+### **__OverTaking (Player,index)__**
+
+Este metodo recibe un Player y un index el cual hace que ese player lleve la carta de su `Deck` que ocupa el lugar del index a la `Hand`
+
+### **__Como asignar variables ?__**
+
+Para asignar variables es bien sencillo solo basta con poner el nombre de la variable seguido el simbolo de `=` y despues la expresion que le quiere asignar a esa variable y por ultimo el `;` , seria algo asi:
+```
+nombre = ( Expresion ( numerica || boolean || players ||  carta de banco ) ) ;
+```
+Importante: a las variables no se le pueden asginar listas
+
+### **__Como acceder a las listas del juego ?__**
+
+Bueno primeramente debe conocer cuales son las listas del juego y son las siguientes:
+```
+DeckList : lista donde se encuentran las cartas antes de llevarlas a la HandList
+
+HandList : lista donde se encuentran las cartas que tiene el jugador para jugar en su turno
+
+OnGoingList : lista donde se encuentran las cartas que el jugador ha jugado en su turno
+
+DiscardPileList : lista donde se encuentran las cartas que el jugador ya ha utilizado o no en sus turnos anteriores y ademas las que ha comprado (estas cartas pasan a ser parte del DekcList cuando al Deck no le queden cartas)
+
+GemPileList : aqui se encuentran las gemas de la GemPile del jugador
+```
+
+Ya conocemos como indetificar los campos `Deck` , `Hand` , `OnGoing` , `DiscardPile` y `GemPile` en nuestro lenguaje pero si los invocamos por si solos no tiene sentido porque por ejemplo pongo HandList sabemos q es la lista de cartas que tiene un jugador en su `Hand` pero especificamente de cual jugador ? Por esto principalmente para poder acceder a las listas de los jugadores de su tablero debemos hacerlo de la siguiente forma:
+(Player||variable Player||metodo que retorne un Player)`.`(lista) asi llamariamos a la lista de ese jugador en el respectivo campo. Ejemplo:
+```
+player = SelectPlayer ;
+indexcard = SelectCard(player.HandList) ;
+Move ( player.HandList , Me.HandList , indexcard ) ;
+```
+Esto lo pone dentro del Action en el .txt de una carta y lo que haria fuera mover una carta de la mano de otro jugador a la mano del jugador que esta en turno, igual funcionaria si no crearas las variables y pusieras los metodos en el lugar de las variables en el metodo `Move`
+
+
+

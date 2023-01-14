@@ -16,7 +16,7 @@ Action
     {
         if (true)
         {
-            SaveCards(SelectCardHand);
+            SaveCard(SelectCardHand);
         }
     }
 }
